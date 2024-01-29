@@ -1,3 +1,4 @@
+import { useSubmit } from "@remix-run/react";
 import { useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import invariant from "tiny-invariant";
@@ -5,7 +6,7 @@ import { Icon } from "~/icons/icons";
 import { Card } from "./card";
 import { EditableText } from "./components";
 import { NewCard } from "./new-card";
-import { INTENTS, RenderedItem } from "./types";
+import { CONTENT_TYPES, INTENTS, ItemMutation, RenderedItem } from "./types";
 
 interface ColumnProps {
   name: string;
@@ -17,6 +18,7 @@ export function Column({ name, columnId, items }: ColumnProps) {
   const [acceptDrop, setAcceptDrop] = useState<boolean>(false);
   const [edit, setEdit] = useState(false);
   const listRef = useRef<HTMLUListElement>(null);
+  const submit = useSubmit();
 
   function scrollList() {
     invariant(listRef.current);
@@ -29,6 +31,43 @@ export function Column({ name, columnId, items }: ColumnProps) {
         "flex-shrink-0 flex flex-col overflow-hidden max-h-full w-80 border-slate-400 rounded-xl shadow-sm shadow-slate-400 bg-slate-100" +
         (acceptDrop ? `outline outline-2 outline-brand-red` : ``)
       }
+      onDragOver={(event) => {
+        if (
+          items.length === 0 &&
+          event.dataTransfer.types.includes(CONTENT_TYPES.card)
+        ) {
+          event.preventDefault();
+          setAcceptDrop(true);
+        }
+      }}
+      onDragLeave={() => {
+        setAcceptDrop(false);
+      }}
+      onDrop={(event) => {
+        let transfer = JSON.parse(
+          event.dataTransfer.getData(CONTENT_TYPES.card),
+        );
+        invariant(transfer.id, "missing transfer.id");
+        invariant(transfer.title, "missing transfer.title");
+
+        let mutation: ItemMutation = {
+          order: 1,
+          columnId,
+          id: transfer.id,
+          title: transfer.title,
+        };
+
+        submit(
+          { ...mutation, intent: INTENTS.moveItem },
+          {
+            method: "post",
+            navigate: false,
+            fetcherKey: `card:${transfer.id}`,
+          },
+        );
+
+        setAcceptDrop(false);
+      }}
     >
       <div className="p-2">
         <EditableText

@@ -3,7 +3,8 @@ import { useState } from "react";
 
 import { Icon } from "~/icons/icons";
 
-import { INTENTS } from "./types";
+import invariant from "tiny-invariant";
+import { CONTENT_TYPES, INTENTS, ItemMutation } from "./types";
 
 interface CardProps {
   title: string;
@@ -31,6 +32,46 @@ export function Card({
 
   return deleteFetcher.state !== "idle" ? null : (
     <li
+      onDragOver={(event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        let rect = event.currentTarget.getBoundingClientRect();
+        let midpoint = (rect.top + rect.bottom) / 2;
+        setAcceptDrop(event.clientY <= midpoint ? "top" : "bottom");
+      }}
+      onDragLeave={() => {
+        setAcceptDrop("none");
+      }}
+      onDrop={(event) => {
+        event.stopPropagation();
+
+        let transfer = JSON.parse(
+          event.dataTransfer.getData(CONTENT_TYPES.card),
+        );
+        invariant(transfer.id, "missing cardId");
+        invariant(transfer.title, "missing title");
+
+        let droppedOrder = acceptDrop === "top" ? previousOrder : nextOrder;
+        let moveOrder = (droppedOrder + order) / 2;
+
+        let mutation: ItemMutation = {
+          order: moveOrder,
+          columnId,
+          id: transfer.id,
+          title: transfer.title,
+        };
+
+        submit(
+          { ...mutation, intent: INTENTS.moveItem },
+          {
+            method: "post",
+            navigate: false,
+            fetcherKey: `card:${transfer.id}`,
+          },
+        );
+
+        setAcceptDrop("none");
+      }}
       className={
         "border-t-2 border-b-2 -mb-[2px] last:mb-0 cursor-grab active:cursor-grabbing px-2 py-1 " +
         (acceptDrop === "top"
@@ -43,6 +84,13 @@ export function Card({
       <div
         draggable
         className="bg-white shadow shadow-slate-300 border-slate-300 text-sm rounded-lg w-full py-1 px-2 relative"
+        onDragStart={(event) => {
+          event.dataTransfer.effectAllowed = "move";
+          event.dataTransfer.setData(
+            CONTENT_TYPES.card,
+            JSON.stringify({ id, title }),
+          );
+        }}
       >
         <h3>{title}</h3>
         <div className="mt-2">{content || <>&nbsp;</>}</div>
