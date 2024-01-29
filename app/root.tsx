@@ -14,7 +14,6 @@ import {
 } from "@remix-run/react";
 
 import { getAuthFromRequest } from "./auth/auth";
-import { LoginIcon, LogoutIcon } from "./icons/icons";
 import "./styles.css";
 
 export const links: LinksFunction = () => [
@@ -56,8 +55,6 @@ export default function App() {
               {userId ? (
                 <form method="post" action="/logout">
                   <button className="block text-center">
-                    <LogoutIcon />
-                    <br />
                     <span className="text-slate-500 text-xs uppercase font-bold">
                       Log out
                     </span>
@@ -68,7 +65,6 @@ export default function App() {
                   to="/login"
                   className="text-slate-500 text-xs uppercase font-bold"
                 >
-                  <LoginIcon />
                   Log in
                 </Link>
               )}

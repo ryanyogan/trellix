@@ -12,6 +12,8 @@ model Account {
 
   email    String    @unique
   password Password?
+
+  boards Board[]
 }
 
 model Password {
@@ -21,4 +23,57 @@ model Password {
 
   accountId String  @unique
   account   Account @relation(fields: [accountId], references: [id])
+}
+
+model Board {
+  id Int @id @default(autoincrement())
+
+  name  String
+  color String @default("#eaeaea")
+
+  accountId String
+  account   Account @relation(fields: [accountId], references: [id])
+
+  items   Item[]
+  columns Column[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Column {
+  id String @id @default(uuid())
+
+  name    String
+  content String?
+  order   Float   @default(0)
+
+  items Item[]
+
+  board   Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  boardId Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Item {
+  id String @id @default(uuid())
+
+  title   String
+  content String?
+
+  // Why is order a float? We split the difference betwen prev/next
+  // If an item is dropped between 1.00 and 2.00 it will be 1.50.  If dropped
+  /// between 1.50 and 2.0 it will be 1.75, etc...
+  order Float
+
+  board   Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  boardId Int
+
+  column   Column @relation(fields: [columnId], references: [id], onDelete: Cascade)
+  columnId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

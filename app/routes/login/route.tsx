@@ -100,7 +100,7 @@ export default function Signup() {
             <Button type="submit">Log In</Button>
 
             <div className="text-sm text-slate-500">
-              Don't have any account?
+              Don't have any account?{" "}
               <Link to="/signup" className="underline">
                 Sign Up
               </Link>
