@@ -1,4 +1,4 @@
-import { useLoaderData } from "@remix-run/react";
+import { useFetchers, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { Column } from "./column";
 import { EditableText } from "./components";
@@ -11,10 +11,14 @@ export function Board() {
 
   let itemsById = new Map(board.items.map((item) => [item.id, item]));
 
-  type Column = (typeof board.columns)[number];
+  let optAddingColumns = usePendingColumns();
+  type Column =
+    | (typeof board.columns)[number]
+    | (typeof optAddingColumns)[number];
+
   type ColumnWithItems = Column & { items: typeof board.items };
   let columns = new Map<string, ColumnWithItems>();
-  for (let column of board.columns) {
+  for (let column of [...board.columns, ...optAddingColumns]) {
     columns.set(column.id, { ...column, items: [] });
   }
 
@@ -62,4 +66,20 @@ export function Board() {
       </div>
     </div>
   );
+}
+
+function usePendingColumns() {
+  type CreateColumnFetcher = ReturnType<typeof useFetchers>[number] & {
+    formData: FormData;
+  };
+
+  return useFetchers()
+    .filter((fetcher): fetcher is CreateColumnFetcher => {
+      return fetcher.formData?.get("intent") === INTENTS.createColumn;
+    })
+    .map((fetcher) => {
+      let name = String(fetcher.formData.get("name"));
+      let id = String(fetcher.formData.get("id"));
+      return { name, id };
+    });
 }
