@@ -64,6 +64,7 @@ export function NewCard({
         name={ItemMutationFields.title.name}
         ref={textAreaRef}
         autoFocus
+        required
         placeholder="Enter a title for this card"
         className="outline-none shadow text-sm rounded-lg w-full py-1 px-2 resize-none placeholder:text-sm placeholder:text-slate-500 h-14"
         onKeyDown={(event) => {
