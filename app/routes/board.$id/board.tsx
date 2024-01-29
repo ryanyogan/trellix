@@ -1,15 +1,31 @@
 import { useFetchers, useLoaderData } from "@remix-run/react";
+import { useRef } from "react";
 import invariant from "tiny-invariant";
 import { Column } from "./column";
 import { EditableText } from "./components";
 import { NewColumn } from "./new-columns";
 import { loader } from "./route";
-import { INTENTS } from "./types";
+import { INTENTS, RenderedItem } from "./types";
 
 export function Board() {
   let { board } = useLoaderData<typeof loader>();
 
   let itemsById = new Map(board.items.map((item) => [item.id, item]));
+
+  let pendingItems = usePendingItems();
+  for (let pendingItem of pendingItems) {
+    let item = itemsById.get(pendingItem.id);
+    let merged = item
+      ? { ...item, ...pendingItem }
+      : {
+          ...pendingItem,
+          boardId: board.id,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        };
+
+    itemsById.set(pendingItem.id, merged);
+  }
 
   let optAddingColumns = usePendingColumns();
   type Column =
@@ -29,8 +45,16 @@ export function Board() {
     column.items.push(item);
   }
 
+  let scrollContainerRef = useRef<HTMLDivElement>(null);
+  function scrollRight() {
+    invariant(scrollContainerRef.current, "no scroll container");
+    scrollContainerRef.current.scrollLeft =
+      scrollContainerRef.current.scrollWidth;
+  }
+
   return (
     <div
+      ref={scrollContainerRef}
       style={{ backgroundColor: board.color }}
       className="h-full min-h-0 flex flex-col overflow-x-scroll"
     >
@@ -60,9 +84,11 @@ export function Board() {
 
         <NewColumn
           boardId={board.id}
-          onAdd={() => {}}
+          onAdd={scrollRight}
           editInitially={board.columns.length === 0}
         />
+
+        <div data-lol className="w-8 h-1 flex-shrink-0" />
       </div>
     </div>
   );
@@ -81,5 +107,26 @@ function usePendingColumns() {
       let name = String(fetcher.formData.get("name"));
       let id = String(fetcher.formData.get("id"));
       return { name, id };
+    });
+}
+
+function usePendingItems() {
+  type PendingItem = ReturnType<typeof useFetchers>[number] & {
+    formData: FormData;
+  };
+
+  return useFetchers()
+    .filter((fetcher): fetcher is PendingItem => {
+      if (!fetcher.formData) return false;
+      let intent = fetcher.formData.get("intent");
+      return intent === INTENTS.createItem || intent === INTENTS.moveItem;
+    })
+    .map((fetcher) => {
+      let columnId = String(fetcher.formData.get("columnId"));
+      let title = String(fetcher.formData.get("title"));
+      let id = String(fetcher.formData.get("id"));
+      let order = Number(fetcher.formData.get("order"));
+      let item: RenderedItem = { title, id, order, columnId, content: null };
+      return item;
     });
 }
