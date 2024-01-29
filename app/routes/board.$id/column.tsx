@@ -83,20 +83,23 @@ export function Column({ name, columnId, items }: ColumnProps) {
           <input type="hidden" name="columnId" value={columnId} />
         </EditableText>
 
-        <deleteFetcher.Form method="post">
-          <input type="hidden" name="intent" value={INTENTS.deleteColumn} />
-          <input type="hidden" name="columnId" value={columnId} />
-          <button
-            aria-label="Delete card"
-            className="absolute top-4 right-4 hover:text-brand-red"
-            type="submit"
-            onClick={(event) => {
-              event.stopPropagation();
-            }}
-          >
-            <Icon name="trash" />
-          </button>
-        </deleteFetcher.Form>
+        {items.length === 0 ? (
+          <deleteFetcher.Form method="post">
+            <input type="hidden" name="intent" value={INTENTS.deleteColumn} />
+            <input type="hidden" name="columnId" value={columnId} />
+            <button
+              disabled={items.length !== 0}
+              aria-label="Delete card"
+              className="absolute top-4 right-4 hover:text-brand-red"
+              type="submit"
+              onClick={(event) => {
+                event.stopPropagation();
+              }}
+            >
+              <Icon name="trash" />
+            </button>
+          </deleteFetcher.Form>
+        ) : null}
       </div>
 
       <ul ref={listRef} className="flex-grow overflow-auto">
