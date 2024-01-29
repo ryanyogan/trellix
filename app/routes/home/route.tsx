@@ -71,7 +71,9 @@ function Boards() {
 
   return (
     <div className="p-8">
-      <h2 className="font-bold mb-2 text-xl">Boards</h2>
+      <h2 className="font-bold text-xl">Boards</h2>
+      <div className="h-px bg-slate-700/30 w-full mb-4" />
+
       <nav className="flex flex-wrap gap-8">
         {boards.map((board) => (
           <Board
@@ -101,7 +103,7 @@ function Board({
   return isDeleting ? null : (
     <Link
       to={`/board/${id}`}
-      className="w-60 h-40 p-4 block border-b-8 shadow rounded hover:shadow-lg bg-white relative"
+      className="w-full sm:w-60 h-20 sm:h-40 p-4 block border-b-8 shadow rounded hover:shadow-lg bg-white relative"
       style={{ borderColor: color }}
     >
       <div className="font-bold">{name}</div>

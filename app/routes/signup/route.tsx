@@ -29,7 +29,7 @@ export default function Signup() {
   let actionResult = useActionData<typeof action>();
 
   return (
-    <div className="flex min-h-full flex-1 flex-col mt-20 sm:px-6 lg:px-8">
+    <div className="flex min-h-full flex-1 flex-col mt-20 px-6">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2
           id="signup-header"
@@ -94,19 +94,6 @@ export default function Signup() {
               </Link>
             </div>
           </Form>
-        </div>
-        <div className="mt-8 space-y-2 mx-2">
-          <h3 className="font-bold text-black">Privacy Notice</h3>
-          <p>
-            We won't use your email address for anything other than
-            authenticating with this demo application. This app doesn't send
-            email anyway, so you can put whatever fake email address you want.
-          </p>
-          <h3 className="font-bold text-black">Terms of Service</h3>
-          <p>
-            This is a demo app, there are no terms of service. Don't be
-            surprised if your data dissappears.
-          </p>
         </div>
       </div>
     </div>
