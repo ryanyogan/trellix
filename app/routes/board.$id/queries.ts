@@ -5,6 +5,10 @@ export function deleteCard(id: string, accountId: string) {
   return prisma.item.delete({ where: { id, board: { accountId } } });
 }
 
+export function deleteColumn(id: string, accountId: string) {
+  return prisma.column.delete({ where: { id, board: { accountId } } });
+}
+
 export async function getBoardData(boardId: number, accountId: string) {
   return prisma.board.findUnique({
     where: {

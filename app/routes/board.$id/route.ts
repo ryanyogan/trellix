@@ -6,6 +6,7 @@ import { Board } from "./board";
 import {
   createColumn,
   deleteCard,
+  deleteColumn,
   getBoardData,
   updateBoardName,
   updateColumnName,
@@ -47,6 +48,12 @@ export async function action({ request, params }: ActionFunctionArgs) {
     case INTENTS.deleteCard: {
       let id = String(formData.get("itemId") || "");
       await deleteCard(id, accountId);
+      return { ok: true };
+    }
+
+    case INTENTS.deleteColumn: {
+      let id = String(formData.get("columnId") || "");
+      await deleteColumn(id, accountId);
       return { ok: true };
     }
 

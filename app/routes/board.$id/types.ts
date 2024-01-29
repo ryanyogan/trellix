@@ -20,6 +20,7 @@ export const INTENTS = {
   createItem: "createItem" as const,
   moveItem: "createItem" as const,
   deleteCard: "deleteCard" as const,
+  deleteColumn: "deleteColumn" as const,
 };
 
 export const ItemMutationFields = {

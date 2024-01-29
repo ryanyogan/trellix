@@ -1,4 +1,4 @@
-import { useSubmit } from "@remix-run/react";
+import { useFetcher, useSubmit } from "@remix-run/react";
 import { useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import invariant from "tiny-invariant";
@@ -19,6 +19,7 @@ export function Column({ name, columnId, items }: ColumnProps) {
   const [edit, setEdit] = useState(false);
   const listRef = useRef<HTMLUListElement>(null);
   const submit = useSubmit();
+  const deleteFetcher = useFetcher();
 
   function scrollList() {
     invariant(listRef.current);
@@ -69,18 +70,33 @@ export function Column({ name, columnId, items }: ColumnProps) {
         setAcceptDrop(false);
       }}
     >
-      <div className="p-2">
+      <div className="p-2 relative">
         <EditableText
           fieldName="name"
           value={name}
           inputLabel="Edit column name"
           buttonLabel={`Edit column "${name}" name`}
-          inputClassName="border border-slate-400 w-full rounded-lg py-1 px-2 font-medium text-black"
-          buttonClassName="block rounded-lg text-left w-full border border-transparent py-1 px-2 font-medium text-slate-600"
+          inputClassName="border border-slate-400  rounded-lg py-1 px-2 font-medium text-black"
+          buttonClassName="block rounded-lg text-left border border-transparent py-1 px-2 font-medium text-slate-600"
         >
           <input type="hidden" name="intent" value={INTENTS.updateColumn} />
           <input type="hidden" name="columnId" value={columnId} />
         </EditableText>
+
+        <deleteFetcher.Form method="post">
+          <input type="hidden" name="intent" value={INTENTS.deleteColumn} />
+          <input type="hidden" name="columnId" value={columnId} />
+          <button
+            aria-label="Delete card"
+            className="absolute top-4 right-4 hover:text-brand-red"
+            type="submit"
+            onClick={(event) => {
+              event.stopPropagation();
+            }}
+          >
+            <Icon name="trash" />
+          </button>
+        </deleteFetcher.Form>
       </div>
 
       <ul ref={listRef} className="flex-grow overflow-auto">
