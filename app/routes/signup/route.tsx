@@ -1,6 +1,6 @@
 import { ActionFunctionArgs, json, redirect } from "@remix-run/node";
 import { Form, Link, useActionData } from "@remix-run/react";
-import { setAuthOnResponse } from "~/auth/auth";
+import { redirectIfLoggedInLoader, setAuthOnResponse } from "~/auth/auth";
 import { Button } from "~/components/button";
 import { Input, Label } from "~/components/input";
 import { createAccount } from "./queries";
@@ -9,6 +9,8 @@ import { validate } from "./validate";
 export const meta = () => {
   return [{ title: "Trellix Signup" }];
 };
+
+export const loader = redirectIfLoggedInLoader;
 
 export async function action({ request }: ActionFunctionArgs) {
   let formData = await request.formData();

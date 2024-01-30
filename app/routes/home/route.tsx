@@ -15,8 +15,14 @@ import { Button } from "~/components/button";
 import { Label, LabeledInput } from "~/components/input";
 import { badRequest } from "~/http/bad-request";
 import { Icon } from "~/icons/icons";
+import { triggerCreateBoardEvent } from "../board.$id/events";
 import { INTENTS } from "../board.$id/types";
-import { createBoard, deleteBoard, getHomeData } from "./queries";
+import {
+  createBoard,
+  deleteBoard,
+  getHomeData,
+  getRecentEvents,
+} from "./queries";
 
 export const meta = () => {
   return [{ title: "Boards" }];
@@ -25,7 +31,8 @@ export const meta = () => {
 export async function loader({ request }: LoaderFunctionArgs) {
   let userId = await requireAuthCookie(request);
   let boards = await getHomeData(userId);
-  return { boards };
+  let events = await getRecentEvents(userId);
+  return { boards, events };
 }
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -38,7 +45,11 @@ export async function action({ request }: ActionFunctionArgs) {
       let name = String(formData.get("name") || "");
       let color = String(formData.get("color") || "");
       if (!name) throw badRequest("Bad Request");
-      let board = await createBoard(accountId, name, color);
+
+      let [board] = await Promise.all([
+        createBoard(accountId, name, color),
+        triggerCreateBoardEvent(accountId),
+      ]);
 
       return redirect(`/board/${board.id}`);
     }
@@ -58,9 +69,30 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export default function Projects() {
+  let { events } = useLoaderData<typeof loader>();
   return (
     <div className="h-full">
-      <NewBoard />
+      <div className="flex flex-col sm:flex-row justify-between">
+        <div className="w-full">
+          <NewBoard />
+        </div>
+        <div className="p-8 w-full">
+          <h2 className="font-semibold text-xl">Recent Activity</h2>
+          <ul className="mt-2">
+            {events
+              ? events.map((event) => (
+                  <li className="text-sm text-indigo-600 my-1">
+                    <span className="text-neutral-500 text-xs mr-2 -mt-0.5">
+                      12:21PM
+                    </span>
+                    ryan {event.action.toLowerCase()} a{" "}
+                    {event.type.toLowerCase()}
+                  </li>
+                ))
+              : null}
+          </ul>
+        </div>
+      </div>
       <Boards />
     </div>
   );
@@ -131,7 +163,7 @@ function NewBoard() {
   let isCreating = navigation.formData?.get("intent") === "createBoard";
 
   return (
-    <Form method="post" className="p-8 max-w-md">
+    <Form method="post" className="p-8 w-full">
       <input type="hidden" name="intent" value="createBoard" />
       <div>
         <h2 className="font-bold mb-2 text-xl">New Board</h2>
