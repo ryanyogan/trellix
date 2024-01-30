@@ -17,6 +17,12 @@ export default function Index() {
           This is a demo app to compare Remix to Next.js for a simple
           application, it seems to be pretty damn fast ;)
         </p>
+
+        <p>
+          This app is using Sqlite3 distributed by the way of nerds, it means it
+          is fast as shit to get to your data.
+        </p>
+
         <p>
           It's a recreation of the popular drag and drop interface in{" "}
           <a href="https://trello.com" className="underline">
