@@ -6,14 +6,11 @@ kill_timeout = 5
 processes = []
 
 [experimental]
-allowed_public_ports = []
 auto_rollback = true
-cmd = "start.sh"
-entrypoint = "sh"
 
 [mounts]
 destination = "/data"
-source = "myapp_data"
+source = "data"
 
 [[services]]
 internal_port = 8080
@@ -29,6 +26,23 @@ type = "connections"
 force_https = true
 handlers = ["http"]
 port = 80
+
+[[services.tcp_checks]]
+grace_period = "1s"
+interval = "15s"
+restart_limit = 0
+timeout = "2s"
+
+[[services.http_checks]]
+interval = 10000
+grace_period = "1s"
+method = "get"
+path = "/"
+protocol = "http"
+restart_limit = 0
+timeout = 500
+tls_skip_verify = false
+
 
 [[services.ports]]
 handlers = ["tls", "http"]

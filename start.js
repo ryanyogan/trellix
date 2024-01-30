@@ -1,6 +1,7 @@
 import { spawn } from "child_process";
 
 async function start() {
+  console.log("Checking for database migrations...");
   await execute("npx prisma migrate deploy");
 
   console.log("Starting the Trellix application...");
