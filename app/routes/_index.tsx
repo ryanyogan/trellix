@@ -20,7 +20,7 @@ export default function Index() {
 
         <p>
           This app is using Sqlite3 distributed by the way of nerds, it means it
-          is fast as shit to get to your data...
+          is fast as shit to get to your data.
         </p>
 
         <p>
