@@ -2,7 +2,7 @@
 FROM node:18-bullseye-slim as base
 
 # Install openssl for Prisma
-RUN apt-get update && apt-get install -y openssl sqlite3
+RUN apt-get update && apt-get install -y openssl sqlite3 fuse3 ca-certificates
 
 # Install all node_modules, including dev dependencies
 FROM base as deps
@@ -41,7 +41,8 @@ RUN npm run build
 # Finally, build the production image with minimal footprint
 FROM base
 
-ENV DATABASE_URL="file:/data/sqlite.db"
+ENV LITEFS_DIR="/litefs"
+ENV DATABASE_URL="file:$LITEFS_DIR/sqlite.db"
 ENV PORT="8080"
 ENV NODE_ENV="production"
 
@@ -56,4 +57,6 @@ COPY --from=build /app/build /app/build
 COPY --from=build /app/public /app/public
 ADD . .
 
-CMD ["npm", "start"]
+COPY --from=flyio/litefs:0.5 /usr/local/bin/litefs /usr/local/bin/litefs
+
+CMD ["litefs", "mount", "--", "npm", "start"]
