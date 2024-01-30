@@ -7,6 +7,7 @@ processes = []
 
 [experimental]
 auto_rollback = true
+enable_consul = true
 
 [mounts]
 destination = "/data"
