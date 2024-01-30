@@ -1,8 +1,19 @@
 import { spawn } from "child_process";
+import { getInstanceInfo } from "litefs-js";
 
 async function start() {
-  console.log("Checking for database migrations...");
-  await execute("npx prisma migrate deploy");
+  let { currentIsPrimary } = await getInstanceInfo();
+
+  if (currentIsPrimary) {
+    console.log(
+      `Instance (${currentInstance}) in ${process.env.FLY_REGION} is primary. Deploying migrations.`,
+    );
+    await execute("npx prisma migrate deploy");
+  } else {
+    console.log(
+      `Instance (${currentInstance}) in ${process.env.FLY_REGION} is not primary (the primary instance is ${primaryInstance}). Skipping migrations.`,
+    );
+  }
 
   console.log("Starting the Trellix application...");
   await execute("NODE_ENV=production remix-serve ./build/server/index.js");
