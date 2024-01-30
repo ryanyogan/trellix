@@ -1,8 +1,9 @@
-# flyctl launch added from .gitignore
-**/node_modules
-
-.cache
-build
-public/build
-**/.env
-fly.toml
+node_modules
+.env
+/build
+/.vscode
+prisma/sqlite.db
+prisma/sqlite.db-journal
+Dockerfile
+.dockerignore
+.git
