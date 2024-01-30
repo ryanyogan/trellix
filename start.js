@@ -2,7 +2,8 @@ import { spawn } from "child_process";
 import { getInstanceInfo } from "litefs-js";
 
 async function start() {
-  let { currentIsPrimary, currentInstance } = await getInstanceInfo();
+  let { currentIsPrimary, currentInstance, primaryInstance } =
+    await getInstanceInfo();
 
   if (currentIsPrimary) {
     console.log(
