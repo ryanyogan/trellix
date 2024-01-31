@@ -1,7 +1,8 @@
 import { Form, useSubmit } from "@remix-run/react";
 import { useRef } from "react";
 import invariant from "tiny-invariant";
-import { CancelButton, SaveButton } from "./components";
+import { Button } from "~/components/ui/button";
+import { CancelButton } from "./components";
 import { INTENTS, ItemMutationFields } from "./types";
 
 export function NewCard({
@@ -84,7 +85,9 @@ export function NewCard({
         }}
       />
       <div className="flex justify-between">
-        <SaveButton ref={buttonRef}>Save Card</SaveButton>
+        <Button variant="ghost" className="bg-blue-200" ref={buttonRef}>
+          Save Card
+        </Button>
         <CancelButton onClick={onComplete}>Cancel</CancelButton>
       </div>
     </Form>

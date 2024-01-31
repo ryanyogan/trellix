@@ -10,8 +10,8 @@ import {
   useLoaderData,
   useNavigation,
 } from "@remix-run/react";
+import { Plus } from "lucide-react";
 import { requireAuthCookie } from "~/auth/auth";
-import { Label } from "~/components/input";
 import { Button } from "~/components/ui/button";
 import {
   Dialog,
@@ -80,8 +80,11 @@ export async function action({ request }: ActionFunctionArgs) {
 export default function Projects() {
   return (
     <div className="h-full">
-      <div className="p-6">
-        <NewBoard />
+      <div className="flex flex-row items-center justify-between mt-8">
+        <h1 className="font-bold text-3xl text-slate-600 ml-8">My Boards</h1>
+        <div className="pr-6 text-right">
+          <NewBoard />
+        </div>
       </div>
       <Boards />
     </div>
@@ -92,10 +95,7 @@ function Boards() {
   let { boards } = useLoaderData<typeof loader>();
 
   return (
-    <div className="p-8">
-      <h2 className="font-bold text-xl">Boards</h2>
-      <div className="h-px bg-slate-700/30 w-full mb-4" />
-
+    <div className="p-6">
       <nav className="flex flex-wrap gap-8">
         {boards.map((board) => (
           <Board
@@ -155,7 +155,9 @@ function NewBoard() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="default">Create New Board</Button>
+        <Button variant="default">
+          <Plus className="h-5 w-5" />
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -167,13 +169,25 @@ function NewBoard() {
         <Form method="post">
           <input type="hidden" name="intent" value="createBoard" />
           <div>
-            <label htmlFor="name">Name</label>
-            <Input name="name" type="text" required />
+            <label htmlFor="name" className="text-gray-700 font-bold text-sm">
+              Name
+            </label>
+            <Input
+              name="name"
+              type="text"
+              className="text-[16px] sm:text-base"
+              required
+            />
           </div>
 
           <div className="mt-4 flex items-center gap-4">
             <div className="flex items-center gap-1">
-              <Label htmlFor="board-color">Color</Label>
+              <label
+                htmlFor="board-color"
+                className="text-gray-700 font-bold text-sm"
+              >
+                Color
+              </label>
               <input
                 id="board-color"
                 name="color"

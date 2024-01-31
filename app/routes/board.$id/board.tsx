@@ -72,7 +72,7 @@ export function Board() {
         </EditableText>
       </h1>
 
-      <div className="flex flex-col flex-grow sm:flex-row min-h-0 h-full items-start gap-4 px-8 pb-4">
+      <div className="flex flex-grow min-h-0 h-full items-start gap-4 px-8 pb-4">
         {[...columns.values()].map((col) => (
           <Column
             key={col.id}
