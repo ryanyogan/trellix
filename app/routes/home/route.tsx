@@ -11,8 +11,17 @@ import {
   useNavigation,
 } from "@remix-run/react";
 import { requireAuthCookie } from "~/auth/auth";
-import { Button } from "~/components/button";
-import { Label, LabeledInput } from "~/components/input";
+import { Label } from "~/components/input";
+import { Button } from "~/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "~/components/ui/dialog";
+import { Input } from "~/components/ui/input";
 import { badRequest } from "~/http/bad-request";
 import { Icon } from "~/icons/icons";
 import { triggerCreateBoardEvent } from "../board.$id/events";
@@ -69,29 +78,10 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export default function Projects() {
-  let { events } = useLoaderData<typeof loader>();
   return (
     <div className="h-full">
-      <div className="flex flex-col sm:flex-row justify-between">
-        <div className="w-full">
-          <NewBoard />
-        </div>
-        <div className="p-8 w-full">
-          <h2 className="font-semibold text-xl">Recent Activity</h2>
-          <ul className="mt-2">
-            {events
-              ? events.map((event) => (
-                  <li className="text-sm text-indigo-600 my-1">
-                    <span className="text-neutral-500 text-xs mr-2 -mt-0.5">
-                      12:21PM
-                    </span>
-                    ryan {event.action.toLowerCase()} a{" "}
-                    {event.type.toLowerCase()}
-                  </li>
-                ))
-              : null}
-          </ul>
-        </div>
+      <div className="p-6">
+        <NewBoard />
       </div>
       <Boards />
     </div>
@@ -163,27 +153,43 @@ function NewBoard() {
   let isCreating = navigation.formData?.get("intent") === "createBoard";
 
   return (
-    <Form method="post" className="p-8 w-full">
-      <input type="hidden" name="intent" value="createBoard" />
-      <div>
-        <h2 className="font-bold mb-2 text-xl">New Board</h2>
-        <LabeledInput label="Name" name="name" type="text" required />
-      </div>
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="default">Create New Board</Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Create Board</DialogTitle>
+          <DialogDescription>
+            Create a new board here. Click create when you're done.
+          </DialogDescription>
+        </DialogHeader>
+        <Form method="post">
+          <input type="hidden" name="intent" value="createBoard" />
+          <div>
+            <label htmlFor="name">Name</label>
+            <Input name="name" type="text" required />
+          </div>
 
-      <div className="mt-4 flex items-center gap-4">
-        <div className="flex items-center gap-1">
-          <Label htmlFor="board-color">Color</Label>
-          <input
-            id="board-color"
-            name="color"
-            type="color"
-            defaultValue="#eaeaea"
-            className="bg-transparent"
-          />
-        </div>
-
-        <Button type="submit">{isCreating ? "Creating..." : "Create"}</Button>
-      </div>
-    </Form>
+          <div className="mt-4 flex items-center gap-4">
+            <div className="flex items-center gap-1">
+              <Label htmlFor="board-color">Color</Label>
+              <input
+                id="board-color"
+                name="color"
+                type="color"
+                defaultValue="#eaeaea"
+                className="bg-transparent"
+              />
+            </div>
+          </div>
+          <div className="text-right">
+            <Button type="submit">
+              {isCreating ? "Creating..." : "Create"}
+            </Button>
+          </div>
+        </Form>
+      </DialogContent>
+    </Dialog>
   );
 }

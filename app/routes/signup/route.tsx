@@ -1,8 +1,8 @@
 import { ActionFunctionArgs, json, redirect } from "@remix-run/node";
 import { Form, Link, useActionData } from "@remix-run/react";
 import { redirectIfLoggedInLoader, setAuthOnResponse } from "~/auth/auth";
-import { Button } from "~/components/button";
 import { Input, Label } from "~/components/input";
+import { Button } from "~/components/ui/button";
 import { createAccount } from "./queries";
 import { validate } from "./validate";
 
