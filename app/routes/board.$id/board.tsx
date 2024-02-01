@@ -80,77 +80,83 @@ export function Board() {
       style={{ backgroundColor: board.color }}
       className="h-full min-h-0 flex flex-col overflow-x-scroll"
     >
-      <h1 className="bg-slate-200 shadow mb-10">
-        <EditableText
-          value={board.name}
-          fieldName="name"
-          inputClassName="mx-8 my-4 text-2xl font-medium border border-slate-400 rounded-lg py-1 px-2 text-black"
-          buttonClassName="mx-8 my-4 text-2xl font-medium block rounded-lg text-left border border-transparent py-1 px-2 text-slate-800"
-          buttonLabel={`Edit board "${board.name}" name`}
-          inputLabel="Edit board name"
-        >
-          <input type="hidden" name="intent" value={INTENTS.updateBoardName} />
-          <input type="hidden" name="id" value={board.id} />
-        </EditableText>
-      </h1>
-
-      <Dialog open={dialogOpen} onOpenChange={onChange}>
-        <DialogTrigger asChild>
-          <Button
-            onClick={() => setDialogOpen(true)}
-            variant="secondary"
-            className="absolute right-5 top-20 bg-transparent"
+      <div className="bg-slate-200 shadow mb-10 flex flex-row justify-between items-center pr-4">
+        <h1>
+          <EditableText
+            value={board.name}
+            fieldName="name"
+            inputClassName="mx-8 my-4 text-2xl font-medium border border-slate-400 rounded-lg py-1 px-2 text-black"
+            buttonClassName="mx-8 my-4 text-2xl font-medium block rounded-lg text-left border border-transparent py-1 px-2 text-slate-800"
+            buttonLabel={`Edit board "${board.name}" name`}
+            inputLabel="Edit board name"
           >
-            <Pencil className="h-5 w-5 text-slate-900" />
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle className="text-xl">Edit Board</DialogTitle>
-            <DialogDescription className="text-md">
-              Edit your board here. Click update when you're complete.
-            </DialogDescription>
-          </DialogHeader>
+            <input
+              type="hidden"
+              name="intent"
+              value={INTENTS.updateBoardName}
+            />
+            <input type="hidden" name="id" value={board.id} />
+          </EditableText>
+        </h1>
 
-          <editFetcher.Form method="post">
-            <input type="hidden" name="intent" value="editBoard" />
-            <input type="hidden" name="boardId" value={board.id} />
-            <div>
-              <Label htmlFor="name">Board Name</Label>
-              <Input
-                name="name"
-                type="text"
-                defaultValue={board.name}
-                className="text-[16px] sm:text-base ring-0 ring-transparent focus:ring-transparent"
-                required
-              />
-            </div>
+        <Dialog open={dialogOpen} onOpenChange={onChange}>
+          <DialogTrigger asChild>
+            <Button
+              onClick={() => setDialogOpen(true)}
+              variant="secondary"
+              className="bg-transparent"
+            >
+              <Pencil className="h-5 w-5 text-slate-900" />
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle className="text-xl">Edit Board</DialogTitle>
+              <DialogDescription className="text-md">
+                Edit your board here. Click update when you're complete.
+              </DialogDescription>
+            </DialogHeader>
 
-            <div className="mt-4 flex items-center gap-4">
-              <div className="flex flex-col items-start gap-1">
-                <Label htmlFor="board-color">Board Color</Label>
-                <input
-                  id="board-color"
-                  name="color"
-                  type="color"
-                  defaultValue={board.color}
-                  className="bg-transparent"
+            <editFetcher.Form method="post">
+              <input type="hidden" name="intent" value="editBoard" />
+              <input type="hidden" name="boardId" value={board.id} />
+              <div>
+                <Label htmlFor="name">Board Name</Label>
+                <Input
+                  name="name"
+                  type="text"
+                  defaultValue={board.name}
+                  className="text-[16px] sm:text-base ring-0 ring-transparent focus:ring-transparent"
+                  required
                 />
               </div>
-            </div>
-            <div className="text-right">
-              <Button
-                type="submit"
-                onClick={() => {
-                  setDialogOpen(false);
-                }}
-              >
-                {isEditing ? "Upading..." : "Update"}
-              </Button>
-            </div>
-          </editFetcher.Form>
-        </DialogContent>
-      </Dialog>
+
+              <div className="mt-4 flex items-center gap-4">
+                <div className="flex flex-col items-start gap-1">
+                  <Label htmlFor="board-color">Board Color</Label>
+                  <input
+                    id="board-color"
+                    name="color"
+                    type="color"
+                    defaultValue={board.color}
+                    className="bg-transparent"
+                  />
+                </div>
+              </div>
+              <div className="text-right">
+                <Button
+                  type="submit"
+                  onClick={() => {
+                    setDialogOpen(false);
+                  }}
+                >
+                  {isEditing ? "Upading..." : "Update"}
+                </Button>
+              </div>
+            </editFetcher.Form>
+          </DialogContent>
+        </Dialog>
+      </div>
 
       <div className="flex flex-grow min-h-0 h-full items-start gap-4 px-8 pb-4">
         {[...columns.values()].map((col) => (
