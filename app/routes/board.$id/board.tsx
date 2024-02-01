@@ -105,10 +105,10 @@ export function Board() {
           <div className="text-gray-500 font-light">
             {completionCount} \ {totalCount} items complete
           </div>
-          <div className="w-full h-2.5 bg-slate-300 rounded-md mr-4">
+          <div className="w-full h-2 bg-slate-300 rounded-md mr-4">
             <div
               style={{ width: `${completionDelta}%` }}
-              className="h-2.5 rounded-md bg-indigo-400"
+              className="h-2 rounded-md bg-indigo-400"
             ></div>
           </div>
         </div>
