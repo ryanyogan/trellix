@@ -97,17 +97,26 @@ function Boards() {
 
   return (
     <div className="p-6">
-      <nav className="grid grid-cols-2 md:grid-cols-3 3xl:grid-cols-4 gap-4">
-        {boards.map((board) => (
-          <Board
-            key={board.id}
-            name={board.name}
-            id={board.id}
-            color={board.color}
-            itemCount={board.items.length}
-          />
-        ))}
-      </nav>
+      {boards.length === 0 ? (
+        <div className="flex justify-center items-center h-[50vh]">
+          <h2 className="text-slate-500 text-2xl">
+            You have yet to create any boards, click the plus sign and get
+            started!
+          </h2>
+        </div>
+      ) : (
+        <nav className="grid grid-cols-2 md:grid-cols-3 3xl:grid-cols-4 gap-4">
+          {boards.map((board) => (
+            <Board
+              key={board.id}
+              name={board.name}
+              id={board.id}
+              color={board.color}
+              itemCount={board.items.length}
+            />
+          ))}
+        </nav>
+      )}
     </div>
   );
 }
