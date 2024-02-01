@@ -21,7 +21,7 @@ export let Label = forwardRef<
     <label
       {...props}
       ref={ref}
-      className="block text-sm font-medium leading-6 text-gray-900"
+      className="block text-lg font-medium leading-6 text-gray-900 mb-2"
     />
   );
 });

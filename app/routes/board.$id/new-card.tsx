@@ -67,7 +67,7 @@ export function NewCard({
         autoFocus
         required
         placeholder="Enter a title for this card"
-        className="outline-none shadow text-sm rounded-lg w-full py-1 px-2 resize-none placeholder:text-sm placeholder:text-slate-500 h-14"
+        className="outline-none shadow text-[16px] sm:text-sm rounded-lg w-full py-1 px-2 resize-none placeholder:text-sm placeholder:text-slate-500 h-14"
         onKeyDown={(event) => {
           if (event.key === "Enter") {
             event.preventDefault();
@@ -85,7 +85,11 @@ export function NewCard({
         }}
       />
       <div className="flex justify-between">
-        <Button variant="ghost" className="bg-blue-200" ref={buttonRef}>
+        <Button
+          variant="ghost"
+          className="bg-slate-900 text-slate-300"
+          ref={buttonRef}
+        >
           Save Card
         </Button>
         <CancelButton onClick={onComplete}>Cancel</CancelButton>

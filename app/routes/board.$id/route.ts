@@ -1,4 +1,8 @@
-import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
+import {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  MetaFunction,
+} from "@remix-run/node";
 import invariant from "tiny-invariant";
 import { requireAuthCookie } from "~/auth/auth";
 import { badRequest, notFound } from "~/http/bad-request";
@@ -7,13 +11,22 @@ import {
   createColumn,
   deleteCard,
   deleteColumn,
+  editBoard,
   getBoardData,
+  markCardComplete,
   updateBoardName,
   updateColumnName,
   upsertItem,
 } from "./queries";
 import { INTENTS } from "./types";
 import { parseItemMutation } from "./utils";
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: "Board" },
+    { name: "description", content: "Projects for ADHD" },
+  ];
+};
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   let accountId = await requireAuthCookie(request);
@@ -45,9 +58,28 @@ export async function action({ request, params }: ActionFunctionArgs) {
       return { ok: true };
     }
 
+    case INTENTS.editBoard: {
+      let { name, color } = Object.fromEntries(formData);
+      invariant(name, "Missing Name");
+      invariant(color, "Missing Name");
+      await editBoard({
+        boardId,
+        accountId,
+        name: String(name),
+        color: String(color),
+      });
+      return { ok: true };
+    }
+
     case INTENTS.deleteCard: {
       let id = String(formData.get("itemId") || "");
       await deleteCard(id, accountId);
+      return { ok: true };
+    }
+
+    case INTENTS.markCardComplete: {
+      let id = String(formData.get("itemId") || "");
+      await markCardComplete(id, accountId);
       return { ok: true };
     }
 
@@ -77,6 +109,10 @@ export async function action({ request, params }: ActionFunctionArgs) {
       let mutation = parseItemMutation(formData);
       await upsertItem({ ...mutation, boardId }, accountId);
       return { ok: true };
+    }
+
+    default: {
+      console.log(intent);
     }
   }
 }

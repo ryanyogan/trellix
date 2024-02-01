@@ -12,6 +12,7 @@ import {
 } from "@remix-run/react";
 import { Plus } from "lucide-react";
 import { requireAuthCookie } from "~/auth/auth";
+import { Label } from "~/components/input";
 import { Button } from "~/components/ui/button";
 import {
   Dialog,
@@ -103,6 +104,7 @@ function Boards() {
             name={board.name}
             id={board.id}
             color={board.color}
+            itemCount={board.items.length}
           />
         ))}
       </nav>
@@ -114,10 +116,12 @@ function Board({
   name,
   color,
   id,
+  itemCount,
 }: {
   name: string;
   id: number;
   color: string;
+  itemCount: number;
 }) {
   let fetcher = useFetcher();
   let isDeleting = fetcher.state !== "idle";
@@ -128,7 +132,14 @@ function Board({
       className="w-full h-28 sm:h-40 p-4 block border-b-8 shadow rounded hover:shadow-lg bg-white relative"
       style={{ borderColor: color }}
     >
-      <div className="font-bold">{name}</div>
+      <div className="font-semibold text-ellipsis">{name}</div>
+
+      <div className="absolute bottom-2">
+        <div className="text-slate-600 text-sm">
+          This board currently has{" "}
+          <span className="text-blue-500">{itemCount}</span> items.
+        </div>
+      </div>
 
       <fetcher.Form method="post">
         <input type="hidden" name="intent" value="deleteBoard" />
@@ -161,33 +172,28 @@ function NewBoard() {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Create Board</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-xl">Create Board</DialogTitle>
+          <DialogDescription className="text-md">
             Create a new board here. Click create when you're done.
           </DialogDescription>
         </DialogHeader>
         <Form method="post">
           <input type="hidden" name="intent" value="createBoard" />
           <div>
-            <label htmlFor="name" className="text-gray-700 font-bold text-sm">
-              Name
-            </label>
+            <Label htmlFor="name">Board Name</Label>
+
             <Input
               name="name"
               type="text"
+              autoCapitalize="true"
               className="text-[16px] sm:text-base"
               required
             />
           </div>
 
           <div className="mt-4 flex items-center gap-4">
-            <div className="flex items-center gap-1">
-              <label
-                htmlFor="board-color"
-                className="text-gray-700 font-bold text-sm"
-              >
-                Color
-              </label>
+            <div className="flex flex-col items-start gap-1">
+              <Label htmlFor="color">Board Color</Label>
               <input
                 id="board-color"
                 name="color"

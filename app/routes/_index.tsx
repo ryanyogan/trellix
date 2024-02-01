@@ -10,39 +10,27 @@ export const meta: MetaFunction = () => {
 
 export default function Index() {
   return (
-    <div className="h-full flex flex-col items-center pt-20 px-10 bg-slate-900">
-      <img src="/remix-logo-new@dark.png" width="402" height="149" />
-      <div className="space-y-4 max-w-md text-lg text-slate-300">
-        <p>
-          This is a demo app to compare Remix to Next.js for a simple
-          application, it seems to be pretty damn fast ;)
+    <div className="h-full flex flex-col items-center pt-40 px-10 bg-slate-900">
+      <div className="space-y-6 max-w-lg text-lg text-slate-500">
+        <h1 className="text-center text-indigo-500 text-5xl">Hi, 👋</h1>
+        <h4 className="text-indigo-400 font-medium text-2xl text-center">
+          Sick of <span className="italic text-orange-400">organization</span>{" "}
+          tools that give you <span className="text-blue-400">anxiety?</span>
+        </h4>
+        <p className="text-green-300 text-center text-muted-foreground text-lg">
+          Come on in, the water's fine <span className="text-pink-400">:)</span>
         </p>
-
-        <p>
-          This app is using Sqlite3 distributed by the way of nerds, it means it
-          is fast as shit to get to your data.
-        </p>
-
-        <p>
-          It's a recreation of the popular drag and drop interface in{" "}
-          <a href="https://trello.com" className="underline">
-            Trello
-          </a>{" "}
-          and other similar apps.
-        </p>
-        <p>If you want to play around, click sign up!</p>
       </div>
-      <div className="flex w-full justify-evenly max-w-md mt-8 rounded-3xl p-10 bg-slate-800">
+      <div className="flex flex-col items-center gap-2 w-full justify-evenly max-w-md rounded-3xl p-10">
         <Link
           to="/signup"
-          className="text-xl font-medium text-brand-aqua underline"
+          className="text-2xl font-medium text-indigo-400 underline underline-offset-2"
         >
           Sign up
         </Link>
-        <div className="h-full border-r border-slate-500" />
         <Link
           to="/login"
-          className="text-xl font-medium text-brand-aqua underline"
+          className="text-2xl font-medium text-indigo-400 underline underline-offset-2"
         >
           Login
         </Link>

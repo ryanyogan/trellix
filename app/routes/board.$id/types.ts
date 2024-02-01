@@ -14,6 +14,7 @@ export const CONTENT_TYPES = {
 export const INTENTS = {
   createBoard: "createBoard" as const,
   deleteBoard: "deleteBoard" as const,
+  editBoard: "editBoard" as const,
   updateBoardName: "updateBoard" as const,
   createColumn: "createColumn" as const,
   updateColumn: "updateColumn" as const,
@@ -21,6 +22,7 @@ export const INTENTS = {
   moveItem: "createItem" as const,
   deleteCard: "deleteCard" as const,
   deleteColumn: "deleteColumn" as const,
+  markCardComplete: "markCardComplete" as const,
 };
 
 export const ItemMutationFields = {

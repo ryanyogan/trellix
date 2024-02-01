@@ -56,7 +56,7 @@ export function NewColumn({
       />
 
       <div className="flex justify-between">
-        <Button variant="ghost" className="bg-blue-200">
+        <Button variant="ghost" className="bg-slate-900 text-slate-300">
           Save Card
         </Button>
         <CancelButton onClick={() => setEditing(false)}>Cancel</CancelButton>

@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import { Icon } from "~/icons/icons";
 
+import { Check } from "lucide-react";
 import invariant from "tiny-invariant";
 import { CONTENT_TYPES, INTENTS, ItemMutation } from "./types";
 
@@ -92,8 +93,23 @@ export function Card({
           );
         }}
       >
-        <h3>{title}</h3>
+        <h3 className="break-words mr-14">{title}</h3>
         <div className="mt-2">{content || <>&nbsp;</>}</div>
+        <deleteFetcher.Form method="post">
+          <input type="hidden" name="intent" value={INTENTS.markCardComplete} />
+          <input type="hidden" name="itemId" value={id} />
+          <button
+            aria-label="Complete card"
+            className="absolute top-4 right-10 hover:text-brand-red"
+            type="submit"
+            onClick={(event) => {
+              event.stopPropagation();
+            }}
+          >
+            <Check className="h-5 w-5 mt-[2px]" />
+          </button>
+        </deleteFetcher.Form>
+
         <deleteFetcher.Form method="post">
           <input type="hidden" name="intent" value={INTENTS.deleteCard} />
           <input type="hidden" name="itemId" value={id} />

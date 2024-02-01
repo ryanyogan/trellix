@@ -36,5 +36,19 @@ export async function getHomeData(userId: string) {
     where: {
       accountId: userId,
     },
+    include: {
+      items: true,
+    },
+  });
+}
+
+export async function getCompleteItemCount(userId: string, boardId: number) {
+  return prisma.item.count({
+    where: {
+      boardId,
+      board: {
+        accountId: userId,
+      },
+    },
   });
 }

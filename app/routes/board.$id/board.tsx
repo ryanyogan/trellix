@@ -1,6 +1,18 @@
-import { useFetchers, useLoaderData } from "@remix-run/react";
-import { useRef } from "react";
+import { useFetcher, useFetchers, useLoaderData } from "@remix-run/react";
+import { Pencil } from "lucide-react";
+import { useRef, useState } from "react";
 import invariant from "tiny-invariant";
+import { Label } from "~/components/input";
+import { Button } from "~/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "~/components/ui/dialog";
+import { Input } from "~/components/ui/input";
 import { Column } from "./column";
 import { EditableText } from "./components";
 import { NewColumn } from "./new-columns";
@@ -20,6 +32,7 @@ export function Board() {
       : {
           ...pendingItem,
           boardId: board.id,
+          complete: false,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
         };
@@ -52,13 +65,22 @@ export function Board() {
       scrollContainerRef.current.scrollWidth;
   }
 
+  let editFetcher = useFetcher();
+  let isEditing = editFetcher.state !== "idle";
+
+  let [dialogOpen, setDialogOpen] = useState<boolean>(false);
+
+  function onChange() {
+    setDialogOpen(!dialogOpen);
+  }
+
   return (
     <div
       ref={scrollContainerRef}
       style={{ backgroundColor: board.color }}
       className="h-full min-h-0 flex flex-col overflow-x-scroll"
     >
-      <h1>
+      <h1 className="bg-slate-200 shadow mb-10">
         <EditableText
           value={board.name}
           fieldName="name"
@@ -71,6 +93,64 @@ export function Board() {
           <input type="hidden" name="id" value={board.id} />
         </EditableText>
       </h1>
+
+      <Dialog open={dialogOpen} onOpenChange={onChange}>
+        <DialogTrigger asChild>
+          <Button
+            onClick={() => setDialogOpen(true)}
+            variant="secondary"
+            className="absolute right-5 top-20 bg-transparent"
+          >
+            <Pencil className="h-5 w-5 text-slate-900" />
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle className="text-xl">Edit Board</DialogTitle>
+            <DialogDescription className="text-md">
+              Edit your board here. Click update when you're complete.
+            </DialogDescription>
+          </DialogHeader>
+
+          <editFetcher.Form method="post">
+            <input type="hidden" name="intent" value="editBoard" />
+            <input type="hidden" name="boardId" value={board.id} />
+            <div>
+              <Label htmlFor="name">Board Name</Label>
+              <Input
+                name="name"
+                type="text"
+                defaultValue={board.name}
+                className="text-[16px] sm:text-base ring-0 ring-transparent focus:ring-transparent"
+                required
+              />
+            </div>
+
+            <div className="mt-4 flex items-center gap-4">
+              <div className="flex flex-col items-start gap-1">
+                <Label htmlFor="board-color">Board Color</Label>
+                <input
+                  id="board-color"
+                  name="color"
+                  type="color"
+                  defaultValue={board.color}
+                  className="bg-transparent"
+                />
+              </div>
+            </div>
+            <div className="text-right">
+              <Button
+                type="submit"
+                onClick={() => {
+                  setDialogOpen(false);
+                }}
+              >
+                {isEditing ? "Upading..." : "Update"}
+              </Button>
+            </div>
+          </editFetcher.Form>
+        </DialogContent>
+      </Dialog>
 
       <div className="flex flex-grow min-h-0 h-full items-start gap-4 px-8 pb-4">
         {[...columns.values()].map((col) => (
