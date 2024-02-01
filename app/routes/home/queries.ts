@@ -46,6 +46,18 @@ export async function getCompleteItemCount(userId: string, boardId: number) {
   return prisma.item.count({
     where: {
       boardId,
+      complete: true,
+      board: {
+        accountId: userId,
+      },
+    },
+  });
+}
+
+export async function getItemCount(userId: string, boardId: number) {
+  return prisma.item.count({
+    where: {
+      boardId,
       board: {
         accountId: userId,
       },

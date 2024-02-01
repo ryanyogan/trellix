@@ -20,7 +20,7 @@ import { loader } from "./route";
 import { INTENTS, RenderedItem } from "./types";
 
 export function Board() {
-  let { board } = useLoaderData<typeof loader>();
+  let { board, completionCount, totalCount } = useLoaderData<typeof loader>();
 
   let itemsById = new Map(board.items.map((item) => [item.id, item]));
 
@@ -74,6 +74,8 @@ export function Board() {
     setDialogOpen(!dialogOpen);
   }
 
+  const completionDelta = (completionCount / totalCount) * 100;
+
   return (
     <div
       ref={scrollContainerRef}
@@ -98,6 +100,18 @@ export function Board() {
             <input type="hidden" name="id" value={board.id} />
           </EditableText>
         </h1>
+
+        <div className="flex w-full flex-col items-center gap-1">
+          <div className="text-gray-500 font-light">
+            {completionCount} \ {totalCount} items complete
+          </div>
+          <div className="w-full h-2.5 bg-slate-300 rounded-md mr-4">
+            <div
+              style={{ width: `${completionDelta}%` }}
+              className="h-2.5 rounded-md bg-indigo-400"
+            ></div>
+          </div>
+        </div>
 
         <Dialog open={dialogOpen} onOpenChange={onChange}>
           <DialogTrigger asChild>

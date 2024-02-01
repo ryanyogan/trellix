@@ -6,6 +6,7 @@ import {
 import invariant from "tiny-invariant";
 import { requireAuthCookie } from "~/auth/auth";
 import { badRequest, notFound } from "~/http/bad-request";
+import { getCompleteItemCount, getItemCount } from "../home/queries";
 import { Board } from "./board";
 import {
   createColumn,
@@ -37,7 +38,10 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   let board = await getBoardData(id, accountId);
   if (!board) throw notFound();
 
-  return { board };
+  let completionCount = await getCompleteItemCount(accountId, board.id);
+  let totalCount = await getItemCount(accountId, board.id);
+
+  return { board, completionCount, totalCount };
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
