@@ -1,6 +1,19 @@
 import { LoaderFunctionArgs } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import {
+  isRouteErrorResponse,
+  useLoaderData,
+  useRouteError,
+} from "@remix-run/react";
 import invariant from "tiny-invariant";
+import { BackButton } from "~/components/back-button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "~/components/ui/card";
 import { notFound } from "~/http/bad-request";
 import { getSharedBoardById } from "../board.$id/queries";
 import { ShareColumn } from "../board.$id/share-column";
@@ -37,13 +50,13 @@ export default function Board() {
 
   return (
     <div className="h-full flex flex-col">
+      <h1 className="absolute z-30 bg-slate-400 rounded-md px-3 py-1 shadow text-xs font-bold text-slate-900 top-20 right-6">
+        Viewing in shared mode, you may not make edits.
+      </h1>
       <div
         style={{ backgroundColor: board.color }}
-        className="h-full relative min-h-0 flex flex-col gap-10 overflow-x-scroll pt-10"
+        className="h-full relative min-h-0 flex flex-col gap-10 overflow-x-scroll pt-14"
       >
-        <h1 className="absolute pl-6 text-xs font-bold text-orange-600 underline right-6 top-2">
-          You are currently viewing this in shared mode, you may not make edits.
-        </h1>
         <div className="flex flex-grow min-h-0 h-full items-start gap-4 px-8 pb-4">
           {[...columns.values()].map((col) => (
             <ShareColumn
@@ -59,4 +72,43 @@ export default function Board() {
       </div>
     </div>
   );
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  if (isRouteErrorResponse(error)) {
+    return (
+      <div className="flex flex-col items-center p-10">
+        <Card className="w-[400px]">
+          <CardHeader>
+            <CardTitle>Page Not Found</CardTitle>
+            <CardDescription>
+              The resource you are looking for could not be found.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-slate-700 text-sm font-semibold">
+              Please contact the owner of this board, they may not have sharing
+              enabled, or this board may not exist.
+            </p>
+          </CardContent>
+          <CardFooter className="flex flex-row justify-end w-full">
+            <BackButton href="/home" label="Back Home" />
+          </CardFooter>
+        </Card>
+      </div>
+    );
+  } else if (error instanceof Error) {
+    return (
+      <div>
+        <h1>Error</h1>
+        <p>{error.message}</p>
+        <p>The stack trace is:</p>
+        <pre>{error.stack}</pre>
+      </div>
+    );
+  } else {
+    return <h1>Unknown Error</h1>;
+  }
 }

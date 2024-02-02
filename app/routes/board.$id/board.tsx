@@ -1,5 +1,5 @@
 import { useFetcher, useFetchers, useLoaderData } from "@remix-run/react";
-import { Link2, Pencil } from "lucide-react";
+import { Link2, Loader, Pencil } from "lucide-react";
 import { useRef, useState } from "react";
 import invariant from "tiny-invariant";
 import { Button } from "~/components/ui/button";
@@ -69,6 +69,7 @@ export function Board() {
   let editFetcher = useFetcher();
   let sharingFetcher = useFetcher();
   let isEditing = editFetcher.state !== "idle";
+  let isSharing = sharingFetcher.state !== "idle";
 
   let [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
@@ -121,9 +122,9 @@ export function Board() {
 
           <div className="flex flex-row">
             {board.shareable ? (
-              <div className="mt-3 mr-2">
+              <div className="mt-3 mr-2 bg-slate-300 flex items-center justify-center px-2 py-1 rounded-md shdow">
                 <a
-                  className="underline text-xs text-indigo-900 underline-offset-2"
+                  className="underline text-xs text-zinc-600 underline-offset-2"
                   href={`https://trellix-clone.fly.dev/board/share/${board.id}`}
                   target="_BLANK"
                 >
@@ -145,14 +146,18 @@ export function Board() {
                   variant="outline"
                   className="mr-4 mt-2 shadow-sm"
                 >
-                  <Link2
-                    className={cn(
-                      "h-5 w-5 text-slate-800 font-bold",
-                      board.shareable?.toString() === "true"
-                        ? "text-green-600 font-bold"
-                        : "",
-                    )}
-                  />
+                  {isSharing ? (
+                    <Loader className="h-5 w-5 text-orange-500 font-bold animate-spin duration-700" />
+                  ) : (
+                    <Link2
+                      className={cn(
+                        "h-5 w-5 text-slate-800 font-bold",
+                        board.shareable?.toString() === "true"
+                          ? "text-green-600 font-bold"
+                          : "",
+                      )}
+                    />
+                  )}
                 </Button>
               </sharingFetcher.Form>
             </div>
