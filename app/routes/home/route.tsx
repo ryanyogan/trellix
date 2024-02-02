@@ -10,7 +10,7 @@ import {
   useLoaderData,
   useNavigation,
 } from "@remix-run/react";
-import { Plus } from "lucide-react";
+import { ChevronDown, Plus } from "lucide-react";
 import { requireAuthCookie } from "~/auth/auth";
 import { Label } from "~/components/input";
 import { Button } from "~/components/ui/button";
@@ -22,9 +22,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "~/components/ui/dropdown-menu";
 import { Input } from "~/components/ui/input";
 import { badRequest } from "~/http/bad-request";
-import { Icon } from "~/icons/icons";
 import { triggerCreateBoardEvent } from "../board.$id/events";
 import { INTENTS } from "../board.$id/types";
 import {
@@ -129,6 +136,7 @@ function Boards() {
               id={board.id}
               color={board.color}
               itemCount={board.items.length}
+              shareable={board.shareable}
             />
           ))}
         </nav>
@@ -142,11 +150,13 @@ function Board({
   color,
   id,
   itemCount,
+  shareable,
 }: {
   name: string;
   id: number;
   color: string;
   itemCount: number;
+  shareable?: boolean | null;
 }) {
   let fetcher = useFetcher();
   let isDeleting = fetcher.state !== "idle";
@@ -165,20 +175,56 @@ function Board({
         </div>
       </div>
 
-      <fetcher.Form method="post">
-        <input type="hidden" name="intent" value="deleteBoard" />
-        <input type="hidden" name="boardId" value={id} />
-        <button
-          aria-label="Delete board"
-          className="absolute top-4 right-4 hover:text-brand-red"
-          type="submit"
-          onClick={(event) => {
-            event.stopPropagation();
-          }}
-        >
-          <Icon name="trash" />
-        </button>
-      </fetcher.Form>
+      {shareable ? (
+        <div className="absolute bottom-2 right-2">
+          <div className="text-green-700 underline font-bold text-xs">
+            <a
+              onClick={(event) => {
+                event.stopPropagation();
+              }}
+              href={`https://trellix-clone.fly.dev/board/share/${id}`}
+              target="_BLANK"
+            >
+              Sharing Enabled
+            </a>
+          </div>
+        </div>
+      ) : null}
+
+      <div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button
+              className="absolute top-4 right-4 hover:text-brand-red"
+              type="button"
+              onClick={(event) => {
+                event.stopPropagation();
+              }}
+            >
+              <ChevronDown className="w-4 h-4" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuLabel>Settings</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              <fetcher.Form method="post">
+                <input type="hidden" name="intent" value="deleteBoard" />
+                <input type="hidden" name="boardId" value={id} />
+                <button
+                  aria-label="Delete board"
+                  type="submit"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                  }}
+                >
+                  Delete
+                </button>
+              </fetcher.Form>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
     </Link>
   );
 }
