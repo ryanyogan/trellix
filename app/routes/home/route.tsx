@@ -161,8 +161,7 @@ function Board({
 
       <div className="absolute bottom-2">
         <div className="text-slate-600 text-xs sm:text-sm">
-          This board currently has{" "}
-          <span className="text-blue-500">{itemCount}</span> items.
+          <span className="text-blue-500">{itemCount}</span> Items
         </div>
       </div>
 
