@@ -32,14 +32,15 @@ export default function Signup() {
   let actionResult = useActionData<typeof action>();
 
   return (
-    <div className="flex min-h-full flex-1 flex-col mt-20 px-6">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2
-          id="signup-header"
-          className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"
-        >
-          Sign up
-        </h2>
+    <div className="flex min-h-full flex-1 flex-col pt-20 px-6 bg-slate-900">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md flex flex-col items-center">
+        <span className="text-5xl">👋</span>
+        <h4 className="text-blue-600 text-sm font-semibold mt-4 text-center">
+          Signing up is easy, and this is just for fun, use any fake email.
+        </h4>
+        <h4 className="text-slate-600 text-sm font-semibold mt-1 text-center">
+          Your data is safe; however, I cannot promise it will remain retained.
+        </h4>
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
