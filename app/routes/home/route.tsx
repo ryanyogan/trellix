@@ -82,7 +82,7 @@ export default function Projects() {
   return (
     <div className="h-full">
       <div className="flex flex-row items-center justify-between mt-8">
-        <h1 className="font-bold text-3xl text-slate-800 ml-8">My Boards</h1>
+        <h1 className="font-bold text-3xl text-orange-700 ml-8">My Boards</h1>
         <div className="pr-6 text-right">
           <NewBoard />
         </div>
@@ -144,7 +144,7 @@ function Board({
       <div className="font-semibold text-ellipsis">{name}</div>
 
       <div className="absolute bottom-2">
-        <div className="text-slate-600 text-sm">
+        <div className="text-slate-600 text-xs sm:text-sm">
           This board currently has{" "}
           <span className="text-blue-500">{itemCount}</span> items.
         </div>
@@ -175,7 +175,7 @@ function NewBoard() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="default">
+        <Button variant="outline">
           <Plus className="h-5 w-5" />
         </Button>
       </DialogTrigger>

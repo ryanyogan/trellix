@@ -11,7 +11,9 @@ import {
   ShouldRevalidateFunctionArgs,
   redirect,
   useLoaderData,
+  useRouteError,
 } from "@remix-run/react";
+import { captureRemixErrorBoundaryError } from "@sentry/remix";
 
 import { getAuthFromRequest } from "./auth/auth";
 import "./styles.css";
@@ -31,6 +33,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export function shouldRevalidate({ formAction }: ShouldRevalidateFunctionArgs) {
   return formAction && ["/login", "/signup", "logout"].includes(formAction);
 }
+
+export const ErrorBoundary = () => {
+  const error = useRouteError();
+  captureRemixErrorBoundaryError(error);
+  return <div>Something went wrong</div>;
+};
 
 export default function App() {
   let userId = useLoaderData<typeof loader>();

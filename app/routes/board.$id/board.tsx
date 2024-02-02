@@ -121,9 +121,9 @@ export function Board() {
 
           <div className="flex flex-row">
             {board.shareable ? (
-              <div className="mt-3 mr-4">
+              <div className="mt-3 mr-2">
                 <a
-                  className="underline text-xs text-indigo-700"
+                  className="underline text-xs text-indigo-900 underline-offset-2"
                   href={`https://trellix-clone.fly.dev/board/share/${board.id}`}
                   target="_BLANK"
                 >
