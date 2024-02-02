@@ -177,17 +177,7 @@ function Board({
 
       {shareable ? (
         <div className="absolute bottom-2 right-2">
-          <div className="text-green-700 underline font-bold text-xs">
-            <a
-              onClick={(event) => {
-                event.stopPropagation();
-              }}
-              href={`https://trellix-clone.fly.dev/board/share/${id}`}
-              target="_BLANK"
-            >
-              Sharing Enabled
-            </a>
-          </div>
+          <div className="text-green-800 font-bold text-xs">Sharing</div>
         </div>
       ) : null}
 
