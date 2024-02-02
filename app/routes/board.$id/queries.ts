@@ -18,6 +18,29 @@ export function markCardComplete(id: string, accountId: string) {
   });
 }
 
+export async function getSharedBoardById(boardId: number) {
+  return prisma.board.findUnique({
+    where: {
+      id: boardId,
+      shareable: true,
+    },
+    include: {
+      items: {
+        where: {
+          NOT: {
+            complete: true,
+          },
+        },
+      },
+      columns: {
+        orderBy: {
+          order: "asc",
+        },
+      },
+    },
+  });
+}
+
 export async function getBoardData(boardId: number, accountId: string) {
   return prisma.board.findUnique({
     where: {
@@ -57,6 +80,26 @@ export async function updateBoardName({
     },
     data: {
       name,
+    },
+  });
+}
+
+export async function updateBoardSharing({
+  boardId,
+  accountId,
+  shareable = false,
+}: {
+  boardId: number;
+  accountId: string;
+  shareable: boolean;
+}) {
+  return prisma.board.update({
+    where: {
+      id: boardId,
+      accountId: accountId,
+    },
+    data: {
+      shareable,
     },
   });
 }

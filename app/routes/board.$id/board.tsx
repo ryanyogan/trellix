@@ -1,8 +1,7 @@
 import { useFetcher, useFetchers, useLoaderData } from "@remix-run/react";
-import { Pencil } from "lucide-react";
+import { Link2, Pencil } from "lucide-react";
 import { useRef, useState } from "react";
 import invariant from "tiny-invariant";
-import { Label } from "~/components/input";
 import { Button } from "~/components/ui/button";
 import {
   Dialog,
@@ -13,6 +12,8 @@ import {
   DialogTrigger,
 } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+import { cn } from "~/lib/utils";
 import { Column } from "./column";
 import { EditableText } from "./components";
 import { NewColumn } from "./new-columns";
@@ -66,6 +67,7 @@ export function Board() {
   }
 
   let editFetcher = useFetcher();
+  let sharingFetcher = useFetcher();
   let isEditing = editFetcher.state !== "idle";
 
   let [dialogOpen, setDialogOpen] = useState<boolean>(false);
@@ -79,13 +81,32 @@ export function Board() {
   return (
     <div className="h-full flex flex-col">
       <div className="bg-slate-900 shadow-lg flex flex-col justify-between items-center">
-        <div className="flex flex-row items-center justify-between w-full">
-          <h1>
+        <div className="flex w-full flex-row items-center px-8 mb-3 mt-2.5">
+          <span className="text-xs font-semibold text-green-500 mr-2">
+            {completionCount}
+          </span>
+          <div className="w-full h-2 bg-slate-700 rounded-md">
+            <div
+              style={{ width: `${completionDelta}%` }}
+              className="h-2 rounded-md bg-green-400"
+            ></div>
+          </div>
+          <span className="text-xs text-indigo-400 ml-2">{totalCount}</span>
+        </div>
+      </div>
+
+      <div
+        ref={scrollContainerRef}
+        style={{ backgroundColor: board.color }}
+        className="h-full min-h-0 flex flex-col overflow-x-scroll"
+      >
+        <div className="flex flex-row items-center justify-between w-full absolute">
+          <h1 className="bg-slate-900 shadow pb-2 rounded-br">
             <EditableText
               value={board.name}
               fieldName="name"
-              inputClassName="mx-6 mt-2 text-xl font-medium border border-slate-400 rounded-lg py-1 px-2 text-black"
-              buttonClassName="mx-6 mt-2 text-xl font-medium block rounded-lg text-left border border-transparent py-1 px-2 text-blue-500"
+              inputClassName="mx-6 mt-1 text-lg font-medium border border-slate-400 rounded-lg py-1 px-2 text-black"
+              buttonClassName="mx-6 mt-1 text-lg font-medium block rounded-lg text-left border border-transparent py-1 px-2 text-orange-500"
               buttonLabel={`Edit board "${board.name}" name`}
               inputLabel="Edit board name"
             >
@@ -98,85 +119,105 @@ export function Board() {
             </EditableText>
           </h1>
 
-          <Dialog open={dialogOpen} onOpenChange={onChange}>
-            <DialogTrigger asChild>
-              <Button
-                onClick={() => setDialogOpen(true)}
-                variant="secondary"
-                className="bg-transparent mr-4 mt-2"
-              >
-                <Pencil className="h-4 w-4 text-slate-400" />
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle className="text-xl">Edit Board</DialogTitle>
-                <DialogDescription className="text-md">
-                  Edit your board here. Click update when you're complete.
-                </DialogDescription>
-              </DialogHeader>
-
-              <editFetcher.Form method="post">
-                <input type="hidden" name="intent" value="editBoard" />
+          <div className="flex flex-row">
+            {board.shareable ? (
+              <div className="mt-3 mr-4">
+                <a
+                  className="underline text-xs text-indigo-700"
+                  href={`https://trellix-clone.fly.dev/board/share/${board.id}`}
+                  target="_BLANK"
+                >
+                  Share Link
+                </a>
+              </div>
+            ) : null}
+            <div>
+              <sharingFetcher.Form method="post">
+                <input type="hidden" name="intent" value="updateBoardSharing" />
                 <input type="hidden" name="boardId" value={board.id} />
-                <div>
-                  <Label htmlFor="name">Board Name</Label>
-                  <Input
-                    name="name"
-                    type="text"
-                    defaultValue={board.name}
-                    className="text-[16px] sm:text-base ring-0 ring-transparent focus:ring-transparent"
-                    required
+                <input
+                  type="hidden"
+                  name="shareable"
+                  value={board.shareable === true ? "false" : "true"}
+                />
+                <Button
+                  type="submit"
+                  variant="outline"
+                  className="mr-4 mt-2 shadow-sm"
+                >
+                  <Link2
+                    className={cn(
+                      "h-5 w-5 text-slate-800 font-bold",
+                      board.shareable?.toString() === "true"
+                        ? "text-green-600 font-bold"
+                        : "",
+                    )}
                   />
-                </div>
+                </Button>
+              </sharingFetcher.Form>
+            </div>
 
-                <div className="mt-4 flex items-center gap-4">
-                  <div className="flex flex-col items-start gap-1">
-                    <Label htmlFor="board-color">Board Color</Label>
-                    <input
-                      id="board-color"
-                      name="color"
-                      type="color"
-                      defaultValue={board.color}
-                      className="bg-transparent"
+            <Dialog open={dialogOpen} onOpenChange={onChange}>
+              <DialogTrigger asChild>
+                <Button
+                  onClick={() => setDialogOpen(true)}
+                  variant="outline"
+                  className="mr-4 mt-2 shadow-sm"
+                >
+                  <Pencil className="h-4 w-4 text-slate-800" />
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle className="text-xl">Edit Board</DialogTitle>
+                  <DialogDescription className="text-md">
+                    Edit your board here. Click update when you're complete.
+                  </DialogDescription>
+                </DialogHeader>
+
+                <editFetcher.Form method="post">
+                  <input type="hidden" name="intent" value="editBoard" />
+                  <input type="hidden" name="boardId" value={board.id} />
+                  <div>
+                    <Label htmlFor="name">Board Name</Label>
+                    <Input
+                      name="name"
+                      type="text"
+                      defaultValue={board.name}
+                      className="text-[16px] sm:text-base ring-0 ring-transparent focus:ring-transparent"
+                      required
                     />
                   </div>
-                </div>
-                <div className="text-right">
-                  <Button
-                    type="submit"
-                    onClick={() => {
-                      setDialogOpen(false);
-                    }}
-                  >
-                    {isEditing ? "Upading..." : "Update"}
-                  </Button>
-                </div>
-              </editFetcher.Form>
-            </DialogContent>
-          </Dialog>
-        </div>
 
-        <div className="flex w-full flex-row items-center gap-1 px-8 mb-4 mt-1">
-          <span className="text-xs font-semibold text-green-500 mr-2">
-            {completionCount}
-          </span>
-          <div className="w-full h-2 bg-slate-700 rounded-md">
-            <div
-              style={{ width: `${completionDelta}%` }}
-              className="h-2 rounded-md bg-green-400"
-            ></div>
+                  <div className="mt-4 flex items-center gap-4">
+                    <div className="flex flex-col items-start gap-1">
+                      <Label htmlFor="board-color">Board Color</Label>
+                      <input
+                        id="board-color"
+                        name="color"
+                        type="color"
+                        defaultValue={board.color}
+                        className="bg-transparent"
+                      />
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <Button
+                      type="submit"
+                      onClick={() => {
+                        setDialogOpen(false);
+                      }}
+                    >
+                      {isEditing ? "Upading..." : "Update"}
+                    </Button>
+                  </div>
+                </editFetcher.Form>
+              </DialogContent>
+            </Dialog>
           </div>
-          <span className="text-xs text-indigo-500 ml-2">{totalCount}</span>
         </div>
-      </div>
 
-      <div
-        ref={scrollContainerRef}
-        style={{ backgroundColor: board.color }}
-        className="h-full min-h-0 flex flex-col overflow-x-scroll pt-10"
-      >
-        <div className="flex flex-grow min-h-0 h-full items-start gap-4 px-8 pb-4">
+        <div className="flex flex-grow min-h-0 h-full items-start gap-4 px-8 pb-4 pt-16">
           {[...columns.values()].map((col) => (
             <Column
               key={col.id}

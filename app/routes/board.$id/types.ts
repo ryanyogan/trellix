@@ -23,6 +23,7 @@ export const INTENTS = {
   deleteCard: "deleteCard" as const,
   deleteColumn: "deleteColumn" as const,
   markCardComplete: "markCardComplete" as const,
+  updateBoardSharing: "updateBoardSharing" as const,
 };
 
 export const ItemMutationFields = {

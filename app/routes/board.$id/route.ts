@@ -16,6 +16,7 @@ import {
   getBoardData,
   markCardComplete,
   updateBoardName,
+  updateBoardSharing,
   updateColumnName,
   upsertItem,
 } from "./queries";
@@ -59,6 +60,17 @@ export async function action({ request, params }: ActionFunctionArgs) {
       let name = String(formData.get("name") || "");
       invariant(name, "Missing Name");
       await updateBoardName({ boardId, accountId, name });
+      return { ok: true };
+    }
+
+    case INTENTS.updateBoardSharing: {
+      let shareable = formData.get("shareable");
+      invariant(shareable, "shareable");
+      await updateBoardSharing({
+        boardId,
+        accountId,
+        shareable: shareable === "true" ? true : false,
+      });
       return { ok: true };
     }
 
