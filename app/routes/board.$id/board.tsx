@@ -77,118 +77,123 @@ export function Board() {
   const completionDelta = (completionCount / totalCount) * 100;
 
   return (
-    <div
-      ref={scrollContainerRef}
-      style={{ backgroundColor: board.color }}
-      className="h-full min-h-0 flex flex-col overflow-x-scroll"
-    >
-      <div className="bg-slate-200 shadow mb-10 flex flex-row justify-between items-center pr-4">
-        <h1>
-          <EditableText
-            value={board.name}
-            fieldName="name"
-            inputClassName="mx-8 my-4 text-2xl font-medium border border-slate-400 rounded-lg py-1 px-2 text-black"
-            buttonClassName="mx-8 my-4 text-2xl font-medium block rounded-lg text-left border border-transparent py-1 px-2 text-slate-800"
-            buttonLabel={`Edit board "${board.name}" name`}
-            inputLabel="Edit board name"
-          >
-            <input
-              type="hidden"
-              name="intent"
-              value={INTENTS.updateBoardName}
-            />
-            <input type="hidden" name="id" value={board.id} />
-          </EditableText>
-        </h1>
-
-        <div className="flex w-full flex-col items-center gap-1">
-          <div className="text-gray-500 font-light">
-            {completionCount} \ {totalCount} items complete
-          </div>
-          <div className="w-full h-2 bg-slate-300 rounded-md mr-4">
-            <div
-              style={{ width: `${completionDelta}%` }}
-              className="h-2 rounded-md bg-indigo-400"
-            ></div>
-          </div>
-        </div>
-
-        <Dialog open={dialogOpen} onOpenChange={onChange}>
-          <DialogTrigger asChild>
-            <Button
-              onClick={() => setDialogOpen(true)}
-              variant="secondary"
-              className="bg-transparent"
+    <div className="h-full flex flex-col">
+      <div className="bg-slate-900 shadow-lg flex flex-col justify-between items-center">
+        <div className="flex flex-row items-center justify-between w-full">
+          <h1>
+            <EditableText
+              value={board.name}
+              fieldName="name"
+              inputClassName="mx-6 mt-2 text-xl font-medium border border-slate-400 rounded-lg py-1 px-2 text-black"
+              buttonClassName="mx-6 mt-2 text-xl font-medium block rounded-lg text-left border border-transparent py-1 px-2 text-blue-500"
+              buttonLabel={`Edit board "${board.name}" name`}
+              inputLabel="Edit board name"
             >
-              <Pencil className="h-5 w-5 text-slate-900" />
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle className="text-xl">Edit Board</DialogTitle>
-              <DialogDescription className="text-md">
-                Edit your board here. Click update when you're complete.
-              </DialogDescription>
-            </DialogHeader>
+              <input
+                type="hidden"
+                name="intent"
+                value={INTENTS.updateBoardName}
+              />
+              <input type="hidden" name="id" value={board.id} />
+            </EditableText>
+          </h1>
 
-            <editFetcher.Form method="post">
-              <input type="hidden" name="intent" value="editBoard" />
-              <input type="hidden" name="boardId" value={board.id} />
-              <div>
-                <Label htmlFor="name">Board Name</Label>
-                <Input
-                  name="name"
-                  type="text"
-                  defaultValue={board.name}
-                  className="text-[16px] sm:text-base ring-0 ring-transparent focus:ring-transparent"
-                  required
-                />
-              </div>
+          <Dialog open={dialogOpen} onOpenChange={onChange}>
+            <DialogTrigger asChild>
+              <Button
+                onClick={() => setDialogOpen(true)}
+                variant="secondary"
+                className="bg-transparent mr-4 mt-2"
+              >
+                <Pencil className="h-4 w-4 text-slate-400" />
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle className="text-xl">Edit Board</DialogTitle>
+                <DialogDescription className="text-md">
+                  Edit your board here. Click update when you're complete.
+                </DialogDescription>
+              </DialogHeader>
 
-              <div className="mt-4 flex items-center gap-4">
-                <div className="flex flex-col items-start gap-1">
-                  <Label htmlFor="board-color">Board Color</Label>
-                  <input
-                    id="board-color"
-                    name="color"
-                    type="color"
-                    defaultValue={board.color}
-                    className="bg-transparent"
+              <editFetcher.Form method="post">
+                <input type="hidden" name="intent" value="editBoard" />
+                <input type="hidden" name="boardId" value={board.id} />
+                <div>
+                  <Label htmlFor="name">Board Name</Label>
+                  <Input
+                    name="name"
+                    type="text"
+                    defaultValue={board.name}
+                    className="text-[16px] sm:text-base ring-0 ring-transparent focus:ring-transparent"
+                    required
                   />
                 </div>
-              </div>
-              <div className="text-right">
-                <Button
-                  type="submit"
-                  onClick={() => {
-                    setDialogOpen(false);
-                  }}
-                >
-                  {isEditing ? "Upading..." : "Update"}
-                </Button>
-              </div>
-            </editFetcher.Form>
-          </DialogContent>
-        </Dialog>
+
+                <div className="mt-4 flex items-center gap-4">
+                  <div className="flex flex-col items-start gap-1">
+                    <Label htmlFor="board-color">Board Color</Label>
+                    <input
+                      id="board-color"
+                      name="color"
+                      type="color"
+                      defaultValue={board.color}
+                      className="bg-transparent"
+                    />
+                  </div>
+                </div>
+                <div className="text-right">
+                  <Button
+                    type="submit"
+                    onClick={() => {
+                      setDialogOpen(false);
+                    }}
+                  >
+                    {isEditing ? "Upading..." : "Update"}
+                  </Button>
+                </div>
+              </editFetcher.Form>
+            </DialogContent>
+          </Dialog>
+        </div>
+
+        <div className="flex w-full flex-row items-center gap-1 px-8 mb-4 mt-1">
+          <span className="text-xs font-semibold text-green-500 mr-2">
+            {completionCount}
+          </span>
+          <div className="w-full h-2 bg-slate-700 rounded-md">
+            <div
+              style={{ width: `${completionDelta}%` }}
+              className="h-2 rounded-md bg-green-400"
+            ></div>
+          </div>
+          <span className="text-xs text-indigo-500 ml-2">{totalCount}</span>
+        </div>
       </div>
 
-      <div className="flex flex-grow min-h-0 h-full items-start gap-4 px-8 pb-4">
-        {[...columns.values()].map((col) => (
-          <Column
-            key={col.id}
-            name={col.name}
-            columnId={col.id}
-            items={col.items}
+      <div
+        ref={scrollContainerRef}
+        style={{ backgroundColor: board.color }}
+        className="h-full min-h-0 flex flex-col overflow-x-scroll pt-10"
+      >
+        <div className="flex flex-grow min-h-0 h-full items-start gap-4 px-8 pb-4">
+          {[...columns.values()].map((col) => (
+            <Column
+              key={col.id}
+              name={col.name}
+              columnId={col.id}
+              items={col.items}
+            />
+          ))}
+
+          <NewColumn
+            boardId={board.id}
+            onAdd={scrollRight}
+            editInitially={board.columns.length === 0}
           />
-        ))}
 
-        <NewColumn
-          boardId={board.id}
-          onAdd={scrollRight}
-          editInitially={board.columns.length === 0}
-        />
-
-        <div data-lol className="w-8 h-1 flex-shrink-0" />
+          <div data-lol className="w-8 h-1 flex-shrink-0" />
+        </div>
       </div>
     </div>
   );
