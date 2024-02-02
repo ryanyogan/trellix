@@ -80,10 +80,26 @@ export async function action({ request }: ActionFunctionArgs) {
 
 export default function Projects() {
   return (
-    <div className="h-full">
-      <div className="flex flex-row items-center justify-between mt-8">
-        <h1 className="font-bold text-3xl text-orange-700 ml-8">My Boards</h1>
-        <div className="pr-6 text-right">
+    <div className="h-full flex flex-col">
+      <div className="bg-slate-900 shadow-lg flex flex-col justify-between items-center">
+        <div className="flex w-full flex-row items-center px-8 mb-3 mt-2.5">
+          <span className="text-xs font-semibold text-green-500 mr-2">10</span>
+          <div className="w-full h-2 bg-slate-700 rounded-md">
+            <div
+              style={{ width: `20%` }}
+              className="h-2 rounded-md bg-green-400"
+            ></div>
+          </div>
+          <span className="text-xs text-indigo-400 ml-2">{200}</span>
+        </div>
+      </div>
+      <div className="flex flex-row justify-between">
+        <div className="bg-slate-900 shadow pb-2 rounded-br">
+          <h1 className="mx-6 mt-1 text-lg font-medium block rounded-lg text-left border border-transparent py-1 px-2 text-orange-500">
+            My Boards
+          </h1>
+        </div>
+        <div className="mr-2 mt-2">
           <NewBoard />
         </div>
       </div>
@@ -175,8 +191,8 @@ function NewBoard() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">
-          <Plus className="h-5 w-5" />
+        <Button variant="ghost">
+          <Plus className="h-6 w-6 font-bold" />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
