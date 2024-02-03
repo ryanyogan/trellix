@@ -112,6 +112,7 @@ export function Column({ name, columnId, items }: ColumnProps) {
               content={item.content}
               id={item.id}
               order={item.order}
+              complete={item.complete}
               columnId={columnId}
               previousOrder={items[index - 1] ? items[index - 1].order : 0}
               nextOrder={

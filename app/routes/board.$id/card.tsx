@@ -5,6 +5,7 @@ import { Icon } from "~/icons/icons";
 
 import { Check } from "lucide-react";
 import invariant from "tiny-invariant";
+import { cn } from "~/lib/utils";
 import { CONTENT_TYPES, INTENTS, ItemMutation } from "./types";
 
 interface CardProps {
@@ -15,6 +16,7 @@ interface CardProps {
   order: number;
   nextOrder: number;
   previousOrder: number;
+  complete: boolean | null;
 }
 
 export function Card({
@@ -25,6 +27,7 @@ export function Card({
   order,
   nextOrder,
   previousOrder,
+  complete,
 }: CardProps) {
   let submit = useSubmit();
   let deleteFetcher = useFetcher();
@@ -84,7 +87,10 @@ export function Card({
     >
       <div
         draggable
-        className="bg-white shadow shadow-slate-300 border-slate-300 text-sm rounded-lg w-full py-1 px-2 relative"
+        className={cn(
+          "shadow shadow-slate-300 border-slate-300 text-sm rounded-lg w-full py-1 px-2 relative",
+          complete ? "bg-green-200 text-green-800" : "bg-white",
+        )}
         onDragStart={(event) => {
           event.dataTransfer.effectAllowed = "move";
           event.dataTransfer.setData(
@@ -95,20 +101,27 @@ export function Card({
       >
         <h3 className="break-words mr-14">{title}</h3>
         <div className="mt-2">{content || <>&nbsp;</>}</div>
-        <deleteFetcher.Form method="post">
-          <input type="hidden" name="intent" value={INTENTS.markCardComplete} />
-          <input type="hidden" name="itemId" value={id} />
-          <button
-            aria-label="Complete card"
-            className="absolute top-4 right-10 hover:text-brand-red"
-            type="submit"
-            onClick={(event) => {
-              event.stopPropagation();
-            }}
-          >
-            <Check className="h-5 w-5 mt-[2px]" />
-          </button>
-        </deleteFetcher.Form>
+
+        {!complete ? (
+          <deleteFetcher.Form method="post">
+            <input
+              type="hidden"
+              name="intent"
+              value={INTENTS.markCardComplete}
+            />
+            <input type="hidden" name="itemId" value={id} />
+            <button
+              aria-label="Complete card"
+              className="absolute top-4 text-green-600 right-10 hover:text-green-900"
+              type="submit"
+              onClick={(event) => {
+                event.stopPropagation();
+              }}
+            >
+              <Check className="h-5 w-5 mt-[2px]" />
+            </button>
+          </deleteFetcher.Form>
+        ) : null}
 
         <deleteFetcher.Form method="post">
           <input type="hidden" name="intent" value={INTENTS.deleteCard} />

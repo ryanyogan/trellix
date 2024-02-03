@@ -56,6 +56,7 @@ export function Board() {
     let columnId = item.columnId;
     let column = columns.get(columnId);
     invariant(column, "missing column");
+    // Add filter here
     column.items.push(item);
   }
 
@@ -101,13 +102,13 @@ export function Board() {
         style={{ backgroundColor: board.color }}
         className="h-full min-h-0 flex flex-col overflow-x-scroll"
       >
-        <div className="flex flex-row bg-slate-900 items-center p-2 justify-between w-full absolute">
+        <div className="flex flex-row bg-slate-900 shadow-md items-center p-2 justify-between w-full absolute">
           <h1 className="bg-slate-900">
             <EditableText
               value={board.name}
               fieldName="name"
               inputClassName="mx-3 text-lg font-medium border border-slate-400 rounded-lg py-1 px-2 text-black"
-              buttonClassName="mx-3 text-lg font-medium block rounded-lg text-left border border-transparent py-1 px-2 text-indigo-400"
+              buttonClassName="mx-3 text-lg font-medium block rounded-lg text-left border border-transparent py-1 px-2 text-slate-400"
               buttonLabel={`Edit board "${board.name}" name`}
               inputLabel="Edit board name"
             >
@@ -214,7 +215,7 @@ export function Board() {
           </div>
         </div>
 
-        <div className="flex flex-grow min-h-0 h-full items-start gap-4 px-8 pb-4 pt-20">
+        <div className="flex flex-grow min-h-0 h-full items-start gap-4 px-8 pb-4 pt-24 inset-0">
           {[...columns.values()].map((col) => (
             <Column
               key={col.id}
@@ -269,7 +270,14 @@ function usePendingItems() {
       let title = String(fetcher.formData.get("title"));
       let id = String(fetcher.formData.get("id"));
       let order = Number(fetcher.formData.get("order"));
-      let item: RenderedItem = { title, id, order, columnId, content: null };
+      let item: RenderedItem = {
+        title,
+        id,
+        order,
+        columnId,
+        content: null,
+        complete: false,
+      };
       return item;
     });
 }

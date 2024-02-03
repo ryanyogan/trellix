@@ -101,8 +101,8 @@ export default function Projects() {
           <span className="text-xs text-indigo-400 ml-2">{200}</span>
         </div>
       </div>
-      <div className="flex flex-row bg-slate-900 p-2 justify-between">
-        <h1 className="mx-3 text-lg block font-medium text-left text-indigo-400 px-2 py-1">
+      <div className="flex flex-row bg-slate-900 shadow-md p-2 justify-between">
+        <h1 className="mx-3 text-xl block font-medium text-left text-slate-400 px-2 py-1">
           My Boards
         </h1>
         <NewBoard />

@@ -4,6 +4,7 @@ export interface RenderedItem {
   order: number;
   content: string | null;
   columnId: string;
+  complete: boolean | null;
 }
 
 export const CONTENT_TYPES = {
