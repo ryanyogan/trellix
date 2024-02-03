@@ -101,10 +101,27 @@ export default function Projects() {
           <span className="text-xs text-indigo-400 ml-2">{200}</span>
         </div>
       </div>
-      <div className="flex flex-row bg-slate-900 shadow-md p-2 justify-between">
-        <h1 className="mx-3 text-xl block font-medium text-left text-slate-400 px-2 py-1">
-          My Boards
-        </h1>
+      <div className="flex flex-row bg-slate-900 shadow-md p-0 justify-between">
+        <div className="ml-4 flex flex-row items-center">
+          <Link
+            to="/home"
+            className="text-sm font-medium underline underline-offset-2 text-left text-slate-400 px-2 py-1"
+          >
+            Boards
+          </Link>
+          <Link
+            to="/activity"
+            className="text-sm font-medium text-left text-slate-400 px-2 py-1"
+          >
+            Activity
+          </Link>
+          <Link
+            to="/settings"
+            className="text-sm font-medium text-left text-slate-400 px-2 py-1"
+          >
+            Settings
+          </Link>
+        </div>
         <NewBoard />
       </div>
       <Boards />

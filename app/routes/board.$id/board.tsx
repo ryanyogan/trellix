@@ -34,6 +34,7 @@ export function Board() {
           ...pendingItem,
           boardId: board.id,
           complete: false,
+          accountId: null,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
         };
@@ -102,13 +103,13 @@ export function Board() {
         style={{ backgroundColor: board.color }}
         className="h-full min-h-0 flex flex-col overflow-x-scroll"
       >
-        <div className="flex flex-row bg-slate-900 shadow-md items-center p-2 justify-between w-full absolute">
+        <div className="flex flex-row bg-slate-900 shadow-md items-center p-0 justify-between w-full absolute">
           <h1 className="bg-slate-900">
             <EditableText
               value={board.name}
               fieldName="name"
-              inputClassName="mx-3 text-lg font-medium border border-slate-400 rounded-lg py-1 px-2 text-black"
-              buttonClassName="mx-3 text-lg font-medium block rounded-lg text-left border border-transparent py-1 px-2 text-slate-400"
+              inputClassName="mx-3 text-sm font-medium border border-slate-400 rounded-lg py-1 px-2 text-black"
+              buttonClassName="mx-3 text-sm font-medium block rounded-lg text-left border border-transparent py-1 px-2 text-slate-400"
               buttonLabel={`Edit board "${board.name}" name`}
               inputLabel="Edit board name"
             >
