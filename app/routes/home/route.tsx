@@ -49,6 +49,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   let userId = await requireAuthCookie(request);
   let boards = await getHomeData(userId);
   let events = await getRecentEvents(userId);
+
   return { boards, events };
 }
 
@@ -88,8 +89,8 @@ export async function action({ request }: ActionFunctionArgs) {
 export default function Projects() {
   return (
     <div className="h-full flex flex-col">
-      <div className="bg-slate-900 shadow-lg flex flex-col justify-between items-center">
-        <div className="flex w-full flex-row items-center px-8 mb-3 mt-2.5">
+      <div className="bg-slate-900 flex flex-col border-b border-slate-800 justify-between items-center">
+        <div className="flex w-full flex-row items-center px-6 mb-3 mt-2.5">
           <span className="text-xs font-semibold text-green-500 mr-2">10</span>
           <div className="w-full h-2 bg-slate-700 rounded-md">
             <div
@@ -100,15 +101,11 @@ export default function Projects() {
           <span className="text-xs text-indigo-400 ml-2">{200}</span>
         </div>
       </div>
-      <div className="flex flex-row justify-between">
-        <div className="bg-slate-900 shadow pb-2 rounded-br">
-          <h1 className="mx-6 mt-1 text-lg font-medium block rounded-lg text-left border border-transparent py-1 px-2 text-orange-500">
-            My Boards
-          </h1>
-        </div>
-        <div className="mr-2 mt-2">
-          <NewBoard />
-        </div>
+      <div className="flex flex-row bg-slate-900 p-2 justify-between">
+        <h1 className="mx-3 text-lg block font-medium text-left text-indigo-400 px-2 py-1">
+          My Boards
+        </h1>
+        <NewBoard />
       </div>
       <Boards />
     </div>
@@ -226,8 +223,8 @@ function NewBoard() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="ghost">
-          <Plus className="h-6 w-6 font-bold" />
+        <Button variant="link">
+          <Plus className="h-4 w-4 text-slate-400" />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
