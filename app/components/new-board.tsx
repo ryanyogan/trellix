@@ -1,7 +1,5 @@
-import { Label } from "@radix-ui/react-label";
 import { useFetcher } from "@remix-run/react";
 import { Plus } from "lucide-react";
-import { Input } from "./input";
 import { Button } from "./ui/button";
 import {
   Dialog,
@@ -11,6 +9,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
 
 export function NewBoard() {
   const fetcher = useFetcher();
