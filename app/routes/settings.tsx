@@ -1,3 +1,6 @@
+import { NavLink } from "@remix-run/react";
+import { NewBoard } from "~/components/new-board";
+
 export default function SettingsPage() {
   return (
     <div className="h-full flex flex-col">
@@ -15,18 +18,36 @@ export default function SettingsPage() {
       </div>
       <div className="flex flex-row bg-slate-900 shadow-md p-0 justify-between">
         <div className="ml-4 flex flex-row items-center">
-          <h1 className="text-sm font-medium underline underline-offset-2 text-left text-slate-400 px-2 py-1">
+          <NavLink
+            to="/home"
+            prefetch="intent"
+            className={({ isActive }) =>
+              `text-sm font-medium underline-offset-2 text-left text-slate-400 px-2 py-1 ${isActive && "underline"}`
+            }
+          >
             Boards
-          </h1>
-          <h1 className="text-sm font-medium text-left text-slate-400 px-2 py-1">
+          </NavLink>
+          <NavLink
+            to="/activity"
+            prefetch="intent"
+            className={({ isActive }) =>
+              `text-sm font-medium underline-offset-2 text-left text-slate-400 px-2 py-1 ${isActive && "underline"}`
+            }
+          >
             Activity
-          </h1>
-          <h1 className="text-sm font-medium text-left text-slate-400 px-2 py-1">
+          </NavLink>
+          <NavLink
+            to="/settings"
+            prefetch="intent"
+            className={({ isActive }) =>
+              `text-sm font-medium underline-offset-2 text-left text-slate-400 px-2 py-1 ${isActive && "underline"}`
+            }
+          >
             Settings
-          </h1>
+          </NavLink>
         </div>
+        <NewBoard />
       </div>
-      <div>Settings</div>
     </div>
   );
 }

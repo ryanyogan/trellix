@@ -3,25 +3,10 @@ import {
   LoaderFunctionArgs,
   redirect,
 } from "@remix-run/node";
-import {
-  Form,
-  Link,
-  useFetcher,
-  useLoaderData,
-  useNavigation,
-} from "@remix-run/react";
-import { ChevronDown, Plus } from "lucide-react";
+import { Link, NavLink, useFetcher, useLoaderData } from "@remix-run/react";
+import { ChevronDown } from "lucide-react";
 import { requireAuthCookie } from "~/auth/auth";
-import { Label } from "~/components/input";
-import { Button } from "~/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "~/components/ui/dialog";
+import { NewBoard } from "~/components/new-board";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,8 +15,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { Input } from "~/components/ui/input";
 import { badRequest } from "~/http/bad-request";
+import { createAuditLog } from "~/lib/create-audit-log";
 import { triggerCreateBoardEvent } from "../board.$id/events";
 import { INTENTS } from "../board.$id/types";
 import {
@@ -69,13 +54,31 @@ export async function action({ request }: ActionFunctionArgs) {
         triggerCreateBoardEvent(accountId),
       ]);
 
+      await createAuditLog({
+        entityTitle: board.name,
+        entityId: String(board.id),
+        entityType: "BOARD",
+        action: "CREATE",
+        authorEmail: "hello@jk.com",
+        authorId: accountId,
+      });
+
       return redirect(`/board/${board.id}`);
     }
 
     case INTENTS.deleteBoard: {
       let boardId = Number(formData.get("boardId"));
       if (!boardId) throw badRequest("Missing board");
-      await deleteBoard(boardId, accountId);
+      const board = await deleteBoard(boardId, accountId);
+
+      await createAuditLog({
+        entityTitle: board.name,
+        entityId: String(board.id),
+        entityType: "BOARD",
+        action: "DELETE",
+        authorEmail: "hello@jk.com",
+        authorId: accountId,
+      });
 
       return { ok: true };
     }
@@ -103,24 +106,33 @@ export default function Projects() {
       </div>
       <div className="flex flex-row bg-slate-900 shadow-md p-0 justify-between">
         <div className="ml-4 flex flex-row items-center">
-          <Link
+          <NavLink
             to="/home"
-            className="text-sm font-medium underline underline-offset-2 text-left text-slate-400 px-2 py-1"
+            prefetch="intent"
+            className={({ isActive }) =>
+              `text-sm font-medium underline-offset-2 text-left text-slate-400 px-2 py-1 ${isActive && "underline"}`
+            }
           >
             Boards
-          </Link>
-          <Link
+          </NavLink>
+          <NavLink
             to="/activity"
-            className="text-sm font-medium text-left text-slate-400 px-2 py-1"
+            prefetch="intent"
+            className={({ isActive }) =>
+              `text-sm font-medium underline-offset-2 text-left text-slate-400 px-2 py-1 ${isActive && "underline"}`
+            }
           >
             Activity
-          </Link>
-          <Link
+          </NavLink>
+          <NavLink
             to="/settings"
-            className="text-sm font-medium text-left text-slate-400 px-2 py-1"
+            prefetch="intent"
+            className={({ isActive }) =>
+              `text-sm font-medium underline-offset-2 text-left text-slate-400 px-2 py-1 ${isActive && "underline"}`
+            }
           >
             Settings
-          </Link>
+          </NavLink>
         </div>
         <NewBoard />
       </div>
@@ -230,60 +242,5 @@ function Board({
         </DropdownMenu>
       </div>
     </Link>
-  );
-}
-
-function NewBoard() {
-  let navigation = useNavigation();
-  let isCreating = navigation.formData?.get("intent") === "createBoard";
-
-  return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="link">
-          <Plus className="h-4 w-4 text-slate-400" />
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle className="text-xl">Create Board</DialogTitle>
-          <DialogDescription className="text-md">
-            Create a new board here. Click create when you're done.
-          </DialogDescription>
-        </DialogHeader>
-        <Form method="post">
-          <input type="hidden" name="intent" value="createBoard" />
-          <div>
-            <Label htmlFor="name">Board Name</Label>
-
-            <Input
-              name="name"
-              type="text"
-              autoCapitalize="true"
-              className="text-[16px] sm:text-base"
-              required
-            />
-          </div>
-
-          <div className="mt-4 flex items-center gap-4">
-            <div className="flex flex-col items-start gap-1">
-              <Label htmlFor="color">Board Color</Label>
-              <input
-                id="board-color"
-                name="color"
-                type="color"
-                defaultValue="#eaeaea"
-                className="bg-transparent"
-              />
-            </div>
-          </div>
-          <div className="text-right">
-            <Button type="submit">
-              {isCreating ? "Creating..." : "Create"}
-            </Button>
-          </div>
-        </Form>
-      </DialogContent>
-    </Dialog>
   );
 }
