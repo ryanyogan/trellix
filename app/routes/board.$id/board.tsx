@@ -89,8 +89,8 @@ export function Board() {
             <EditableText
               value={board.name}
               fieldName="name"
-              inputClassName="mx-3 text-sm font-medium border border-slate-400 rounded-lg py-1 px-1 text-black"
-              buttonClassName="mx-3 text-sm font-medium block rounded-lg text-left border border-transparent py-1 px-2 text-slate-400"
+              inputClassName="mx-4 text-sm font-medium border border-slate-400 rounded-lg py-1 px-1 text-black"
+              buttonClassName="mx-4 text-sm font-medium block rounded-lg text-left border border-transparent py-1 px-2 text-slate-400"
               buttonLabel={`Edit board "${board.name}" name`}
               inputLabel="Edit board name"
             >
@@ -123,7 +123,7 @@ export function Board() {
 
         <div className="flex-1"></div>
 
-        <div className="flex flex-row">
+        <div className="flex flex-row mr-2">
           {board.shareable ? (
             <div className="flex items-center justify-center">
               <a

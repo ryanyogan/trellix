@@ -50,9 +50,20 @@ export default function Board() {
 
   return (
     <div className="h-full flex flex-col">
-      <h1 className="absolute z-30 bg-slate-400 rounded-md px-3 py-1 shadow text-xs font-bold text-slate-900 top-20 right-6">
-        Viewing in shared mode, you may not make edits.
-      </h1>
+      <div className="flex flex-row bg-slate-900 items-center p-1 justify-between w-full">
+        <div>
+          <h1 className="mx-3 text-sm font-medium block text-left py-1 px-2 text-slate-400">
+            {board.name}
+          </h1>
+        </div>
+
+        <div className="flex flex-row mr-4">
+          <h1 className="text-xs font-bold text-green-400">
+            Viewing in shared mode, you may not make edits.
+          </h1>
+        </div>
+      </div>
+
       <div
         style={{ backgroundColor: board.color }}
         className="h-full relative min-h-0 flex flex-col gap-10 overflow-x-scroll pt-14"
