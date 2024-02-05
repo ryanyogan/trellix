@@ -25,6 +25,8 @@ export const INTENTS = {
   deleteColumn: "deleteColumn" as const,
   markCardComplete: "markCardComplete" as const,
   updateBoardSharing: "updateBoardSharing" as const,
+  updateCardTitle: "updateCardTitle" as const,
+  updateCard: "updateCard" as const,
 };
 
 export const ItemMutationFields = {

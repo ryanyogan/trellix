@@ -1,22 +1,24 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
-interface PortalProps {
+interface props {
   children: React.ReactNode;
   wrapperId: string;
 }
 
-function createWrapper(wrapperId: string) {
+// 1
+const createWrapper = (wrapperId: string) => {
   const wrapper = document.createElement("div");
   wrapper.setAttribute("id", wrapperId);
   document.body.appendChild(wrapper);
   return wrapper;
-}
+};
 
-export function Portal({ children, wrapperId }: PortalProps) {
+export const Portal: React.FC<props> = ({ children, wrapperId }) => {
   const [wrapper, setWrapper] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
+    // 2
     let element = document.getElementById(wrapperId);
     let created = false;
 
@@ -27,6 +29,7 @@ export function Portal({ children, wrapperId }: PortalProps) {
 
     setWrapper(element);
 
+    // 3
     return () => {
       if (created && element?.parentNode) {
         element.parentNode.removeChild(element);
@@ -34,9 +37,8 @@ export function Portal({ children, wrapperId }: PortalProps) {
     };
   }, [wrapperId]);
 
-  if (wrapper === null) {
-    return null;
-  }
+  if (wrapper === null) return null;
 
+  // 4
   return createPortal(children, wrapper);
-}
+};

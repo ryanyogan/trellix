@@ -1,9 +1,8 @@
-import { useFetcher, useSubmit } from "@remix-run/react";
+import { Link, useFetcher, useSubmit } from "@remix-run/react";
 import { useState } from "react";
 
 import { Icon } from "~/icons/icons";
 
-import { Check } from "lucide-react";
 import invariant from "tiny-invariant";
 import { cn } from "~/lib/utils";
 import { CONTENT_TYPES, INTENTS, ItemMutation } from "./types";
@@ -17,6 +16,7 @@ interface CardProps {
   nextOrder: number;
   previousOrder: number;
   complete: boolean | null;
+  boardId: number;
 }
 
 export function Card({
@@ -28,6 +28,7 @@ export function Card({
   nextOrder,
   previousOrder,
   complete,
+  boardId,
 }: CardProps) {
   let submit = useSubmit();
   let deleteFetcher = useFetcher();
@@ -99,10 +100,19 @@ export function Card({
           );
         }}
       >
-        <h3 className="break-words mr-14">{title}</h3>
+        <h3 className="break-words mr-14">
+          <Link
+            className="underline underline-offset-2 text-slate-500 hover:text-slate-600"
+            to={`/board/${boardId}/card/${id}`}
+            prefetch="intent"
+          >
+            {title}
+          </Link>
+        </h3>
+
         <div className="mt-2">{content || <>&nbsp;</>}</div>
 
-        {!complete ? (
+        {/* {!complete ? (
           <deleteFetcher.Form method="post">
             <input
               type="hidden"
@@ -121,14 +131,14 @@ export function Card({
               <Check className="h-5 w-5 mt-[2px]" />
             </button>
           </deleteFetcher.Form>
-        ) : null}
+        ) : null} */}
 
         <deleteFetcher.Form method="post">
           <input type="hidden" name="intent" value={INTENTS.deleteCard} />
           <input type="hidden" name="itemId" value={id} />
           <button
             aria-label="Delete card"
-            className="absolute top-4 right-4 hover:text-brand-red"
+            className="absolute top-2 right-2 hover:text-brand-red"
             type="submit"
             onClick={(event) => {
               event.stopPropagation();

@@ -92,7 +92,7 @@ export async function action({ request }: ActionFunctionArgs) {
 export default function Projects() {
   return (
     <div className="h-full flex flex-col">
-      <div className="flex flex-row bg-slate-900 shadow-md p-0 justify-between">
+      <div className="flex flex-row bg-slate-900 shadow-md p-0 justify-between border-b border-slate-800">
         <div className="ml-4 flex flex-row items-center">
           <NavLink
             to="/home"
@@ -142,7 +142,7 @@ function Boards() {
           </h2>
         </div>
       ) : (
-        <nav className="grid grid-cols-2 md:grid-cols-3 3xl:grid-cols-4 gap-4">
+        <nav className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
           {boards.map((board) => (
             <Board
               key={board.id}
@@ -191,7 +191,7 @@ function Board({
 
       {shareable ? (
         <div className="absolute bottom-2 right-2">
-          <div className="text-green-800 font-bold text-xs">Sharing</div>
+          <div className="text-green-600 text-xs">Sharing On</div>
         </div>
       ) : null}
 

@@ -58,8 +58,8 @@ export default function Board() {
         </div>
 
         <div className="flex flex-row mr-4">
-          <h1 className="text-xs font-bold text-green-400">
-            Viewing in shared mode, you may not make edits.
+          <h1 className="text-xs uppercase text-green-400">
+            Viewing in shared mode
           </h1>
         </div>
       </div>

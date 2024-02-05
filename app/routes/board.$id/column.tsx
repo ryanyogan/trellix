@@ -12,9 +12,10 @@ interface ColumnProps {
   name: string;
   columnId: string;
   items: RenderedItem[];
+  boardId: number;
 }
 
-export function Column({ name, columnId, items }: ColumnProps) {
+export function Column({ name, columnId, items, boardId }: ColumnProps) {
   const [acceptDrop, setAcceptDrop] = useState<boolean>(false);
   const [edit, setEdit] = useState(false);
   const listRef = useRef<HTMLUListElement>(null);
@@ -107,6 +108,7 @@ export function Column({ name, columnId, items }: ColumnProps) {
           .sort((a, b) => a.order - b.order)
           .map((item, index, items) => (
             <Card
+              boardId={boardId}
               key={item.id}
               title={item.title}
               content={item.content}

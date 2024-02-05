@@ -1,4 +1,9 @@
-import { useFetcher, useFetchers, useLoaderData } from "@remix-run/react";
+import {
+  Outlet,
+  useFetcher,
+  useFetchers,
+  useLoaderData,
+} from "@remix-run/react";
 import { Link2, Loader, Pencil } from "lucide-react";
 import { useRef, useState } from "react";
 import invariant from "tiny-invariant";
@@ -21,7 +26,7 @@ import { loader } from "./route";
 import { INTENTS, RenderedItem } from "./types";
 
 export function Board() {
-  let { board, completionCount, totalCount } = useLoaderData<typeof loader>();
+  let { board } = useLoaderData<typeof loader>();
 
   let itemsById = new Map(board.items.map((item) => [item.id, item]));
 
@@ -79,11 +84,9 @@ export function Board() {
     setDialogOpen(!dialogOpen);
   }
 
-  const completionDelta = (completionCount / totalCount) * 100;
-
   return (
     <div className="h-full flex flex-col">
-      <div className="flex flex-row bg-slate-900 items-center p-0 justify-start w-full">
+      <div className="relative flex flex-row bg-slate-900 items-center p-0 justify-start w-full">
         <div>
           <h1 className="bg-slate-900">
             <EditableText
@@ -102,23 +105,6 @@ export function Board() {
               <input type="hidden" name="id" value={board.id} />
             </EditableText>
           </h1>
-        </div>
-
-        <div className="w-[100px] sm:w-[300px]">
-          <div className="bg-slate-900 flex flex-row justify-between items-center">
-            <div className="flex w-full flex-row items-center">
-              <span className="text-xs font-semibold text-green-500 mr-2">
-                {completionCount}
-              </span>
-              <div className="w-full h-2 bg-slate-300 rounded-md">
-                <div
-                  style={{ width: `${completionDelta}%` }}
-                  className="h-2 rounded-md bg-green-400"
-                ></div>
-              </div>
-              <span className="text-xs text-indigo-400 ml-2">{totalCount}</span>
-            </div>
-          </div>
         </div>
 
         <div className="flex-1"></div>
@@ -220,7 +206,7 @@ export function Board() {
       <div
         ref={scrollContainerRef}
         style={{ backgroundColor: board.color }}
-        className="h-full min-h-0 flex flex-col overflow-x-scroll"
+        className="h-full min-h-0 flex flex-col overflow-x-scroll bg-gradient-to-tr to-gray-100"
       >
         <div className="flex flex-grow min-h-0 h-full items-start gap-4 px-8 pb-4 pt-8 inset-0">
           {[...columns.values()].map((col) => (
@@ -229,6 +215,7 @@ export function Board() {
               name={col.name}
               columnId={col.id}
               items={col.items}
+              boardId={board.id}
             />
           ))}
 
@@ -241,6 +228,7 @@ export function Board() {
           <div data-lol className="w-8 h-1 flex-shrink-0" />
         </div>
       </div>
+      <Outlet />
     </div>
   );
 }
