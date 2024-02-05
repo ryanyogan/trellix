@@ -24,7 +24,7 @@ export const links: LinksFunction = () => [
   ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
 ];
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request, params }: LoaderFunctionArgs) {
   let auth = await getAuthFromRequest(request);
   if (auth && new URL(request.url).pathname === "/") {
     throw redirect("/home");

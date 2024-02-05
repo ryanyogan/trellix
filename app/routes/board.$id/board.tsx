@@ -1,13 +1,7 @@
-import {
-  NavLink,
-  useFetcher,
-  useFetchers,
-  useLoaderData,
-} from "@remix-run/react";
+import { useFetcher, useFetchers, useLoaderData } from "@remix-run/react";
 import { Link2, Loader, Pencil } from "lucide-react";
 import { useRef, useState } from "react";
 import invariant from "tiny-invariant";
-import { NewBoard } from "~/components/new-board";
 import { Button } from "~/components/ui/button";
 import {
   Dialog,
@@ -89,42 +83,9 @@ export function Board() {
 
   return (
     <div className="h-full flex flex-col">
-      <div className="flex flex-row bg-slate-900 shadow-md p-0 justify-between border-b border-slate-800">
-        <div className="ml-4 flex flex-row items-center">
-          <NavLink
-            to="/home"
-            prefetch="intent"
-            className={({ isActive }) =>
-              `text-sm font-medium underline-offset-2 text-left text-slate-400 px-2 py-1 ${isActive && "underline"}`
-            }
-          >
-            Boards
-          </NavLink>
-          <NavLink
-            to="/activity"
-            prefetch="intent"
-            className={({ isActive }) =>
-              `text-sm font-medium underline-offset-2 text-left text-slate-400 px-2 py-1 ${isActive && "underline"}`
-            }
-          >
-            Activity
-          </NavLink>
-          <NavLink
-            to="/settings"
-            prefetch="intent"
-            className={({ isActive }) =>
-              `text-sm font-medium underline-offset-2 text-left text-slate-400 px-2 py-1 ${isActive && "underline"}`
-            }
-          >
-            Settings
-          </NavLink>
-        </div>
-        <NewBoard />
-      </div>
-
-      <div className="flex flex-row bg-slate-800 items-center p-0 justify-between w-full">
+      <div className="flex flex-row bg-slate-900 items-center p-0 justify-start w-full">
         <div>
-          <h1 className="bg-slate-800">
+          <h1 className="bg-slate-900">
             <EditableText
               value={board.name}
               fieldName="name"
@@ -143,8 +104,8 @@ export function Board() {
           </h1>
         </div>
 
-        <div className="w-1/3">
-          <div className="bg-slate-800 flex flex-row justify-between items-center">
+        <div className="w-[100px] sm:w-[300px]">
+          <div className="bg-slate-900 flex flex-row justify-between items-center">
             <div className="flex w-full flex-row items-center">
               <span className="text-xs font-semibold text-green-500 mr-2">
                 {completionCount}
@@ -159,6 +120,8 @@ export function Board() {
             </div>
           </div>
         </div>
+
+        <div className="flex-1"></div>
 
         <div className="flex flex-row">
           {board.shareable ? (

@@ -9,6 +9,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const userId = await requireAuthCookie(request);
 
   const auditLogs = await prisma.auditLog.findMany({
+    where: {
+      authorId: userId,
+    },
     orderBy: {
       createdAt: "asc",
     },
