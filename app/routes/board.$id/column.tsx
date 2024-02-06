@@ -51,12 +51,14 @@ export function Column({ name, columnId, items, boardId }: ColumnProps) {
         );
         invariant(transfer.id, "missing transfer.id");
         invariant(transfer.title, "missing transfer.title");
+        invariant(transfer.content, "missing transfer.content");
 
         let mutation: ItemMutation = {
           order: 1,
           columnId,
           id: transfer.id,
           title: transfer.title,
+          content: transfer.content,
         };
 
         submit(

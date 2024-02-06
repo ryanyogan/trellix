@@ -34,6 +34,7 @@ export const ItemMutationFields = {
   columnId: { type: String, name: "columnId" },
   order: { type: Number, name: "order" },
   title: { type: String, name: "title" },
+  content: { type: String, name: "content" },
 } as const;
 
 export type ItemMutation = MutationFromFields<typeof ItemMutationFields>;

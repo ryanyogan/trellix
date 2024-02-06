@@ -53,8 +53,10 @@ export function Card({
         let transfer = JSON.parse(
           event.dataTransfer.getData(CONTENT_TYPES.card),
         );
+
         invariant(transfer.id, "missing cardId");
         invariant(transfer.title, "missing title");
+        invariant(transfer.content, "missing content");
 
         let droppedOrder = acceptDrop === "top" ? previousOrder : nextOrder;
         let moveOrder = (droppedOrder + order) / 2;
@@ -64,6 +66,7 @@ export function Card({
           columnId,
           id: transfer.id,
           title: transfer.title,
+          content: transfer.content,
         };
 
         submit(
@@ -96,7 +99,7 @@ export function Card({
           event.dataTransfer.effectAllowed = "move";
           event.dataTransfer.setData(
             CONTENT_TYPES.card,
-            JSON.stringify({ id, title }),
+            JSON.stringify({ id, title, content: content || "" }),
           );
         }}
       >

@@ -40,6 +40,7 @@ export function Board() {
           boardId: board.id,
           complete: false,
           accountId: null,
+          content: "",
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
         };
@@ -263,6 +264,7 @@ function usePendingItems() {
     .map((fetcher) => {
       let columnId = String(fetcher.formData.get("columnId"));
       let title = String(fetcher.formData.get("title"));
+      let content = String(fetcher.formData.get("content"));
       let id = String(fetcher.formData.get("id"));
       let order = Number(fetcher.formData.get("order"));
       let item: RenderedItem = {
@@ -270,7 +272,7 @@ function usePendingItems() {
         id,
         order,
         columnId,
-        content: null,
+        content,
         complete: false,
       };
       return item;
