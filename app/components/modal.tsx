@@ -22,7 +22,7 @@ export const Modal: React.FC<props> = ({
   return (
     <Portal wrapperId="modal">
       <div
-        className="fixed inset-0 overflow-y-auto bg-gray-900 bg-opacity-20"
+        className="fixed inset-0 overflow-y-auto bg-slate-800 bg-opacity-40"
         aria-labelledby={ariaLabel ?? "modal-title"}
         role="dialog"
         aria-modal="true"

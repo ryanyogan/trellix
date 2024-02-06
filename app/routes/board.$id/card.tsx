@@ -56,7 +56,6 @@ export function Card({
 
         invariant(transfer.id, "missing cardId");
         invariant(transfer.title, "missing title");
-        invariant(transfer.content, "missing content");
 
         let droppedOrder = acceptDrop === "top" ? previousOrder : nextOrder;
         let moveOrder = (droppedOrder + order) / 2;
@@ -83,29 +82,28 @@ export function Card({
       className={
         "border-t-2 border-b-2 -mb-[2px] last:mb-0 cursor-grab active:cursor-grabbing px-2 py-1 " +
         (acceptDrop === "top"
-          ? "border-t-brand-red border-b-transparent"
+          ? "border-t-slate-500 border-b-transparent"
           : acceptDrop === "bottom"
-            ? "border-b-brand-red border-t-transparent"
+            ? "border-b-slate-500 border-t-transparent"
             : "border-t-transparent border-b-transparent")
       }
     >
       <div
         draggable
         className={cn(
-          "shadow shadow-slate-300 border-slate-300 text-sm rounded-lg w-full py-1 px-2 relative",
-          complete ? "bg-green-200 text-green-800" : "bg-white",
+          "bg-slate-900 text-sm border-b border-slate-800 w-full py-1 px-2 relative",
         )}
         onDragStart={(event) => {
           event.dataTransfer.effectAllowed = "move";
           event.dataTransfer.setData(
             CONTENT_TYPES.card,
-            JSON.stringify({ id, title, content: content || "" }),
+            JSON.stringify({ id, title, content }),
           );
         }}
       >
         <h3 className="break-words mr-14">
           <Link
-            className="underline underline-offset-2 text-slate-500 hover:text-slate-600"
+            className="text-blue-500 hover:text-blue-400 font-semibold"
             to={`/board/${boardId}/card/${id}`}
             prefetch="intent"
           >
@@ -113,35 +111,14 @@ export function Card({
           </Link>
         </h3>
 
-        <div className="mt-2">{content || <>&nbsp;</>}</div>
-
-        {/* {!complete ? (
-          <deleteFetcher.Form method="post">
-            <input
-              type="hidden"
-              name="intent"
-              value={INTENTS.markCardComplete}
-            />
-            <input type="hidden" name="itemId" value={id} />
-            <button
-              aria-label="Complete card"
-              className="absolute top-4 text-green-600 right-10 hover:text-green-900"
-              type="submit"
-              onClick={(event) => {
-                event.stopPropagation();
-              }}
-            >
-              <Check className="h-5 w-5 mt-[2px]" />
-            </button>
-          </deleteFetcher.Form>
-        ) : null} */}
+        <div className="mt-2 text-blue-300 mb-2">{content || <>&nbsp;</>}</div>
 
         <deleteFetcher.Form method="post">
           <input type="hidden" name="intent" value={INTENTS.deleteCard} />
           <input type="hidden" name="itemId" value={id} />
           <button
             aria-label="Delete card"
-            className="absolute top-2 right-2 hover:text-brand-red"
+            className="absolute top-0 right-0 text-slate-600 hover:text-slate-500"
             type="submit"
             onClick={(event) => {
               event.stopPropagation();

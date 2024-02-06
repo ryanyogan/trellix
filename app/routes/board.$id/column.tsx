@@ -30,7 +30,7 @@ export function Column({ name, columnId, items, boardId }: ColumnProps) {
   return (
     <div
       className={
-        "flex-shrink-0 flex flex-col overflow-hidden max-h-full w-80 border-slate-400 rounded-xl shadow-sm shadow-slate-400 bg-slate-100" +
+        "flex-shrink-0 flex flex-col overflow-hidden max-h-full w-80 border-slate-700 shadow-lg round-sm shadow-slate-900 bg-slate-900" +
         (acceptDrop ? `outline outline-2 outline-brand-red` : ``)
       }
       onDragOver={(event) => {
@@ -73,14 +73,14 @@ export function Column({ name, columnId, items, boardId }: ColumnProps) {
         setAcceptDrop(false);
       }}
     >
-      <div className="p-2 relative">
+      <div className="p-2 relative border-b border-slate-800">
         <EditableText
           fieldName="name"
           value={name}
           inputLabel="Edit column name"
           buttonLabel={`Edit column "${name}" name`}
           inputClassName="border border-slate-400  rounded-lg py-1 px-2 font-medium text-black"
-          buttonClassName="block rounded-lg text-left border border-transparent py-1 px-2 font-medium text-slate-600"
+          buttonClassName="block rounded-lg text-left border border-transparent py-1 px-2 font-medium text-blue-300"
         >
           <input type="hidden" name="intent" value={INTENTS.updateColumn} />
           <input type="hidden" name="columnId" value={columnId} />
@@ -144,7 +144,7 @@ export function Column({ name, columnId, items, boardId }: ColumnProps) {
 
               scrollList();
             }}
-            className="flex items-center gap-2 rounded-lg text-left w-full p-2 font-medium text-slate-500 hover:bg-slate-200 focus:bg-slate-200"
+            className="flex items-center gap-2 rounded-lg text-left w-full p-2 font-medium text-slate-500 hover:bg-slate-800 focus:bg-slate-800"
           >
             <Icon name="plus" /> Add a card
           </button>

@@ -98,16 +98,25 @@ export default function Projects() {
             to="/home"
             prefetch="intent"
             className={({ isActive }) =>
-              `text-sm font-medium underline-offset-2 text-left text-slate-400 px-2 py-1 ${isActive && "underline"}`
+              `text-sm font-medium underline-offset-2 text-left text-blue-300 px-2 py-1 ${isActive && "underline"}`
             }
           >
             Boards
           </NavLink>
           <NavLink
+            to="/chores"
+            prefetch="intent"
+            className={({ isActive }) =>
+              `text-sm font-medium underline-offset-2 text-left text-blue-300 px-2 py-1 ${isActive && "underline"}`
+            }
+          >
+            Chores
+          </NavLink>
+          <NavLink
             to="/activity"
             prefetch="intent"
             className={({ isActive }) =>
-              `text-sm font-medium underline-offset-2 text-left text-slate-400 px-2 py-1 ${isActive && "underline"}`
+              `text-sm font-medium underline-offset-2 text-left text-blue-300 px-2 py-1 ${isActive && "underline"}`
             }
           >
             Activity
@@ -116,7 +125,7 @@ export default function Projects() {
             to="/settings"
             prefetch="intent"
             className={({ isActive }) =>
-              `text-sm font-medium underline-offset-2 text-left text-slate-400 px-2 py-1 ${isActive && "underline"}`
+              `text-sm font-medium underline-offset-2 text-left text-blue-300 px-2 py-1 ${isActive && "underline"}`
             }
           >
             Settings
@@ -178,10 +187,10 @@ function Board({
   return isDeleting ? null : (
     <Link
       to={`/board/${id}`}
-      className="w-full h-28 sm:h-40 p-4 block border-b-8 shadow rounded hover:shadow-lg bg-white relative"
-      style={{ borderColor: color }}
+      className="w-full h-28 sm:h-40 p-4 block rounded-sm border-l-2 border-slate-800 border shadow hover:shadow-xl bg-slate-800/30 relative hover:bg-slate-800/50"
+      style={{ borderLeftColor: color }}
     >
-      <div className="font-semibold text-ellipsis">{name}</div>
+      <div className="font-semibold text-ellipsis text-blue-400">{name}</div>
 
       <div className="absolute bottom-2">
         <div className="text-slate-600 text-xs sm:text-sm">
@@ -191,7 +200,7 @@ function Board({
 
       {shareable ? (
         <div className="absolute bottom-2 right-2">
-          <div className="text-green-600 text-xs">Sharing On</div>
+          <div className="text-green-300 text-xs">Sharing</div>
         </div>
       ) : null}
 
@@ -199,13 +208,13 @@ function Board({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button
-              className="absolute top-4 right-4 hover:text-brand-red"
+              className="absolute top-4 right-4"
               type="button"
               onClick={(event) => {
                 event.stopPropagation();
               }}
             >
-              <ChevronDown className="w-4 h-4" />
+              <ChevronDown className="w-4 h-4 text-slate-400" />
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>

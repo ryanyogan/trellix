@@ -59,10 +59,10 @@ export default function App() {
         <div className="h-full flex flex-col min-h-0">
           <div className="bg-slate-900 border-b border-slate-800 flex items-center sticky justify-between py-3 px-6 box-border">
             <Link to="/home" className="block leading-3 w-1/3">
-              <div className="font-black text-2xl text-blue-500 flex flex-row items-center gap-x-2">
-                Chore
+              <div className="text-2xl font-semibold tracking-wide text-indigo-400 flex flex-row items-center gap-x-2">
+                Choring
                 {navigation.state !== "idle" ? (
-                  <Loader className="w-5 h-5 animate-spin text-blue-500/80 mt-0.5 transition duration-700" />
+                  <Loader className="w-5 h-5 animate-spin text-blue-300 mt-0.5 transition duration-700" />
                 ) : null}
               </div>
             </Link>
@@ -87,7 +87,7 @@ export default function App() {
             </div>
           </div>
 
-          <div className="flex-grow min-h-0 h-full bg-slate-400">
+          <div className="flex-grow min-h-0 h-full bg-slate-900">
             <Outlet />
           </div>
         </div>

@@ -43,6 +43,8 @@ export function Board() {
           content: "",
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
+          choreType: null,
+          choreTypeId: null,
         };
 
     itemsById.set(pendingItem.id, merged);
@@ -207,7 +209,7 @@ export function Board() {
       <div
         ref={scrollContainerRef}
         style={{ backgroundColor: board.color }}
-        className="h-full min-h-0 flex flex-col overflow-x-scroll bg-gradient-to-tr to-gray-100"
+        className="h-full min-h-0 flex flex-col overflow-x-scroll"
       >
         <div className="flex flex-grow min-h-0 h-full items-start gap-4 px-8 pb-4 pt-8 inset-0">
           {[...columns.values()].map((col) => (

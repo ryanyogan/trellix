@@ -11,11 +11,13 @@ import {
   useNavigation,
   useParams,
 } from "@remix-run/react";
+import { useRef } from "react";
 import invariant from "tiny-invariant";
 import { requireAuthCookie } from "~/auth/auth";
 import { Modal } from "~/components/modal";
 import { Portal } from "~/components/portal";
 import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Separator } from "~/components/ui/separator";
 import { Switch } from "~/components/ui/switch";
@@ -89,6 +91,7 @@ export default function ItemDetail() {
   const navigate = useNavigate();
   const navigation = useNavigation();
   const isLoading = navigation.state !== "idle";
+  let buttonRef = useRef<HTMLButtonElement>(null);
 
   const { item } = useLoaderData<typeof loader>();
 
@@ -127,6 +130,17 @@ export default function ItemDetail() {
               name="content"
               defaultValue={item?.content ?? ""}
               className="mt-1 resize-none text-[16px] bg-slate-800 border text-blue-300 border-slate-700 focus-visible:ring-0 focus-visible:ring-offset-0 ring-0 focus:ring-0 outline-none shadow-sm"
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  event.preventDefault();
+                  invariant(buttonRef.current, "expected button ref");
+                  buttonRef.current.click();
+                }
+
+                if (event.key === "Escape") {
+                  navigate(`/board/${params.id}`);
+                }
+              }}
             />
 
             <div className="w-full space-y-4 mt-6">
@@ -147,6 +161,21 @@ export default function ItemDetail() {
                 </div>
               </div>
             </div>
+
+            <div className="w-full space-y-4 mt-6">
+              <div className="space-y-4">
+                <div className="flex flex-col items-start gap-y-1">
+                  <Label className="text-blue-400">Due Date</Label>
+                  <div className="bg-slate-800 mt-1 w-full p-2 flex flex-row items-center rounded-md border border-slate-700">
+                    <Input
+                      className="bg-slate-800 border-transparent text-blue-300"
+                      type="date"
+                      name="dueDate"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className="flex flex-row justify-end mt-4">
@@ -162,6 +191,7 @@ export default function ItemDetail() {
               Cancel
             </Button>
             <Button
+              ref={buttonRef}
               variant="link"
               type="submit"
               className="text-green-400 font-bold px-3 py-2"

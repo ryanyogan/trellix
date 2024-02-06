@@ -40,6 +40,9 @@ model Board {
   items   Item[]
   columns Column[]
 
+  choreType   ChoreType? @relation(fields: [choreTypeId], references: [id])
+  choreTypeId String?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -87,7 +90,25 @@ model Item {
   account   Account? @relation(fields: [accountId], references: [id], onDelete: Cascade)
   accountId String?
 
+  choreType   ChoreType? @relation(fields: [choreTypeId], references: [id])
+  choreTypeId String?
+
   @@index([complete])
+}
+
+model ChoreType {
+  id String @id @default(uuid())
+
+  name      String
+  repeating Boolean?
+
+  dueDate DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  items  Item[]
+  boards Board[]
 }
 
 model Event {

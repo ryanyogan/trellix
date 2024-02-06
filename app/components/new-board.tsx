@@ -51,7 +51,7 @@ export function NewBoard() {
                 id="board-color"
                 name="color"
                 type="color"
-                defaultValue="#eaeaea"
+                defaultValue="#3b82f6"
                 className="bg-transparent"
               />
             </div>

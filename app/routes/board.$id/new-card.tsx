@@ -2,7 +2,6 @@ import { Form, useSubmit } from "@remix-run/react";
 import { useRef } from "react";
 import invariant from "tiny-invariant";
 import { Button } from "~/components/ui/button";
-import { CancelButton } from "./components";
 import { INTENTS, ItemMutationFields } from "./types";
 
 export function NewCard({
@@ -67,7 +66,7 @@ export function NewCard({
         autoFocus
         required
         placeholder="Enter a title for this card"
-        className="outline-none shadow text-[16px] sm:text-sm rounded-lg w-full py-1 px-2 resize-none placeholder:text-sm placeholder:text-slate-500 h-14"
+        className="bg-slate-800 outline-none shadow text-[16px] text-blue-300 rounded-sm w-full py-1 px-2 resize-none placeholder:text-sm placeholder:text-slate-500 h-14"
         onKeyDown={(event) => {
           if (event.key === "Enter") {
             event.preventDefault();
@@ -87,12 +86,18 @@ export function NewCard({
       <div className="flex justify-between">
         <Button
           variant="ghost"
-          className="bg-slate-900 text-slate-300"
+          className="bg-slate-900 text-blue-500 hover:bg-slate-800 hover:text-blue-500"
           ref={buttonRef}
         >
           Save Card
         </Button>
-        <CancelButton onClick={onComplete}>Cancel</CancelButton>
+        <Button
+          variant="link"
+          className=" text-orange-300"
+          onClick={onComplete}
+        >
+          Cancel
+        </Button>
       </div>
     </Form>
   );
