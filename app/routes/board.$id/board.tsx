@@ -90,9 +90,9 @@ export function Board() {
 
   return (
     <div className="h-full flex flex-col">
-      <div className="relative flex flex-row bg-slate-900 border-b border-slate-800 text-blue-300 items-center p-0 justify-start w-full">
+      <div className="relative flex flex-row bg-slate-800/30 border-b border-slate-800 text-blue-300 items-center p-0 justify-start w-full">
         <div>
-          <h1 className="bg-slate-900">
+          <h1>
             <EditableText
               value={board.name}
               fieldName="name"

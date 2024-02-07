@@ -92,7 +92,7 @@ export async function action({ request }: ActionFunctionArgs) {
 export default function Projects() {
   return (
     <div className="h-full flex flex-col">
-      <div className="flex flex-row bg-slate-900 shadow-md p-0 justify-between border-b border-slate-800">
+      <div className="flex flex-row bg-slate-800/30 shadow-md p-0 justify-between border-b border-slate-800">
         <div className="ml-4 flex flex-row items-center">
           <NavLink
             to="/home"
