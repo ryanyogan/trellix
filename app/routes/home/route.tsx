@@ -187,7 +187,7 @@ function Board({
   return isDeleting ? null : (
     <Link
       to={`/board/${id}`}
-      className="w-full h-28 sm:h-40 p-4 block rounded-sm border-l-2 border-slate-800 border shadow hover:shadow-xl bg-slate-800/30 relative hover:bg-slate-800/50"
+      className="w-full h-28 sm:h-40 p-4 block rounded-sm border-l-2 border-slate-800 border shadow hover:shadow-xl bg-slate-800/50 relative hover:bg-slate-800/80"
       style={{ borderLeftColor: color }}
     >
       <div className="font-semibold text-ellipsis text-blue-400">{name}</div>

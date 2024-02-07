@@ -37,16 +37,11 @@ export const ItemMutationFields = {
   content: { type: String, name: "content" },
 } as const;
 
-export type ItemMutation = MutationFromFields<typeof ItemMutationFields>;
-
-////////////////////////////////////////////////////////////////////////////////
-// Bonkers TypeScript
-type ConstructorToType<T> = T extends typeof String
-  ? string
-  : T extends typeof Number
-    ? number
-    : never;
-
-export type MutationFromFields<T extends Record<string, any>> = {
-  [K in keyof T]: ConstructorToType<T[K]["type"]>;
+export type ItemMutation = {
+  id: string;
+  columnId: string;
+  order: number;
+  title: string;
+  content?: string;
+  kidId?: string;
 };

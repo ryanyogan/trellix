@@ -45,6 +45,7 @@ export function Board() {
           updatedAt: new Date().toISOString(),
           choreType: null,
           choreTypeId: null,
+          kidId: null,
         };
 
     itemsById.set(pendingItem.id, merged);

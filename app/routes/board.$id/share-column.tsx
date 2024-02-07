@@ -31,13 +31,6 @@ export function ShareColumn({ name, columnId, items }: ColumnProps) {
               key={item.id}
               title={item.title}
               content={item.content}
-              id={item.id}
-              order={item.order}
-              columnId={columnId}
-              previousOrder={items[index - 1] ? items[index - 1].order : 0}
-              nextOrder={
-                items[index + 1] ? items[index + 1].order : item.order + 1
-              }
             />
           ))}
       </ul>
