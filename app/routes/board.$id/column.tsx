@@ -31,7 +31,7 @@ export function Column({ name, columnId, items, boardId, color }: ColumnProps) {
   return (
     <div
       className={
-        "flex-shrink-0 flex flex-col overflow-hidden max-h-full w-80 bg-slate-900 rounded-sm border-t border-slate-800 border shadow-xl bg-slate-800/50" +
+        "flex-shrink-0 flex flex-col overflow-hidden max-h-full w-80 bg-slate-900 rounded-sm border-t border-slate-700/50 border shadow-xl bg-slate-800/50" +
         (acceptDrop ? `outline outline-2 outline-brand-red` : ``)
       }
       style={{ borderTopColor: color }}

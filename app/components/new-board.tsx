@@ -20,7 +20,7 @@ export function NewBoard() {
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="link">
-          <Plus className="h-4 w-4 text-slate-400" />
+          <Plus className="h-4 w-4 text-green-400" />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">

@@ -98,7 +98,7 @@ export default function Projects() {
             to="/home"
             prefetch="intent"
             className={({ isActive }) =>
-              `text-sm font-medium underline-offset-2 text-left text-blue-300 px-2 py-1 ${isActive && "underline"}`
+              `text-sm font-medium underline-offset-2 text-left text-green-400 px-2 py-1 ${isActive && "underline"}`
             }
           >
             Boards
@@ -107,7 +107,7 @@ export default function Projects() {
             to="/chores"
             prefetch="intent"
             className={({ isActive }) =>
-              `text-sm font-medium underline-offset-2 text-left text-blue-300 px-2 py-1 ${isActive && "underline"}`
+              `text-sm font-medium underline-offset-2 text-left text-green-400 px-2 py-1 ${isActive && "underline"}`
             }
           >
             Chores
@@ -116,7 +116,7 @@ export default function Projects() {
             to="/activity"
             prefetch="intent"
             className={({ isActive }) =>
-              `text-sm font-medium underline-offset-2 text-left text-blue-300 px-2 py-1 ${isActive && "underline"}`
+              `text-sm font-medium underline-offset-2 text-left text-green-400 px-2 py-1 ${isActive && "underline"}`
             }
           >
             Activity
@@ -125,7 +125,7 @@ export default function Projects() {
             to="/settings"
             prefetch="intent"
             className={({ isActive }) =>
-              `text-sm font-medium underline-offset-2 text-left text-blue-300 px-2 py-1 ${isActive && "underline"}`
+              `text-sm font-medium underline-offset-2 text-left text-green-400 px-2 py-1 ${isActive && "underline"}`
             }
           >
             Settings
@@ -187,7 +187,7 @@ function Board({
   return isDeleting ? null : (
     <Link
       to={`/board/${id}`}
-      className="w-full h-28 sm:h-40 p-4 block rounded-sm border-l-2 border-slate-800 border shadow hover:shadow-xl bg-slate-800/50 relative hover:bg-slate-800/80"
+      className="w-full h-28 sm:h-40 p-4 block rounded-sm border-l-2 border-slate-700/50 border shadow hover:shadow-xl bg-slate-800/50 relative hover:bg-slate-800/80"
       style={{ borderLeftColor: color }}
     >
       <div className="font-semibold text-ellipsis text-blue-400">{name}</div>
