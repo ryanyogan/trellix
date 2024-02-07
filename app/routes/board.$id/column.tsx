@@ -13,9 +13,10 @@ interface ColumnProps {
   columnId: string;
   items: RenderedItem[];
   boardId: number;
+  color: string;
 }
 
-export function Column({ name, columnId, items, boardId }: ColumnProps) {
+export function Column({ name, columnId, items, boardId, color }: ColumnProps) {
   const [acceptDrop, setAcceptDrop] = useState<boolean>(false);
   const [edit, setEdit] = useState(false);
   const listRef = useRef<HTMLUListElement>(null);
@@ -30,9 +31,10 @@ export function Column({ name, columnId, items, boardId }: ColumnProps) {
   return (
     <div
       className={
-        "flex-shrink-0 flex flex-col overflow-hidden max-h-full w-80 border-slate-700 shadow-lg round-sm shadow-slate-900 bg-slate-900" +
+        "flex-shrink-0 flex flex-col overflow-hidden max-h-full w-80 bg-slate-900 rounded-sm border-t border-slate-800 border shadow-xl bg-slate-800/50" +
         (acceptDrop ? `outline outline-2 outline-brand-red` : ``)
       }
+      style={{ borderTopColor: color }}
       onDragOver={(event) => {
         if (
           items.length === 0 &&
@@ -73,7 +75,7 @@ export function Column({ name, columnId, items, boardId }: ColumnProps) {
         setAcceptDrop(false);
       }}
     >
-      <div className="p-2 relative border-b border-slate-800">
+      <div className="p-2 relative">
         <EditableText
           fieldName="name"
           value={name}

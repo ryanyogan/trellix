@@ -90,9 +90,7 @@ export function Card({
     >
       <div
         draggable
-        className={cn(
-          "bg-slate-900 text-sm border-b border-slate-800 w-full py-1 px-2 relative",
-        )}
+        className={cn("bg-slate-800/50 text-sm w-full py-1 px-2 relative")}
         onDragStart={(event) => {
           event.dataTransfer.effectAllowed = "move";
           event.dataTransfer.setData(
@@ -103,7 +101,7 @@ export function Card({
       >
         <h3 className="break-words mr-14">
           <Link
-            className="text-blue-500 hover:text-blue-400 font-semibold"
+            className="text-indigo-400 hover:text-blue-400 font-semibold"
             to={`/board/${boardId}/card/${id}`}
             prefetch="intent"
           >
@@ -111,14 +109,14 @@ export function Card({
           </Link>
         </h3>
 
-        <div className="mt-2 text-blue-300 mb-2">{content || <>&nbsp;</>}</div>
+        <div className="mt-2 text-slate-400 mb-2">{content || <>&nbsp;</>}</div>
 
         <deleteFetcher.Form method="post">
           <input type="hidden" name="intent" value={INTENTS.deleteCard} />
           <input type="hidden" name="itemId" value={id} />
           <button
             aria-label="Delete card"
-            className="absolute top-0 right-0 text-slate-600 hover:text-slate-500"
+            className="absolute top-2 right-2 text-slate-600 hover:text-slate-500"
             type="submit"
             onClick={(event) => {
               event.stopPropagation();

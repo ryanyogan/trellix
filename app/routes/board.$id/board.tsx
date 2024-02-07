@@ -90,14 +90,14 @@ export function Board() {
 
   return (
     <div className="h-full flex flex-col">
-      <div className="relative flex flex-row bg-slate-900 items-center p-0 justify-start w-full">
+      <div className="relative flex flex-row bg-slate-900 border-b border-slate-800 text-blue-300 items-center p-0 justify-start w-full">
         <div>
           <h1 className="bg-slate-900">
             <EditableText
               value={board.name}
               fieldName="name"
               inputClassName="mx-4 text-sm font-medium border border-slate-400 rounded-lg py-1 px-1 text-black"
-              buttonClassName="mx-4 text-sm font-medium block rounded-lg text-left border border-transparent py-1 px-2 text-slate-400"
+              buttonClassName="mx-4 text-sm font-medium block rounded-lg text-left border border-transparent py-1 px-2 text-blue-300"
               buttonLabel={`Edit board "${board.name}" name`}
               inputLabel="Edit board name"
             >
@@ -140,7 +140,7 @@ export function Board() {
                 ) : (
                   <Link2
                     className={cn(
-                      "h-5 w-5 text-slate-400 font-bold",
+                      "h-5 w-5 text-blue-300 font-bold",
                       board.shareable?.toString() === "true"
                         ? "text-green-400 font-bold"
                         : "",
@@ -154,7 +154,7 @@ export function Board() {
           <Dialog open={dialogOpen} onOpenChange={onChange}>
             <DialogTrigger asChild>
               <Button onClick={() => setDialogOpen(true)} variant="link">
-                <Pencil className="h-4 w-4 text-slate-400" />
+                <Pencil className="h-4 w-4 text-blue-300" />
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
@@ -209,12 +209,12 @@ export function Board() {
 
       <div
         ref={scrollContainerRef}
-        style={{ backgroundColor: board.color }}
         className="h-full min-h-0 flex flex-col overflow-x-scroll"
       >
         <div className="flex flex-grow min-h-0 h-full items-start gap-4 px-8 pb-4 pt-8 inset-0">
           {[...columns.values()].map((col) => (
             <Column
+              color={board.color}
               key={col.id}
               name={col.name}
               columnId={col.id}
