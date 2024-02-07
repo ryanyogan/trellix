@@ -118,7 +118,7 @@ export function Board() {
             <div className="flex items-center justify-center">
               <a
                 className="underline text-xs text-green-400 underline-offset-2"
-                href={`https://trellix-clone.fly.dev/board/share/${board.id}`}
+                href={`https://choring.yogan.dev/sharing/${board.id}`}
                 target="_BLANK"
               >
                 Share Link

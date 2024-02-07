@@ -17,7 +17,6 @@ import {
 } from "~/components/ui/dropdown-menu";
 import { badRequest } from "~/http/bad-request";
 import { createAuditLog } from "~/lib/create-audit-log";
-import { triggerCreateBoardEvent } from "../board.$id/events";
 import { INTENTS } from "../board.$id/types";
 import {
   createBoard,
@@ -49,10 +48,7 @@ export async function action({ request }: ActionFunctionArgs) {
       let color = String(formData.get("color") || "");
       if (!name) throw badRequest("Bad Request");
 
-      let [board] = await Promise.all([
-        createBoard(accountId, name, color),
-        triggerCreateBoardEvent(accountId),
-      ]);
+      let board = await createBoard(accountId, name, color);
 
       await createAuditLog({
         entityTitle: board.name,
