@@ -27,7 +27,9 @@ export const INTENTS = {
   updateBoardSharing: "updateBoardSharing" as const,
   updateCardTitle: "updateCardTitle" as const,
   updateCard: "updateCard" as const,
-};
+  createChore: "createChore" as const,
+  createChoreType: "createChoreType" as const,
+} as const;
 
 export const ItemMutationFields = {
   id: { type: String, name: "id" },

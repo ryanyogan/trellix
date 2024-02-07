@@ -15,18 +15,7 @@ model Account {
 
   boards Board[]
   items  Item[]
-}
-
-model Kid {
-  id String @id @default(uuid())
-
-  name  String
-  score Float?
-
-  chores Item[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  chores Chore[]
 }
 
 model Password {
@@ -124,6 +113,40 @@ model ChoreType {
 
   items  Item[]
   boards Board[]
+  Chore  Chore[]
+}
+
+model Kid {
+  id String @id @default(uuid())
+
+  name  String
+  score Float?
+
+  chores Chore[]
+  items  Item[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Chore {
+  id String @id @default(uuid())
+
+  title       String
+  description String
+  color       String @default("#eaeaea")
+
+  creator   Account? @relation(fields: [accountId], references: [id])
+  accountId String?
+
+  choreType   ChoreType @relation(fields: [choreTypeId], references: [id])
+  choreTypeId String
+
+  child Kid?    @relation(fields: [kidId], references: [id])
+  kidId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Event {

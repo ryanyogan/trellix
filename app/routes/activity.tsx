@@ -31,16 +31,25 @@ export default function ActivityPage() {
             to="/home"
             prefetch="intent"
             className={({ isActive }) =>
-              `text-sm font-medium underline-offset-2 text-left text-slate-400 px-2 py-1 ${isActive && "underline"}`
+              `text-sm font-medium underline-offset-2 text-left text-blue-300 px-2 py-1 ${isActive && "underline"}`
             }
           >
             Boards
           </NavLink>
           <NavLink
+            to="/chores"
+            prefetch="intent"
+            className={({ isActive }) =>
+              `text-sm font-medium underline-offset-2 text-left text-blue-300 px-2 py-1 ${isActive && "underline"}`
+            }
+          >
+            Chores
+          </NavLink>
+          <NavLink
             to="/activity"
             prefetch="intent"
             className={({ isActive }) =>
-              `text-sm font-medium underline-offset-2 text-left text-slate-400 px-2 py-1 ${isActive && "underline"}`
+              `text-sm font-medium underline-offset-2 text-left text-blue-300 px-2 py-1 ${isActive && "underline"}`
             }
           >
             Activity
@@ -49,7 +58,7 @@ export default function ActivityPage() {
             to="/settings"
             prefetch="intent"
             className={({ isActive }) =>
-              `text-sm font-medium underline-offset-2 text-left text-slate-400 px-2 py-1 ${isActive && "underline"}`
+              `text-sm font-medium underline-offset-2 text-left text-blue-300 px-2 py-1 ${isActive && "underline"}`
             }
           >
             Settings

@@ -98,7 +98,7 @@ export default function Projects() {
             to="/home"
             prefetch="intent"
             className={({ isActive }) =>
-              `text-sm font-medium underline-offset-2 text-left text-green-400 px-2 py-1 ${isActive && "underline"}`
+              `text-sm font-medium underline-offset-2 text-left text-blue-300 px-2 py-1 ${isActive && "underline"}`
             }
           >
             Boards
@@ -107,7 +107,7 @@ export default function Projects() {
             to="/chores"
             prefetch="intent"
             className={({ isActive }) =>
-              `text-sm font-medium underline-offset-2 text-left text-green-400 px-2 py-1 ${isActive && "underline"}`
+              `text-sm font-medium underline-offset-2 text-left text-blue-300 px-2 py-1 ${isActive && "underline"}`
             }
           >
             Chores
@@ -116,7 +116,7 @@ export default function Projects() {
             to="/activity"
             prefetch="intent"
             className={({ isActive }) =>
-              `text-sm font-medium underline-offset-2 text-left text-green-400 px-2 py-1 ${isActive && "underline"}`
+              `text-sm font-medium underline-offset-2 text-left text-blue-300 px-2 py-1 ${isActive && "underline"}`
             }
           >
             Activity
@@ -125,7 +125,7 @@ export default function Projects() {
             to="/settings"
             prefetch="intent"
             className={({ isActive }) =>
-              `text-sm font-medium underline-offset-2 text-left text-green-400 px-2 py-1 ${isActive && "underline"}`
+              `text-sm font-medium underline-offset-2 text-left text-blue-300 px-2 py-1 ${isActive && "underline"}`
             }
           >
             Settings
@@ -142,7 +142,7 @@ function Boards() {
   let { boards } = useLoaderData<typeof loader>();
 
   return (
-    <div className="p-6">
+    <div className="p-6 mb-10">
       {boards.length === 0 ? (
         <div className="flex justify-center items-center h-[50vh]">
           <h2 className="text-slate-500 text-2xl">
@@ -222,7 +222,7 @@ function Board({
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               <fetcher.Form method="post">
-                <input type="hidden" name="intent" value="deleteBoard" />
+                <input type="hidden" name="intent" value="deleteChore" />
                 <input type="hidden" name="boardId" value={id} />
                 <button
                   aria-label="Delete board"

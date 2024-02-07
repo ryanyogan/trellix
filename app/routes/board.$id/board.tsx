@@ -209,7 +209,7 @@ export function Board() {
 
       <div
         ref={scrollContainerRef}
-        className="h-full min-h-0 flex flex-col overflow-x-scroll"
+        className="h-full min-h-0 flex flex-col overflow-x-scroll mb-10"
       >
         <div className="flex flex-grow min-h-0 h-full items-start gap-4 px-8 pb-4 pt-8 inset-0">
           {[...columns.values()].map((col) => (
