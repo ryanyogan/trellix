@@ -12,7 +12,8 @@ import {
   useFetcher,
   useLoaderData,
 } from "@remix-run/react";
-import { ChevronDown, PlusIcon } from "lucide-react";
+import { format } from "date-fns";
+import { CheckCircle2, ChevronDown, PlusIcon } from "lucide-react";
 import invariant from "tiny-invariant";
 import { requireAuthCookie } from "~/auth/auth";
 import { Button } from "~/components/ui/button";
@@ -36,6 +37,7 @@ import {
 } from "~/components/ui/dropdown-menu";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
+import { Separator } from "~/components/ui/separator";
 import { INTENTS } from "../board.$id/types";
 import { createChoreType, deleteChore, getChores } from "./queries";
 
@@ -177,7 +179,16 @@ function Boards() {
   const { chores } = useLoaderData<typeof loader>();
 
   return (
-    <div className="p-6">
+    <div className="p-6 space-y-8">
+      <div>
+        <div className="flex flex-row items-end justify-between w-full">
+          <h1 className="text-blue-400">Today</h1>
+          <h1 className="text-slate-600 text-sm">
+            {format(new Date(), "MMM, d yyyy")}
+          </h1>
+        </div>
+        <Separator className="bg-slate-700/50 mt-2 mb-8" />
+      </div>
       <nav className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         {chores.map((chore) => (
           <Chore
@@ -188,6 +199,12 @@ function Boards() {
             color={chore.color}
           />
         ))}
+      </nav>
+      <div>
+        <h1 className="text-blue-400 ">All Chores</h1>
+        <Separator className="bg-slate-700/50 mt-2 mb-8" />
+      </div>
+      <nav className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         <NewChore />
       </nav>
     </div>
@@ -229,8 +246,12 @@ function Chore({
       className="w-full h-28 sm:h-40 p-4 block rounded-sm border-l-2 border-slate-700/50 border shadow hover:shadow-xl bg-slate-800/50 relative hover:bg-slate-800/80"
     >
       <div className="font-semibold text-ellipsis text-blue-400">{name}</div>
-      <div className="text-slate-500 text-xs sm:text-sm mt-2 text-ellipsis">
+      <div className="text-slate-500 text-xs sm:text-sm mt-2 text-ellipsis mr-6 sm:mr-0">
         {description}
+      </div>
+
+      <div className="absolute sm:bottom-4 sm:right-4 bottom-2 right-2">
+        <CheckCircle2 className="text-orange-400 w-8 h-8 sm:h-10 sm:w-10" />
       </div>
 
       <div>
