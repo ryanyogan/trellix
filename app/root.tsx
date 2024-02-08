@@ -57,7 +57,7 @@ export default function App() {
 
       <body className="h-screen bg-slate-900 text-slate-900">
         <div className="h-full flex flex-col min-h-0">
-          <div className="bg-slate-800/30 border-slate-800 flex items-center sticky justify-between py-3 px-6 box-border">
+          <div className="bg-slate-800/30 border-slate-800 flex items-center sticky justify-between py-5 px-6 box-border">
             <Link to="/home" className="block leading-3 w-1/3">
               <div className="text-xl font-semibold tracking-tighter text-blue-300 flex flex-row items-center gap-x-2">
                 <CheckCircle2Icon className="h-6 w-6" />
