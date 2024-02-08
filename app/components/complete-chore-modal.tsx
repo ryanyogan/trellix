@@ -43,11 +43,11 @@ export function CompleteChoreModal({
           <input type="hidden" name="intent" value={INTENTS.completeChore} />
           <input type="hidden" name="choreId" value={choreId} />
 
-          <div className="flex gap-8 my-8 flex-row items-center justify-center w-full">
+          <div className="flex gap-8 my-8 px-2 flex-row items-center justify-between w-full">
             <Button
               variant="link"
               type="button"
-              className="p-10 border-red-400 border bg-red-400/20 rounded-full text-red-400"
+              className="p-10 w-full border-red-400 border bg-red-400/20 rounded-sm text-red-400"
               onClick={(event) => {
                 event.stopPropagation();
                 setClose();
@@ -59,7 +59,7 @@ export function CompleteChoreModal({
             <Button
               variant="link"
               type="submit"
-              className="p-10 border-green-400 bg-green-400/20 border rounded-full text-green-400"
+              className="p-10 w-full border-green-400 bg-green-400/20 border rounded-sm text-green-400"
             >
               {fetching ? "Completing..." : "Completed"}
             </Button>
