@@ -134,7 +134,8 @@ model Chore {
 
   title       String
   description String
-  color       String @default("#eaeaea")
+  color       String  @default("#eaeaea")
+  complete    Boolean @default(false)
 
   creator   Account? @relation(fields: [accountId], references: [id])
   accountId String?

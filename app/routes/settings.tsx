@@ -1,50 +1,9 @@
-import { NavLink } from "@remix-run/react";
-import { NewBoard } from "~/components/new-board";
+import { NavigationLinks } from "~/components/navigation-links";
 
 export default function SettingsPage() {
   return (
     <div className="h-full flex flex-col">
-      <div className="flex flex-row bg-slate-900 shadow-md p-0 justify-between">
-        <div className="ml-4 flex flex-row items-center">
-          <NavLink
-            to="/home"
-            prefetch="intent"
-            className={({ isActive }) =>
-              `text-sm font-medium underline-offset-2 text-left text-blue-300 px-2 py-1 ${isActive && "underline"}`
-            }
-          >
-            Boards
-          </NavLink>
-          <NavLink
-            to="/chores"
-            prefetch="intent"
-            className={({ isActive }) =>
-              `text-sm font-medium underline-offset-2 text-left text-blue-300 px-2 py-1 ${isActive && "underline"}`
-            }
-          >
-            Chores
-          </NavLink>
-          <NavLink
-            to="/activity"
-            prefetch="intent"
-            className={({ isActive }) =>
-              `text-sm font-medium underline-offset-2 text-left text-blue-300 px-2 py-1 ${isActive && "underline"}`
-            }
-          >
-            Activity
-          </NavLink>
-          <NavLink
-            to="/settings"
-            prefetch="intent"
-            className={({ isActive }) =>
-              `text-sm font-medium underline-offset-2 text-left text-blue-300 px-2 py-1 ${isActive && "underline"}`
-            }
-          >
-            Settings
-          </NavLink>
-        </div>
-        <NewBoard />
-      </div>
+      <NavigationLinks />
     </div>
   );
 }

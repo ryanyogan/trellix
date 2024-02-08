@@ -3,15 +3,10 @@ import {
   LoaderFunctionArgs,
   redirect,
 } from "@remix-run/node";
-import {
-  Link,
-  NavLink,
-  Outlet,
-  useFetcher,
-  useLoaderData,
-} from "@remix-run/react";
+import { Link, Outlet, useFetcher, useLoaderData } from "@remix-run/react";
 import { ChevronDown, PlusIcon } from "lucide-react";
 import { requireAuthCookie } from "~/auth/auth";
+import { NavigationLinks } from "~/components/navigation-links";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -93,46 +88,7 @@ export async function action({ request }: ActionFunctionArgs) {
 export default function Projects() {
   return (
     <div className="h-full flex flex-col">
-      <div className="flex flex-row bg-slate-800/30 shadow-md p-0 pb-1 justify-between border-b border-slate-800">
-        <div className="ml-4 flex flex-row items-center">
-          <NavLink
-            to="/home"
-            prefetch="intent"
-            className={({ isActive }) =>
-              `text-sm font-medium underline-offset-2 text-left text-blue-300 px-2 py-1 ${isActive && "underline"}`
-            }
-          >
-            Boards
-          </NavLink>
-          <NavLink
-            to="/chores"
-            prefetch="intent"
-            className={({ isActive }) =>
-              `text-sm font-medium underline-offset-2 text-left text-blue-300 px-2 py-1 ${isActive && "underline"}`
-            }
-          >
-            Chores
-          </NavLink>
-          <NavLink
-            to="/activity"
-            prefetch="intent"
-            className={({ isActive }) =>
-              `text-sm font-medium underline-offset-2 text-left text-blue-300 px-2 py-1 ${isActive && "underline"}`
-            }
-          >
-            Activity
-          </NavLink>
-          <NavLink
-            to="/settings"
-            prefetch="intent"
-            className={({ isActive }) =>
-              `text-sm font-medium underline-offset-2 text-left text-blue-300 px-2 py-1 ${isActive && "underline"}`
-            }
-          >
-            Settings
-          </NavLink>
-        </div>
-      </div>
+      <NavigationLinks />
       <Boards />
     </div>
   );

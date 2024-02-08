@@ -12,9 +12,7 @@ import {
   redirect,
   useLoaderData,
   useNavigation,
-  useRouteError,
 } from "@remix-run/react";
-import { captureRemixErrorBoundaryError } from "@sentry/remix";
 
 import { CheckCircle2Icon, Loader } from "lucide-react";
 import { getAuthFromRequest } from "./auth/auth";
@@ -36,11 +34,11 @@ export function shouldRevalidate({ formAction }: ShouldRevalidateFunctionArgs) {
   return formAction && ["/login", "/signup", "logout"].includes(formAction);
 }
 
-export const ErrorBoundary = () => {
-  const error = useRouteError();
-  captureRemixErrorBoundaryError(error);
-  return <div>Something went wrong</div>;
-};
+// export const ErrorBoundary = () => {
+//   const error = useRouteError();
+//   captureRemixErrorBoundaryError(error);
+//   return <div>Something went wrong</div>;
+// };
 
 export default function App() {
   let userId = useLoaderData<typeof loader>();
@@ -64,7 +62,9 @@ export default function App() {
                 Choring
                 {navigation.state !== "idle" ? (
                   <Loader className="w-5 h-5 animate-spin text-blue-300 mt-0.5 transition duration-700" />
-                ) : null}
+                ) : (
+                  <span className="w-5 h-5" />
+                )}
               </div>
             </Link>
 

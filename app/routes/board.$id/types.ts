@@ -29,6 +29,7 @@ export const INTENTS = {
   updateCard: "updateCard" as const,
   createChore: "createChore" as const,
   createChoreType: "createChoreType" as const,
+  completeChore: "completeChore" as const,
 } as const;
 
 export const ItemMutationFields = {

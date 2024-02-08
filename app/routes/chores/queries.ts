@@ -31,6 +31,25 @@ export async function deleteChore({
   });
 }
 
+export async function completeChore({
+  accountId,
+  id,
+}: {
+  accountId: string;
+  id: string;
+}) {
+  console.log("ID", id);
+  return prisma.chore.update({
+    where: {
+      accountId,
+      id,
+    },
+    data: {
+      complete: true,
+    },
+  });
+}
+
 export async function createChore({
   accountId,
   title,

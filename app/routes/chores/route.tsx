@@ -4,12 +4,14 @@ import {
   json,
   redirect,
 } from "@remix-run/node";
-import { Form, NavLink, useFetcher, useLoaderData } from "@remix-run/react";
+import { Form, useFetcher, useLoaderData } from "@remix-run/react";
 import { format } from "date-fns";
-import { CheckCircle2, ChevronDown, PlusIcon } from "lucide-react";
-import { useState } from "react";
+import { ChevronDown, Clock, PlusIcon } from "lucide-react";
+import { useEffect, useState } from "react";
 import invariant from "tiny-invariant";
 import { requireAuthCookie } from "~/auth/auth";
+import { CompleteChoreModal } from "~/components/complete-chore-modal";
+import { NavigationLinks } from "~/components/navigation-links";
 import NewChoreModal from "~/components/new-chore-modal";
 import { Button } from "~/components/ui/button";
 import {
@@ -33,8 +35,10 @@ import {
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Separator } from "~/components/ui/separator";
+import { cn } from "~/lib/utils";
 import { INTENTS } from "../board.$id/types";
 import {
+  completeChore,
   createChore,
   createChoreType,
   deleteChore,
@@ -69,6 +73,17 @@ export async function action({ request }: ActionFunctionArgs) {
 
       await deleteChore({ accountId, id });
       return json({ ok: true, error: null }, 201);
+    }
+
+    case INTENTS.completeChore: {
+      const choreId = String(formData.get("choreId"));
+      invariant(choreId, "choreId missing");
+      try {
+        await completeChore({ accountId, id: choreId });
+        return json({ ok: true, error: null }, 201);
+      } catch (error) {
+        return json({ ok: false, error }, 500);
+      }
     }
 
     case INTENTS.createChore: {
@@ -115,46 +130,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export default function Projects() {
   return (
     <div className="h-full flex flex-col">
-      <div className="flex flex-row bg-slate-800/30 shadow-md p-0 justify-between pb-1 border-b border-slate-800">
-        <div className="ml-4 flex flex-row items-center">
-          <NavLink
-            to="/home"
-            prefetch="intent"
-            className={({ isActive }) =>
-              `text-sm font-medium underline-offset-2 text-left text-blue-300 px-2 py-1 ${isActive && "underline"}`
-            }
-          >
-            Boards
-          </NavLink>
-          <NavLink
-            to="/chores"
-            prefetch="intent"
-            className={({ isActive }) =>
-              `text-sm font-medium underline-offset-2 text-left text-blue-300 px-2 py-1 ${isActive && "underline"}`
-            }
-          >
-            Chores
-          </NavLink>
-          <NavLink
-            to="/activity"
-            prefetch="intent"
-            className={({ isActive }) =>
-              `text-sm font-medium underline-offset-2 text-left text-blue-300 px-2 py-1 ${isActive && "underline"}`
-            }
-          >
-            Activity
-          </NavLink>
-          <NavLink
-            to="/settings"
-            prefetch="intent"
-            className={({ isActive }) =>
-              `text-sm font-medium underline-offset-2 text-left text-blue-300 px-2 py-1 ${isActive && "underline"}`
-            }
-          >
-            Settings
-          </NavLink>
-        </div>
-      </div>
+      <NavigationLinks />
+
       <Boards />
 
       <div className="fixed bottom-0 left-2 right-2 bg-slate-800/50 border-slate-700 border rounded-tr-lg rounded-tl-lg">
@@ -204,6 +181,17 @@ export default function Projects() {
 
 function Boards() {
   const { chores } = useLoaderData<typeof loader>();
+  const [choreId, setChoreId] = useState<string | null>(null);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (choreId) {
+      setModalOpen(true);
+    }
+  }, [choreId]);
+
+  const completedChores = chores.filter((chore) => chore.complete);
+  const todaysChores = chores.filter((chore) => !chore.complete);
 
   return (
     <div className="p-6 space-y-8">
@@ -215,18 +203,39 @@ function Boards() {
           </h1>
         </div>
         <Separator className="bg-slate-700/50 mt-2 mb-8" />
+        <nav className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          {todaysChores.map((chore) => (
+            <Chore
+              setChoreId={setChoreId}
+              key={chore.id}
+              description={chore.description}
+              name={chore.title}
+              id={chore.id}
+              complete={chore.complete}
+              color={chore.color}
+            />
+          ))}
+        </nav>
       </div>
-      <nav className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-        {chores.map((chore) => (
-          <Chore
-            key={chore.id}
-            description={chore.description}
-            name={chore.title}
-            id={chore.id}
-            color={chore.color}
-          />
-        ))}
-      </nav>
+
+      <div>
+        <h1 className="text-blue-400 ">Completed Chores</h1>
+        <Separator className="bg-slate-700/50 mt-2 mb-8" />
+        <nav className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          {completedChores.map((chore) => (
+            <Chore
+              setChoreId={setChoreId}
+              key={chore.id}
+              description={chore.description}
+              name={chore.title}
+              id={chore.id}
+              complete={chore.complete}
+              color={chore.color}
+            />
+          ))}
+        </nav>
+      </div>
+
       <div>
         <h1 className="text-blue-400 ">All Chores</h1>
         <Separator className="bg-slate-700/50 mt-2 mb-8" />
@@ -234,6 +243,15 @@ function Boards() {
       <nav className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         <NewChore />
       </nav>
+
+      <CompleteChoreModal
+        choreId={choreId!}
+        isOpen={modalOpen}
+        setClose={() => {
+          setModalOpen(false);
+          setChoreId(null);
+        }}
+      />
     </div>
   );
 }
@@ -270,18 +288,24 @@ function Chore({
   id,
   description,
   color,
+  setChoreId,
+  complete = false,
 }: {
   name: string;
   id: string;
   description: string;
   color: string;
+  setChoreId: (choreId: string) => void;
+  complete: boolean;
 }) {
   const fetcher = useFetcher();
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   return (
     <div
       style={{ borderLeftColor: color }}
-      className="w-full h-28 sm:h-40 p-4 block rounded-sm border-l-2 border-slate-700/50 border shadow hover:shadow-xl bg-slate-800/50 relative hover:bg-slate-800/80"
+      className="w-full cursor-pointer h-28 sm:h-40 p-4 block rounded-sm border-l-2 border-slate-700/50 border shadow hover:shadow-xl bg-slate-800/50 relative hover:bg-slate-800/80"
+      onClick={() => setChoreId(id)}
     >
       <div className="font-semibold text-ellipsis text-blue-400">{name}</div>
       <div className="text-slate-500 text-xs sm:text-sm mt-2 text-ellipsis mr-6 sm:mr-0">
@@ -289,20 +313,25 @@ function Chore({
       </div>
 
       <div className="absolute sm:bottom-4 sm:right-4 bottom-2 right-2">
-        <CheckCircle2 className="text-orange-400 w-8 h-8 sm:h-10 sm:w-10" />
+        <Clock
+          className={cn(
+            "text-slate-700 w-6 h-6 sm:h-10 sm:w-10",
+            complete && "text-green-400",
+          )}
+        />
       </div>
 
       <div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button
-              className="absolute top-4 right-4"
+              className="absolute top-2 right-2"
               type="button"
               onClick={(event) => {
                 event.stopPropagation();
               }}
             >
-              <ChevronDown className="w-4 h-4 text-slate-400" />
+              <ChevronDown className="w-4 h-4 text-blue-400" />
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
