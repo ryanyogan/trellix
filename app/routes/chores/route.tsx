@@ -15,7 +15,6 @@ import {
 import { ChevronDown, PlusIcon } from "lucide-react";
 import invariant from "tiny-invariant";
 import { requireAuthCookie } from "~/auth/auth";
-import { NewBoard } from "~/components/new-board";
 import { Button } from "~/components/ui/button";
 import {
   Drawer,
@@ -87,7 +86,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export default function Projects() {
   return (
     <div className="h-full flex flex-col">
-      <div className="flex flex-row bg-slate-800/30 shadow-md p-0 justify-between border-b border-slate-800">
+      <div className="flex flex-row bg-slate-800/30 shadow-md p-0 justify-between pb-1 border-b border-slate-800">
         <div className="ml-4 flex flex-row items-center">
           <NavLink
             to="/home"
@@ -126,7 +125,6 @@ export default function Projects() {
             Settings
           </NavLink>
         </div>
-        <NewBoard />
       </div>
       <Boards />
 
@@ -201,10 +199,10 @@ function NewChore({}: {}) {
     <>
       <Link
         to={`/chores/new`}
-        className="flex w-full h-28 sm:h-40 p-4 justify-center items-center rounded-sm border-l-2 border-slate-700/50 border shadow hover:shadow-xl bg-slate-800/50 relative hover:bg-slate-800/80"
+        className="flex w-full h-28 sm:h-40 p-4 justify-center items-center rounded-sm border-slate-700/50 border shadow text-slate-700 hover:shadow-xl bg-slate-800/50 relative hover:bg-slate-800/80"
       >
-        <div className="font-semibold text-ellipsis text-blue-400">
-          <PlusIcon className="h-20 w-20 text-slate-700" />
+        <div className="">
+          <PlusIcon className="h-20 w-20" />
         </div>
       </Link>
       <Outlet />

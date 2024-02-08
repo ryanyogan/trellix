@@ -3,10 +3,15 @@ import {
   LoaderFunctionArgs,
   redirect,
 } from "@remix-run/node";
-import { Link, NavLink, useFetcher, useLoaderData } from "@remix-run/react";
-import { ChevronDown } from "lucide-react";
+import {
+  Link,
+  NavLink,
+  Outlet,
+  useFetcher,
+  useLoaderData,
+} from "@remix-run/react";
+import { ChevronDown, PlusIcon } from "lucide-react";
 import { requireAuthCookie } from "~/auth/auth";
-import { NewBoard } from "~/components/new-board";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -88,7 +93,7 @@ export async function action({ request }: ActionFunctionArgs) {
 export default function Projects() {
   return (
     <div className="h-full flex flex-col">
-      <div className="flex flex-row bg-slate-800/30 shadow-md p-0 justify-between border-b border-slate-800">
+      <div className="flex flex-row bg-slate-800/30 shadow-md p-0 pb-1 justify-between border-b border-slate-800">
         <div className="ml-4 flex flex-row items-center">
           <NavLink
             to="/home"
@@ -127,7 +132,6 @@ export default function Projects() {
             Settings
           </NavLink>
         </div>
-        <NewBoard />
       </div>
       <Boards />
     </div>
@@ -158,6 +162,7 @@ function Boards() {
               shareable={board.shareable}
             />
           ))}
+          <NewBoard />
         </nav>
       )}
     </div>
@@ -218,7 +223,7 @@ function Board({
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               <fetcher.Form method="post">
-                <input type="hidden" name="intent" value="deleteChore" />
+                <input type="hidden" name="intent" value="deleteBoard" />
                 <input type="hidden" name="boardId" value={id} />
                 <button
                   aria-label="Delete board"
@@ -235,5 +240,21 @@ function Board({
         </DropdownMenu>
       </div>
     </Link>
+  );
+}
+
+function NewBoard({}: {}) {
+  return (
+    <>
+      <Link
+        to={`/home/board/new`}
+        className="flex w-full h-28 sm:h-40 p-4 justify-center items-center rounded-sm border-slate-700/50 border shadow text-slate-700 hover:shadow-xl bg-slate-800/50 relative hover:bg-slate-800/80"
+      >
+        <div className="">
+          <PlusIcon className="h-20 w-20" />
+        </div>
+      </Link>
+      <Outlet />
+    </>
   );
 }
