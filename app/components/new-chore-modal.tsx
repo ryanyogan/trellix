@@ -1,19 +1,7 @@
-import {
-  ActionFunctionArgs,
-  LoaderFunctionArgs,
-  json,
-  redirect,
-} from "@remix-run/node";
-import {
-  Form,
-  useLoaderData,
-  useNavigate,
-  useNavigation,
-  useParams,
-} from "@remix-run/react";
-import { useRef } from "react";
+import { ChoreType } from "@prisma/client";
+import { useFetcher, useNavigation } from "@remix-run/react";
+import { useEffect, useRef } from "react";
 import invariant from "tiny-invariant";
-import { requireAuthCookie } from "~/auth/auth";
 import { Modal } from "~/components/modal";
 import { Portal } from "~/components/portal";
 import { Button } from "~/components/ui/button";
@@ -30,69 +18,33 @@ import {
 } from "~/components/ui/select";
 import { Separator } from "~/components/ui/separator";
 import { Textarea } from "~/components/ui/textarea";
-import { INTENTS } from "../board.$id/types";
-import { createChore, getChoreTypes } from "./queries";
+import { INTENTS } from "~/routes/board.$id/types";
 
-export async function action({ request }: ActionFunctionArgs) {
-  const formData = await request.formData();
-  const accountId = await requireAuthCookie(request);
-  const intent = String(formData.get("intent"));
-  invariant(accountId, "Unauthenticated");
-  invariant(intent, "intent is missing");
-
-  switch (intent) {
-    case INTENTS.createChore: {
-      const title = String(formData.get("title") ?? "");
-      const description = String(formData.get("description") ?? "");
-      const choreTypeId = String(formData.get("choreTypeId"));
-      const color = String(formData.get("color"));
-      invariant(choreTypeId, "missing chore type id");
-      invariant(color, "missing chore type id");
-
-      try {
-        await createChore({
-          accountId,
-          title,
-          description,
-          choreTypeId,
-          color,
-        });
-
-        return redirect("/chores");
-      } catch (error) {
-        return json({ error: "Error Occurred" }, 500);
-      }
-    }
-
-    default: {
-      return json({ error: "Unknown Intent" }, 400);
-    }
-  }
-}
-
-export async function loader({ request }: LoaderFunctionArgs) {
-  const accountId = await requireAuthCookie(request);
-  invariant(accountId, "Unauthorized");
-
-  const categories = await getChoreTypes();
-
-  return json({ categories }, 200);
-}
-
-export default function ItemDetail() {
-  const { categories } = useLoaderData<typeof loader>();
-
-  const params = useParams();
-  const navigate = useNavigate();
+export default function NewChoreModal({
+  categories,
+  isOpen,
+  setClose,
+}: {
+  categories: any;
+  isOpen: boolean;
+  setClose: () => void;
+}) {
+  const fetcher = useFetcher<{ ok?: boolean; error?: boolean }>();
   const navigation = useNavigation();
   const isLoading = navigation.state !== "idle";
   let buttonRef = useRef<HTMLButtonElement>(null);
 
+  useEffect(() => {
+    if (fetcher?.data?.ok) {
+      setClose();
+    }
+  }, [fetcher]);
+
   return (
     <Portal wrapperId="new-chore">
       <Modal
-        backTo={`/chores`}
-        isOpen={true}
+        triggerClose={setClose}
+        isOpen={isOpen}
         className="w-full m-2 sm:m-0 sm:w-2/3 sm:p-6"
       >
         <h1 className="text-lg font-medium block rounded-lg text-left border border-transparent py-1 px-2 text-blue-400">
@@ -103,7 +55,7 @@ export default function ItemDetail() {
           <Separator className="bg-slate-700" />
         </div>
 
-        <Form method="post">
+        <fetcher.Form method="post" action="/chores">
           <input type="hidden" name="intent" value={INTENTS.createChore} />
 
           <div className="mx-2 flex flex-col space-y-4">
@@ -134,10 +86,6 @@ export default function ItemDetail() {
                   invariant(buttonRef.current, "expected button ref");
                   buttonRef.current.click();
                 }
-
-                if (event.key === "Escape") {
-                  navigate(`/board/${params.id}`);
-                }
               }}
             />
             <div className="w-full">
@@ -152,7 +100,7 @@ export default function ItemDetail() {
                       <SelectContent>
                         <SelectGroup>
                           <SelectLabel>Activies</SelectLabel>
-                          {categories.map((category) => (
+                          {categories.map((category: ChoreType) => (
                             <SelectItem key={category.id} value={category.id}>
                               {category.name}
                             </SelectItem>
@@ -185,7 +133,7 @@ export default function ItemDetail() {
               className="text-orange-400 font-bold px-3 py-2"
               onClick={(event) => {
                 event.stopPropagation();
-                navigate(`/chores`);
+                setClose();
               }}
             >
               Cancel
@@ -199,7 +147,7 @@ export default function ItemDetail() {
               {isLoading ? "Creating..." : "Create Chore"}
             </Button>
           </div>
-        </Form>
+        </fetcher.Form>
       </Modal>
     </Portal>
   );

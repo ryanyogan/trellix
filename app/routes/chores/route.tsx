@@ -4,18 +4,13 @@ import {
   json,
   redirect,
 } from "@remix-run/node";
-import {
-  Form,
-  Link,
-  NavLink,
-  Outlet,
-  useFetcher,
-  useLoaderData,
-} from "@remix-run/react";
+import { Form, NavLink, useFetcher, useLoaderData } from "@remix-run/react";
 import { format } from "date-fns";
 import { CheckCircle2, ChevronDown, PlusIcon } from "lucide-react";
+import { useState } from "react";
 import invariant from "tiny-invariant";
 import { requireAuthCookie } from "~/auth/auth";
+import NewChoreModal from "~/components/new-chore-modal";
 import { Button } from "~/components/ui/button";
 import {
   Drawer,
@@ -39,7 +34,13 @@ import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Separator } from "~/components/ui/separator";
 import { INTENTS } from "../board.$id/types";
-import { createChoreType, deleteChore, getChores } from "./queries";
+import {
+  createChore,
+  createChoreType,
+  deleteChore,
+  getChoreTypes,
+  getChores,
+} from "./queries";
 
 export const meta = () => {
   return [{ title: "Boards" }];
@@ -67,11 +68,34 @@ export async function action({ request }: ActionFunctionArgs) {
       invariant(id, "missing id");
 
       await deleteChore({ accountId, id });
-      return { ok: true };
+      return json({ ok: true, error: null }, 201);
+    }
+
+    case INTENTS.createChore: {
+      const title = String(formData.get("title") ?? "");
+      const description = String(formData.get("description") ?? "");
+      const choreTypeId = String(formData.get("choreTypeId"));
+      const color = String(formData.get("color"));
+      invariant(choreTypeId, "missing chore type id");
+      invariant(color, "missing chore type id");
+
+      try {
+        await createChore({
+          accountId,
+          title,
+          description,
+          choreTypeId,
+          color,
+        });
+
+        return json({ ok: true, error: null }, 201);
+      } catch (error) {
+        return json({ ok: false, error: "Error Occurred" }, 500);
+      }
     }
 
     default: {
-      return json({ status: "Unknown Intent" }, 400);
+      return json({ ok: false, error: "Unknown Intent" }, 400);
     }
   }
 }
@@ -80,9 +104,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const accountId = await requireAuthCookie(request);
   invariant(accountId, "Unauthorized");
 
-  const chores = await getChores({ accountId });
+  const [chores, categories] = await Promise.all([
+    getChores({ accountId }),
+    getChoreTypes(),
+  ]);
 
-  return { chores };
+  return { chores, categories };
 }
 
 export default function Projects() {
@@ -211,18 +238,29 @@ function Boards() {
   );
 }
 
-function NewChore({}: {}) {
+function NewChore() {
+  const { categories } = useLoaderData<typeof loader>();
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+
+  function toggleModal() {
+    setModalOpen((current) => !current);
+  }
+
   return (
     <>
-      <Link
-        to={`/chores/new`}
-        className="flex w-full h-28 sm:h-40 p-4 justify-center items-center rounded-sm border-slate-700/50 border shadow text-slate-700 hover:shadow-xl bg-slate-800/50 relative hover:bg-slate-800/80"
+      <div
+        onClick={toggleModal}
+        className="flex w-full h-28 sm:h-40 p-4 justify-center items-center cursor-pointer rounded-sm border-slate-700/50 border shadow text-slate-700 hover:shadow-xl bg-slate-800/50 relative hover:bg-slate-800/80"
       >
         <div className="">
           <PlusIcon className="h-20 w-20" />
         </div>
-      </Link>
-      <Outlet />
+      </div>
+      <NewChoreModal
+        isOpen={modalOpen}
+        categories={categories}
+        setClose={() => setModalOpen(false)}
+      />
     </>
   );
 }

@@ -7,6 +7,7 @@ interface props {
   ariaLabel?: string;
   className?: string;
   backTo?: string;
+  triggerClose?: () => void;
 }
 
 export const Modal: React.FC<props> = ({
@@ -15,6 +16,7 @@ export const Modal: React.FC<props> = ({
   ariaLabel,
   className,
   backTo,
+  triggerClose,
 }) => {
   const navigate = useNavigate();
   if (!isOpen) return null;
@@ -26,7 +28,9 @@ export const Modal: React.FC<props> = ({
         aria-labelledby={ariaLabel ?? "modal-title"}
         role="dialog"
         aria-modal="true"
-        onClick={() => navigate(backTo || "/home")}
+        onClick={() => {
+          triggerClose ? triggerClose() : navigate(backTo || "/home");
+        }}
       ></div>
       <div className="fixed inset-0 pointer-events-none flex justify-center items-center max-h-screen overflow-scroll">
         <div
