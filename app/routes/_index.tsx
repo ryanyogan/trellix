@@ -1,5 +1,6 @@
 import type { MetaFunction } from "@remix-run/node";
 import { Link } from "@remix-run/react";
+import { CheckCircle } from "lucide-react";
 
 export const meta: MetaFunction = () => {
   return [
@@ -10,30 +11,22 @@ export const meta: MetaFunction = () => {
 
 export default function Index() {
   return (
-    <div className="h-full flex flex-col items-center pt-40 px-10 bg-slate-900">
-      <div className="space-y-6 max-w-lg text-lg text-slate-500">
-        <h1 className="text-center text-indigo-500 text-5xl">Hi, 👋</h1>
-        <h4 className="text-indigo-400 font-medium text-2xl text-center">
-          Sick of <span className="italic text-orange-400">organization</span>{" "}
-          tools that give you <span className="text-blue-400">anxiety?</span>
-        </h4>
-        <p className="text-green-300 text-center text-muted-foreground text-lg">
-          Come on in, the water's fine <span className="text-pink-400">:)</span>
-        </p>
-      </div>
-      <div className="flex flex-col items-center gap-2 w-full justify-evenly max-w-md rounded-3xl p-10">
-        <Link
-          to="/signup"
-          className="text-2xl font-medium text-indigo-400 underline underline-offset-2"
-        >
-          Sign up
-        </Link>
-        <Link
-          to="/login"
-          className="text-2xl font-medium text-indigo-400 underline underline-offset-2"
-        >
-          Login
-        </Link>
+    <div className="h-full flex flex-col justify-center items-center w-full">
+      <div className="sm:w-[400px] w-[300px] cursor-pointer border-l-green-300 h-28 sm:h-40 p-4 block rounded-sm border-l-2 border-slate-700/50 border shadow hover:shadow-xl bg-slate-800/50 relative hover:bg-slate-800/80">
+        <div className="font-semibold text-ellipsis text-blue-400 hover:underline">
+          <Link prefetch="intent" to="/login">
+            Welcome Back, Login
+          </Link>
+        </div>
+        <div className="text-slate-500 text-xs sm:text-sm mt-2 text-ellipsis mr-6 sm:mr-0 hover:underline">
+          <Link prefetch="intent" to="/signup">
+            Don&apos;t have an account? Sign up.
+          </Link>
+        </div>
+
+        <div className="absolute sm:bottom-4 sm:right-4 bottom-2 right-2">
+          <CheckCircle className={"text-green-400 w-6 h-6 sm:h-10 sm:w-10"} />
+        </div>
       </div>
     </div>
   );

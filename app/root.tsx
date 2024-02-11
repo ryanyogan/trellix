@@ -14,8 +14,10 @@ import {
   useNavigation,
 } from "@remix-run/react";
 
-import { CheckCircle2Icon, Loader } from "lucide-react";
+import { CheckCircle2Icon } from "lucide-react";
 import { getAuthFromRequest } from "./auth/auth";
+import { NavigationLinks } from "./components/navigation-links";
+import { cn } from "./lib/utils";
 import "./styles.css";
 
 export const links: LinksFunction = () => [
@@ -56,17 +58,22 @@ export default function App() {
       <body className="h-screen bg-slate-900 text-slate-900">
         <div className="h-full flex flex-col min-h-0">
           <div className="bg-slate-800/30 border-slate-800 flex items-center sticky justify-between py-5 px-6 box-border">
-            <Link to="/home" className="block leading-3 w-1/3">
-              <div className="text-xl font-semibold tracking-tighter text-blue-300 flex flex-row items-center gap-x-2">
-                <CheckCircle2Icon className="h-6 w-6" />
-                Choring
-                {navigation.state !== "idle" ? (
-                  <Loader className="w-5 h-5 animate-spin text-blue-300 mt-0.5 transition duration-700" />
-                ) : (
-                  <span className="w-5 h-5" />
-                )}
-              </div>
-            </Link>
+            <div className="flex flex-row items-center">
+              <Link to="/home" className="block leading-3">
+                <div className="text-xl font-semibold tracking-tighter text-blue-300 flex flex-row items-center gap-x-2">
+                  <CheckCircle2Icon
+                    className={cn(
+                      "sm:h-6 sm:w-6 h-5 w-5",
+                      navigation.state !== "idle"
+                        ? "animate-spin transition duration-700"
+                        : "",
+                    )}
+                  />
+                </div>
+              </Link>
+
+              {userId ? <NavigationLinks /> : null}
+            </div>
 
             <div className="w-1/3 flex justify-end">
               {userId ? (

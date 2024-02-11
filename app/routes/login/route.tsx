@@ -1,14 +1,14 @@
 import { ActionFunctionArgs, json, redirect } from "@remix-run/node";
 import { Form, Link, useActionData } from "@remix-run/react";
 import { redirectIfLoggedInLoader, setAuthOnResponse } from "~/auth/auth";
-import { Label } from "~/components/input";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
 import { login } from "./queries";
 import { validate } from "./validate";
 
 export const meta = () => {
-  return [{ title: "Trellix Signup" }];
+  return [{ title: "Login" }];
 };
 
 export const loader = redirectIfLoggedInLoader;
@@ -43,18 +43,14 @@ export default function Signup() {
 
   return (
     <div className="flex min-h-full flex-1 flex-col pt-20 px-6 bg-slate-900">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md flex flex-col items-center">
-        <span className="text-5xl">👋</span>
-        <h4 className="text-blue-600 text-sm font-semibold mt-4">
-          Hi'ya, welcome back, come on in.
-        </h4>
-      </div>
-
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
-        <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
+        <div className="bg-slate-800/50 px-6 py-12 shadow-md sm:px-12 border-slate-700/50 rounded-sm border flex flex-col w-full">
+          <div className="sm:mx-auto sm:w-full sm:max-w-md flex flex-col items-center mb-8">
+            <span className="text-5xl">👋</span>
+          </div>
           <Form className="space-y-6" method="POST">
             <div>
-              <Label htmlFor="email">
+              <Label className="text-blue-400" htmlFor="email">
                 Email address{" "}
                 {actionResult?.errors?.email && (
                   <span id="email-error" className="text-brand-red">
@@ -66,6 +62,7 @@ export default function Signup() {
               <Input
                 autoFocus
                 id="email"
+                className="mt-1 resize-none text-[16px] bg-slate-800 border text-blue-300 border-slate-700 focus-visible:ring-0 focus-visible:ring-offset-0 ring-0 focus:ring-0 outline-none shadow-sm"
                 name="email"
                 type="email"
                 autoComplete="email"
@@ -77,16 +74,17 @@ export default function Signup() {
             </div>
 
             <div>
-              <Label htmlFor="password">
+              <Label className="text-blue-400" htmlFor="password">
                 Password{" "}
                 {actionResult?.errors?.password && (
-                  <span id="password-error" className="text-brand-red">
+                  <span id="password-error" className="text-orange-400">
                     {actionResult.errors.password}
                   </span>
                 )}
               </Label>
 
               <Input
+                className="mt-1 resize-none text-[16px] bg-slate-800 border text-blue-300 border-slate-700 focus-visible:ring-0 focus-visible:ring-offset-0 ring-0 focus:ring-0 outline-none shadow-sm"
                 id="password"
                 name="password"
                 type="password"
@@ -96,11 +94,19 @@ export default function Signup() {
               />
             </div>
 
-            <Button type="submit">Log In</Button>
+            <div className="flex flex-row justify-end">
+              <Button
+                variant="link"
+                className="text-green-400 font-bold px-3 py-1"
+                type="submit"
+              >
+                Log In
+              </Button>
+            </div>
 
-            <div className="text-sm text-slate-500">
-              Don't have any account?{" "}
-              <Link to="/signup" className="underline">
+            <div className="text-sm text-slate-500 flex justify-end">
+              Don't have any account?
+              <Link to="/signup" className="underline mx-2 text-blue-400">
                 Sign Up
               </Link>
             </div>

@@ -8,23 +8,17 @@ import { badRequest } from "~/http/bad-request";
 import { createAuditLog } from "~/lib/create-audit-log";
 import { INTENTS } from "../board.$id/types";
 import { Home } from "./home";
-import {
-  createBoard,
-  deleteBoard,
-  getHomeData,
-  getRecentEvents,
-} from "./queries";
+import { createBoard, deleteBoard, getHomeData } from "./queries";
 
 export const meta = () => {
-  return [{ title: "Boards" }];
+  return [{ title: "Choring - Boards" }];
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
   let userId = await requireAuthCookie(request);
   let boards = await getHomeData(userId);
-  let events = await getRecentEvents(userId);
 
-  return { boards, events };
+  return { boards };
 }
 
 export async function action({ request }: ActionFunctionArgs) {
