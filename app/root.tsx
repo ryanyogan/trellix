@@ -57,7 +57,7 @@ export default function App() {
 
       <body className="h-screen bg-slate-800 text-slate-900">
         <div className="h-full flex flex-col min-h-0">
-          <div className="bg-slate-800 border-slate-700 flex items-center sticky justify-between py-5 px-6 box-border">
+          <div className="bg-slate-900 border-slate-700 border-b shadow-xl flex items-center sticky justify-between py-5 px-6 box-border">
             <div className="flex flex-row items-center">
               <Link to="/home" className="block leading-3">
                 <div className="text-xl font-semibold tracking-tighter text-blue-300 flex flex-row items-center gap-x-2">
