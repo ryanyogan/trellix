@@ -1,6 +1,5 @@
 import { useFetcher } from "@remix-run/react";
-import { ChevronDown, Clock } from "lucide-react";
-import { useState } from "react";
+import { CheckCircle, ChevronDown, Clock } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,7 +8,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { cn } from "~/lib/utils";
 
 export function ChoreItem({
   name,
@@ -27,7 +25,6 @@ export function ChoreItem({
   complete: boolean;
 }) {
   const fetcher = useFetcher();
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   return (
     <div
@@ -41,12 +38,11 @@ export function ChoreItem({
       </div>
 
       <div className="absolute sm:bottom-4 sm:right-4 bottom-2 right-2">
-        <Clock
-          className={cn(
-            "text-slate-700 w-6 h-6 sm:h-10 sm:w-10",
-            complete && "text-green-400",
-          )}
-        />
+        {complete ? (
+          <CheckCircle className="text-green-400 w-6 h-6 sm:h-10 sm:w-10" />
+        ) : (
+          <Clock className="text-slate-700 w-6 h-6 sm:h-10 sm:w-10" />
+        )}
       </div>
 
       <div>
