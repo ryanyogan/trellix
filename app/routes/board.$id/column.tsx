@@ -53,7 +53,7 @@ export function Column({ name, columnId, items, boardId, color }: ColumnProps) {
         );
         invariant(transfer.id, "missing transfer.id");
         invariant(transfer.title, "missing transfer.title");
-        invariant(transfer.content, "missing transfer.content");
+        // invariant(transfer.content, "missing transfer.content");
 
         let mutation: ItemMutation = {
           order: 1,

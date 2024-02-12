@@ -23,14 +23,6 @@ export async function createBoard(userId: string, name: string, color: string) {
   });
 }
 
-export async function getRecentEvents(userId: string) {
-  return prisma.event.findMany({
-    where: {
-      accountId: userId,
-    },
-  });
-}
-
 export async function getHomeData(userId: string) {
   return prisma.board.findMany({
     where: {

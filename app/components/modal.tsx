@@ -20,10 +20,9 @@ export const Modal: React.FC<props> = ({
 }) => {
   const navigate = useNavigate();
   if (!isOpen) return null;
-  const id = crypto.randomUUID();
 
   return (
-    <Portal wrapperId={`modal-${id}`}>
+    <Portal wrapperId={`modal`}>
       <div
         className="fixed inset-0 overflow-y-auto bg-slate-800 bg-opacity-40"
         aria-labelledby={ariaLabel ?? "modal-title"}

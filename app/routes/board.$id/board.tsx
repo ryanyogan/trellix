@@ -38,14 +38,11 @@ export function Board() {
       : {
           ...pendingItem,
           boardId: board.id,
-          complete: false,
           accountId: null,
-          content: "",
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
-          choreType: null,
-          choreTypeId: null,
           kidId: null,
+          content: pendingItem.content || "",
         };
 
     itemsById.set(pendingItem.id, merged);

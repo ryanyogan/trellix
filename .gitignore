@@ -4,9 +4,5 @@ node_modules
 /build
 /public/build
 .env
-
-# Sentry Config File
-.sentryclirc
-
-# Sentry Config File
-.env.sentry-build-plugin
+prisma/sqlite.db
+prisma/sqlite.db-journal

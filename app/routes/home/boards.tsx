@@ -1,4 +1,6 @@
 import { useLoaderData } from "@remix-run/react";
+import { format } from "date-fns";
+import { Separator } from "~/components/ui/separator";
 import { Board } from "./board";
 import { NewBoard } from "./new-board";
 import { loader } from "./route";
@@ -7,15 +9,15 @@ export function Boards() {
   let { boards } = useLoaderData<typeof loader>();
 
   return (
-    <div className="p-6 mb-10">
-      {boards.length === 0 ? (
-        <div className="flex justify-center items-center h-[50vh]">
-          <h2 className="text-slate-500 text-2xl">
-            You have yet to create any boards, click the plus sign and get
-            started!
-          </h2>
+    <div className="p-6 space-y-8">
+      <div>
+        <div className="flex flex-row items-end justify-between w-full">
+          <h1 className="text-blue-400">All Boards</h1>
+          <h1 className="text-slate-600 text-sm">
+            {format(new Date(), "MMM, d yyyy")}
+          </h1>
         </div>
-      ) : (
+        <Separator className="bg-slate-700/50 mt-2 mb-8" />
         <nav className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
           {boards.map((board) => (
             <Board
@@ -29,7 +31,7 @@ export function Boards() {
           ))}
           <NewBoard />
         </nav>
-      )}
+      </div>
     </div>
   );
 }

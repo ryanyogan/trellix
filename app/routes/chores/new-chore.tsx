@@ -1,11 +1,8 @@
-import { useLoaderData } from "@remix-run/react";
 import { PlusIcon } from "lucide-react";
 import { useState } from "react";
 import NewChoreModal from "~/components/new-chore-modal";
-import { loader } from "./route";
 
 export function NewChore() {
-  const { categories } = useLoaderData<typeof loader>();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   function toggleModal() {
@@ -22,11 +19,7 @@ export function NewChore() {
           <PlusIcon className="h-20 w-20" />
         </div>
       </div>
-      <NewChoreModal
-        isOpen={modalOpen}
-        categories={categories}
-        setClose={() => setModalOpen(false)}
-      />
+      <NewChoreModal isOpen={modalOpen} setClose={() => setModalOpen(false)} />
     </>
   );
 }

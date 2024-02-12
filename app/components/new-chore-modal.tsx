@@ -1,4 +1,3 @@
-import { ChoreType } from "@prisma/client";
 import { useFetcher, useNavigation } from "@remix-run/react";
 import { useEffect, useRef } from "react";
 import invariant from "tiny-invariant";
@@ -7,25 +6,14 @@ import { Portal } from "~/components/portal";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "~/components/ui/select";
 import { Separator } from "~/components/ui/separator";
 import { Textarea } from "~/components/ui/textarea";
 import { INTENTS } from "~/routes/board.$id/types";
 
 export default function NewChoreModal({
-  categories,
   isOpen,
   setClose,
 }: {
-  categories: any;
   isOpen: boolean;
   setClose: () => void;
 }) {
@@ -90,26 +78,6 @@ export default function NewChoreModal({
             />
             <div className="w-full">
               <div className="space-y-2 flex flex-row items-end justify-start gap-x-4">
-                <div className="flex flex-col items-start gap-y-1 w-[200px]">
-                  <Label className="text-blue-400">Category</Label>
-                  <div className="bg-slate-800 mt-2 w-full p-1 flex flex-row items-center rounded-md border border-slate-700">
-                    <Select required name="choreTypeId">
-                      <SelectTrigger className="w-full bg-slate-800 border-0 text-blue-300">
-                        <SelectValue placeholder="Please choose one" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectLabel>Activies</SelectLabel>
-                          {categories.map((category: ChoreType) => (
-                            <SelectItem key={category.id} value={category.id}>
-                              {category.name}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
                 <div className="flex flex-col items-start justify-start gap-y-1">
                   <Label className="text-blue-400">Due Date</Label>
                   <div className="bg-slate-800 mt-2 w-full p-1 flex flex-row items-center rounded-md border border-slate-700">

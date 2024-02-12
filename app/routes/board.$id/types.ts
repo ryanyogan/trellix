@@ -2,7 +2,7 @@ export interface RenderedItem {
   id: string;
   title: string;
   order: number;
-  content: string | null;
+  content: any;
   columnId: string;
   complete: boolean | null;
 }

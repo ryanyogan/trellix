@@ -41,9 +41,6 @@ model Board {
   items   Item[]
   columns Column[]
 
-  choreType   ChoreType? @relation(fields: [choreTypeId], references: [id])
-  choreTypeId String?
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -70,7 +67,7 @@ model Item {
   id String @id @default(uuid())
 
   title   String
-  content String?
+  content String @default("")
 
   // Why is order a float? We split the difference betwen prev/next
   // If an item is dropped between 1.00 and 2.00 it will be 1.50.  If dropped
@@ -91,29 +88,10 @@ model Item {
   account   Account? @relation(fields: [accountId], references: [id], onDelete: Cascade)
   accountId String?
 
-  choreType   ChoreType? @relation(fields: [choreTypeId], references: [id])
-  choreTypeId String?
-
   kid   Kid?    @relation(fields: [kidId], references: [id])
   kidId String?
 
   @@index([complete])
-}
-
-model ChoreType {
-  id String @id @default(uuid())
-
-  name      String
-  repeating Boolean?
-
-  dueDate DateTime?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  items  Item[]
-  boards Board[]
-  Chore  Chore[]
 }
 
 model Kid {
@@ -140,25 +118,11 @@ model Chore {
   creator   Account? @relation(fields: [accountId], references: [id])
   accountId String?
 
-  dueDate DateTime?
-
-  choreType   ChoreType @relation(fields: [choreTypeId], references: [id])
-  choreTypeId String
+  dueDate     DateTime?
+  completedAt DateTime?
 
   child Kid?    @relation(fields: [kidId], references: [id])
   kidId String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Event {
-  id String @id @default(uuid())
-
-  type   String
-  action String
-
-  accountId String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

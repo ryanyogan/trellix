@@ -1,13 +1,5 @@
 import { prisma } from "~/db/prisma";
 
-export async function createChoreType({ name }: { name: string }) {
-  return prisma.choreType.create({
-    data: {
-      name,
-    },
-  });
-}
-
 export async function getChores({ accountId }: { accountId: string }) {
   return prisma.chore.findMany({
     where: {
@@ -54,14 +46,12 @@ export async function createChore({
   accountId,
   title,
   description,
-  choreTypeId,
   color,
   dueDate,
 }: {
   accountId: string;
   title: string;
   description: string;
-  choreTypeId: string;
   color: string;
   dueDate: string | null;
 }) {
@@ -70,13 +60,8 @@ export async function createChore({
       accountId,
       title,
       description,
-      choreTypeId,
       color,
       dueDate,
     },
   });
-}
-
-export async function getChoreTypes() {
-  return prisma.choreType.findMany();
 }

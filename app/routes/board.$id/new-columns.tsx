@@ -46,6 +46,7 @@ export function NewColumn({
     >
       <input type="hidden" name="intent" value={INTENTS.createColumn} />
       <input type="hidden" name="boardId" value={boardId} />
+      <input type="hidden" name="content" value="" />
       <input
         autoFocus
         required

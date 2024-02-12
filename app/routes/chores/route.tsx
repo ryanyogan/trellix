@@ -1,21 +1,9 @@
-import {
-  ActionFunctionArgs,
-  LoaderFunctionArgs,
-  json,
-  redirect,
-} from "@remix-run/node";
+import { ActionFunctionArgs, LoaderFunctionArgs, json } from "@remix-run/node";
 import invariant from "tiny-invariant";
 import { requireAuthCookie } from "~/auth/auth";
 import { INTENTS } from "../board.$id/types";
 import Chores from "./chores";
-import {
-  completeChore,
-  createChore,
-  createChoreType,
-  deleteChore,
-  getChoreTypes,
-  getChores,
-} from "./queries";
+import { completeChore, createChore, deleteChore, getChores } from "./queries";
 
 export const meta = () => {
   return [{ title: "Choring - Chores" }];
@@ -29,15 +17,6 @@ export async function action({ request }: ActionFunctionArgs) {
   invariant(intent, "intent is missing");
 
   switch (intent) {
-    case INTENTS.createChoreType: {
-      const name = String(formData.get("name") ?? "");
-      invariant(name, "Name is required.");
-
-      await createChoreType({ name });
-
-      return redirect("/chores");
-    }
-
     case "deleteChore": {
       const id = String(formData.get("choreId"));
       invariant(id, "missing id");
@@ -60,11 +39,9 @@ export async function action({ request }: ActionFunctionArgs) {
     case INTENTS.createChore: {
       const title = String(formData.get("title") ?? "");
       const description = String(formData.get("description") ?? "");
-      const choreTypeId = String(formData.get("choreTypeId"));
       const color = String(formData.get("color"));
       let dueDate = String(formData.get("dueDate")) || null;
 
-      invariant(choreTypeId, "missing chore type id");
       invariant(color, "missing chore type id");
 
       if (dueDate) {
@@ -76,7 +53,6 @@ export async function action({ request }: ActionFunctionArgs) {
           accountId,
           title,
           description,
-          choreTypeId,
           color,
           dueDate,
         });
@@ -96,13 +72,9 @@ export async function action({ request }: ActionFunctionArgs) {
 export async function loader({ request }: LoaderFunctionArgs) {
   const accountId = await requireAuthCookie(request);
   invariant(accountId, "Unauthorized");
+  const chores = await getChores({ accountId });
 
-  const [chores, categories] = await Promise.all([
-    getChores({ accountId }),
-    getChoreTypes(),
-  ]);
-
-  return { chores, categories };
+  return { chores };
 }
 
 export { Chores as default };

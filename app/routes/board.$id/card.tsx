@@ -56,6 +56,7 @@ export function Card({
 
         invariant(transfer.id, "missing cardId");
         invariant(transfer.title, "missing title");
+        console.log(transfer);
 
         let droppedOrder = acceptDrop === "top" ? previousOrder : nextOrder;
         let moveOrder = (droppedOrder + order) / 2;
