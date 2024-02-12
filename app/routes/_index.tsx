@@ -4,8 +4,8 @@ import { CheckCircle } from "lucide-react";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "Trellix" },
-    { name: "description", content: "Projects for ADHD" },
+    { title: "Choring" },
+    { name: "description", content: "Boops isn't doing it..." },
   ];
 };
 

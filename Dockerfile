@@ -41,11 +41,11 @@ RUN npm run build
 # Finally, build the production image with minimal footprint
 FROM base
 
-ENV DATABASE_URL="file:/app/data/sqlite.db"
+ENV DATABASE_URL="file:/data/sqlite.db"
 ENV PORT="8080"
 ENV NODE_ENV="production"
 
-# RUN echo '#!/bin/sh\nset -xe\nsqlite3 \$DATABASE_URL' > /usr/local/bin/database_cli && chmod +x /usr/local/bin/database_cli
+RUN echo '#!/bin/sh\nset -xe\nsqlite3 \$DATABASE_URL' > /usr/local/bin/database_cli && chmod +x /usr/local/bin/database_cli
 
 RUN mkdir /app/
 WORKDIR /app/
