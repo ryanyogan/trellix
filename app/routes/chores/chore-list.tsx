@@ -41,6 +41,7 @@ export function ChoreList() {
               id={chore.id}
               complete={chore.complete}
               color={chore.color}
+              dueDate={chore?.dueDate}
             />
           ))}
         </nav>

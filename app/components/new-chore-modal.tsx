@@ -89,8 +89,8 @@ export default function NewChoreModal({
               }}
             />
             <div className="w-full">
-              <div className="space-y-2 flex flex-row items-end justify-between">
-                <div className="flex flex-col items-start gap-y-1">
+              <div className="space-y-2 flex flex-row items-end justify-start gap-x-4">
+                <div className="flex flex-col items-start gap-y-1 w-[200px]">
                   <Label className="text-blue-400">Category</Label>
                   <div className="bg-slate-800 mt-2 w-full p-1 flex flex-row items-center rounded-md border border-slate-700">
                     <Select required name="choreTypeId">
@@ -108,6 +108,17 @@ export default function NewChoreModal({
                         </SelectGroup>
                       </SelectContent>
                     </Select>
+                  </div>
+                </div>
+                <div className="flex flex-col items-start justify-start gap-y-1">
+                  <Label className="text-blue-400">Due Date</Label>
+                  <div className="bg-slate-800 mt-2 w-full p-1 flex flex-row items-center rounded-md border border-slate-700">
+                    <Input
+                      className="px-2 bg-slate-800 cursor-pointer text-blue-300 border-0"
+                      id="due-date"
+                      name="dueDate"
+                      type="date"
+                    />
                   </div>
                 </div>
                 <div className="flex flex-col items-start justify-start gap-y-1">

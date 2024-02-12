@@ -62,8 +62,14 @@ export async function action({ request }: ActionFunctionArgs) {
       const description = String(formData.get("description") ?? "");
       const choreTypeId = String(formData.get("choreTypeId"));
       const color = String(formData.get("color"));
+      let dueDate = String(formData.get("dueDate")) || null;
+
       invariant(choreTypeId, "missing chore type id");
       invariant(color, "missing chore type id");
+
+      if (dueDate) {
+        dueDate = new Date(dueDate).toISOString();
+      }
 
       try {
         await createChore({
@@ -72,11 +78,12 @@ export async function action({ request }: ActionFunctionArgs) {
           description,
           choreTypeId,
           color,
+          dueDate,
         });
 
         return json({ ok: true, error: null }, 201);
       } catch (error) {
-        return json({ ok: false, error: "Error Occurred" }, 500);
+        return json({ ok: false, error }, 500);
       }
     }
 

@@ -1,4 +1,5 @@
 import { useFetcher } from "@remix-run/react";
+import { differenceInDays, parseISO } from "date-fns";
 import { CheckCircle, ChevronDown, Clock } from "lucide-react";
 import {
   DropdownMenu,
@@ -8,6 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
+import { cn } from "~/lib/utils";
 
 export function ChoreItem({
   name,
@@ -16,6 +18,7 @@ export function ChoreItem({
   color,
   setChoreId,
   complete = false,
+  dueDate,
 }: {
   name: string;
   id: string;
@@ -23,8 +26,22 @@ export function ChoreItem({
   color: string;
   setChoreId: (choreId: string) => void;
   complete: boolean;
+  dueDate?: string | null;
 }) {
   const fetcher = useFetcher();
+
+  function daysRemaining(date: string) {
+    const givenDate = parseISO(date);
+    const currentDate = new Date();
+    return differenceInDays(givenDate, currentDate);
+  }
+
+  const clockColor =
+    dueDate && daysRemaining(dueDate) < 0
+      ? "text-red-400"
+      : dueDate && daysRemaining(dueDate) < 1
+        ? "text-orange-400"
+        : "text-blue-400";
 
   return (
     <div
@@ -41,7 +58,7 @@ export function ChoreItem({
         {complete ? (
           <CheckCircle className="text-green-400 w-6 h-6 sm:h-10 sm:w-10" />
         ) : (
-          <Clock className="text-slate-700 w-6 h-6 sm:h-10 sm:w-10" />
+          <Clock className={cn("w-6 h-6 sm:h-10 sm:w-10", clockColor)} />
         )}
       </div>
 

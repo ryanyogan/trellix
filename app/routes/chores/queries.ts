@@ -56,12 +56,14 @@ export async function createChore({
   description,
   choreTypeId,
   color,
+  dueDate,
 }: {
   accountId: string;
   title: string;
   description: string;
   choreTypeId: string;
   color: string;
+  dueDate: string | null;
 }) {
   return prisma.chore.create({
     data: {
@@ -70,6 +72,7 @@ export async function createChore({
       description,
       choreTypeId,
       color,
+      dueDate,
     },
   });
 }

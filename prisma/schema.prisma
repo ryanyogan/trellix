@@ -140,6 +140,8 @@ model Chore {
   creator   Account? @relation(fields: [accountId], references: [id])
   accountId String?
 
+  dueDate DateTime?
+
   choreType   ChoreType @relation(fields: [choreTypeId], references: [id])
   choreTypeId String
 
