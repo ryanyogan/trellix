@@ -1,7 +1,8 @@
 app = 'choring'
 primary_region = 'ord'
-
-[build]
+kill_signal = "SIGINT"
+kill_timeout = 5
+processes = ['app']
 
 [mounts]
 source = "data"
@@ -10,14 +11,7 @@ processes = ["app"]
 
 [experimental]
 auto_rollback = true
-
-[http_service]
-internal_port = 3000
-force_https = true
-auto_stop_machines = true
-auto_start_machines = true
-min_machines_running = 0
-processes = ['app']
+enable_consul = true
 
 [[services]]
 protocol = 'tcp'
