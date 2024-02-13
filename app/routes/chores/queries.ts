@@ -5,6 +5,9 @@ export async function getChores({ accountId }: { accountId: string }) {
     where: {
       accountId,
     },
+    include: {
+      child: true,
+    },
   });
 }
 
@@ -30,7 +33,6 @@ export async function completeChore({
   accountId: string;
   id: string;
 }) {
-  console.log("ID", id);
   return prisma.chore.update({
     where: {
       accountId,
@@ -48,12 +50,14 @@ export async function createChore({
   description,
   color,
   dueDate,
+  kidId,
 }: {
   accountId: string;
   title: string;
   description: string;
   color: string;
   dueDate: string | null;
+  kidId?: string | null;
 }) {
   return prisma.chore.create({
     data: {
@@ -62,6 +66,7 @@ export async function createChore({
       description,
       color,
       dueDate,
+      ...(kidId?.length ? { kidId } : {}),
     },
   });
 }

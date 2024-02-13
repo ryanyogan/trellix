@@ -1,4 +1,3 @@
-import { Kid } from "@prisma/client";
 import { useFetcher, useNavigation } from "@remix-run/react";
 import { useEffect, useRef } from "react";
 import invariant from "tiny-invariant";
@@ -8,17 +7,14 @@ import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Separator } from "~/components/ui/separator";
-import { Textarea } from "~/components/ui/textarea";
 import { INTENTS } from "~/routes/board.$id/types";
 
-export default function NewChoreModal({
+export default function NewKidModal({
   isOpen,
   setClose,
-  kids,
 }: {
   isOpen: boolean;
   setClose: () => void;
-  kids: Pick<Kid, "id" | "name" | "color">[];
 }) {
   const fetcher = useFetcher<{ ok?: boolean; error?: boolean }>();
   const navigation = useNavigation();
@@ -32,28 +28,27 @@ export default function NewChoreModal({
   }, [fetcher]);
 
   return (
-    <Portal wrapperId="new-chore">
+    <Portal wrapperId="new-kid-portal">
       <Modal
         triggerClose={setClose}
         isOpen={isOpen}
         className="w-full m-2 sm:m-0 sm:w-2/3 sm:p-6"
       >
         <h1 className="text-lg font-medium block rounded-lg text-left border border-transparent py-1 px-2 text-blue-400">
-          New Chore
+          Add Child 🤣
         </h1>
 
         <div className="flex mx-2 mb-4">
           <Separator className="bg-slate-700" />
         </div>
 
-        <fetcher.Form method="post" action="/chores">
-          <input type="hidden" name="intent" value={INTENTS.createChore} />
+        <fetcher.Form method="post">
+          <input type="hidden" name="intent" value={INTENTS.createKid} />
 
           <div className="mx-2 flex flex-col space-y-4">
-            <Label className="text-blue-400">Title</Label>
+            <Label className="text-blue-400">Kiddo's Name</Label>
             <Input
-              name="title"
-              defaultValue={""}
+              name="name"
               required
               className="mt-1 resize-none text-[16px] bg-slate-800 border text-blue-300 border-slate-700 focus-visible:ring-0 focus-visible:ring-offset-0 ring-0 focus:ring-0 outline-none shadow-sm"
               onKeyDown={(event) => {
@@ -65,38 +60,13 @@ export default function NewChoreModal({
               }}
             />
 
-            <Label className="text-blue-400">Description</Label>
-            <Textarea
-              name="description"
-              defaultValue={""}
-              required
-              className="mt-1 resize-none text-[16px] bg-slate-800 border text-blue-300 border-slate-700 focus-visible:ring-0 focus-visible:ring-offset-0 ring-0 focus:ring-0 outline-none shadow-sm"
-              onKeyDown={(event) => {
-                if (event.key === "Enter") {
-                  event.preventDefault();
-                  invariant(buttonRef.current, "expected button ref");
-                  buttonRef.current.click();
-                }
-              }}
-            />
             <div className="w-full">
               <div className="space-y-2 flex flex-row items-end justify-start gap-x-4">
-                <div className="flex flex-col items-start justify-start gap-y-1">
-                  <Label className="text-blue-400">Due Date</Label>
-                  <div className="bg-slate-800 mt-2 w-full p-1 flex flex-row items-center rounded-md border border-slate-700">
-                    <Input
-                      className="px-2 bg-slate-800 cursor-pointer text-blue-300 border-0"
-                      id="due-date"
-                      name="dueDate"
-                      type="date"
-                    />
-                  </div>
-                </div>
                 <div className="flex flex-col items-start justify-start gap-y-1">
                   <Label className="text-blue-400">Color</Label>
                   <div className="bg-slate-800 mt-2 w-full p-1 flex flex-row items-center rounded-md border border-slate-700">
                     <Input
-                      className="w-[60px] bg-slate-800 border-0"
+                      className="w-[100px] bg-slate-800 border-0"
                       id="board-color"
                       name="color"
                       type="color"
@@ -104,24 +74,16 @@ export default function NewChoreModal({
                     />
                   </div>
                 </div>
-                <div className="flex flex-col items-start justify-start gap-y-1">
-                  <Label className="text-blue-400">Child</Label>
-                  <div className="bg-slate-800 mt-2 w-full p-1 flex flex-row items-center rounded-md border border-slate-700">
-                    <select
-                      name="kidId"
-                      id="kids"
-                      className="p-1 h-[40px] bg-slate-800 text-blue-300"
-                    >
-                      {kids.map((kid) => (
-                        <option key={kid.id} value={kid.id}>
-                          {kid.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
               </div>
             </div>
+
+            <Label className="text-blue-400">Emoji</Label>
+            <Input
+              name="emoji"
+              required
+              type="text"
+              className="mt-1 resize-none text-[16px] bg-slate-800 border text-blue-300 border-slate-700 focus-visible:ring-0 focus-visible:ring-offset-0 ring-0 focus:ring-0 outline-none shadow-sm"
+            />
           </div>
 
           <div className="flex flex-row justify-end mt-4">
@@ -142,7 +104,7 @@ export default function NewChoreModal({
               type="submit"
               className="text-green-400 font-bold px-3 py-2"
             >
-              {isLoading ? "Creating..." : "Create Chore"}
+              {isLoading ? "Adding..." : "Add Child"}
             </Button>
           </div>
         </fetcher.Form>

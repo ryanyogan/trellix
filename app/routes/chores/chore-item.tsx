@@ -19,9 +19,11 @@ export function ChoreItem({
   setChoreId,
   complete = false,
   dueDate,
+  emoji,
 }: {
   name: string;
   id: string;
+  emoji?: string;
   description: string;
   color: string;
   setChoreId: (choreId: string) => void;
@@ -54,13 +56,15 @@ export function ChoreItem({
         {description}
       </div>
 
-      <div className="absolute sm:bottom-4 sm:right-4 bottom-2 right-2">
+      <div className="absolute bottom-2 right-2">
         {complete ? (
           <CheckCircle className="text-green-400 w-6 h-6 sm:h-10 sm:w-10" />
         ) : (
           <Clock className={cn("w-6 h-6 sm:h-10 sm:w-10", clockColor)} />
         )}
       </div>
+
+      <div className="absolute bottom-2 left-4">{emoji}</div>
 
       <div>
         <DropdownMenu>

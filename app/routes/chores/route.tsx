@@ -2,6 +2,7 @@ import { ActionFunctionArgs, LoaderFunctionArgs, json } from "@remix-run/node";
 import invariant from "tiny-invariant";
 import { requireAuthCookie } from "~/auth/auth";
 import { INTENTS } from "../board.$id/types";
+import { getKidsForHouse } from "../settings/queries";
 import Chores from "./chores";
 import { completeChore, createChore, deleteChore, getChores } from "./queries";
 
@@ -40,6 +41,7 @@ export async function action({ request }: ActionFunctionArgs) {
       const title = String(formData.get("title") ?? "");
       const description = String(formData.get("description") ?? "");
       const color = String(formData.get("color"));
+      const kidId = String(formData.get("kidId"));
       let dueDate = String(formData.get("dueDate")) || null;
 
       invariant(color, "missing chore type id");
@@ -55,6 +57,7 @@ export async function action({ request }: ActionFunctionArgs) {
           description,
           color,
           dueDate,
+          kidId,
         });
 
         return json({ ok: true, error: null }, 201);
@@ -72,9 +75,13 @@ export async function action({ request }: ActionFunctionArgs) {
 export async function loader({ request }: LoaderFunctionArgs) {
   const accountId = await requireAuthCookie(request);
   invariant(accountId, "Unauthorized");
-  const chores = await getChores({ accountId });
 
-  return { chores };
+  const [chores, kids] = await Promise.all([
+    getChores({ accountId }),
+    getKidsForHouse(),
+  ]);
+
+  return json({ chores, kids }, 200);
 }
 
 export { Chores as default };

@@ -1,8 +1,13 @@
+import { Kid } from "@prisma/client";
 import { PlusIcon } from "lucide-react";
 import { useState } from "react";
 import NewChoreModal from "~/components/new-chore-modal";
 
-export function NewChore() {
+export function NewChore({
+  kids,
+}: {
+  kids: Pick<Kid, "id" | "name" | "color">[];
+}) {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   function toggleModal() {
@@ -19,7 +24,11 @@ export function NewChore() {
           <PlusIcon className="h-20 w-20" />
         </div>
       </div>
-      <NewChoreModal isOpen={modalOpen} setClose={() => setModalOpen(false)} />
+      <NewChoreModal
+        kids={kids}
+        isOpen={modalOpen}
+        setClose={() => setModalOpen(false)}
+      />
     </>
   );
 }

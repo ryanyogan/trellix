@@ -1,6 +1,8 @@
 import { ActionFunctionArgs, LoaderFunctionArgs, json } from "@remix-run/node";
+import invariant from "tiny-invariant";
 import { requireAuthCookie } from "~/auth/auth";
-import { getKidsForHouse } from "./queries";
+import { INTENTS } from "../board.$id/types";
+import { createKid, getKidsForHouse } from "./queries";
 import { SettingsPage } from "./settings";
 
 export const meta = () => {
@@ -8,7 +10,7 @@ export const meta = () => {
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  let accountId = await requireAuthCookie(request);
+  await requireAuthCookie(request);
 
   const kids = await getKidsForHouse();
   if (!kids) {
@@ -19,11 +21,26 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export async function action({ request }: ActionFunctionArgs) {
-  let accountId = await requireAuthCookie(request);
+  await requireAuthCookie(request);
   let formData = await request.formData();
   let intent = String(formData.get("intent"));
 
   switch (intent) {
+    case INTENTS.createKid: {
+      let name = String(formData.get("name"));
+      let color = String(formData.get("color"));
+      const emoji = String(formData.get("emoji"));
+      invariant(name, "expected name");
+      invariant(color, "expected color");
+
+      await createKid({ name, color, emoji });
+
+      return json({ ok: true });
+    }
+
+    default: {
+      console.log(intent);
+    }
   }
 }
 

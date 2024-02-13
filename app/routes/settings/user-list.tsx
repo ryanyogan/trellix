@@ -1,7 +1,7 @@
 import { useLoaderData } from "@remix-run/react";
 import { format } from "date-fns";
 import { Separator } from "~/components/ui/separator";
-import { NewUserCard } from "./new-user";
+import { NewUser } from "./new-user";
 import { loader } from "./route";
 import { UserCard } from "./user-card";
 
@@ -22,7 +22,7 @@ export function UserList() {
           {kids.map((kid) => (
             <UserCard key={kid.id} kid={kid} />
           ))}
-          <NewUserCard />
+          <NewUser />
         </nav>
       </div>
     </div>

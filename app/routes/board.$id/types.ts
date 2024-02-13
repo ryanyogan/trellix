@@ -30,6 +30,7 @@ export const INTENTS = {
   createChore: "createChore" as const,
   createChoreType: "createChoreType" as const,
   completeChore: "completeChore" as const,
+  createKid: "createKid" as const,
 } as const;
 
 export const ItemMutationFields = {

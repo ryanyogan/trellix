@@ -13,15 +13,22 @@ import {
 export function UserCard({
   kid,
 }: {
-  kid: Omit<Kid, "createdAt" | "updatedAt" | "score">;
+  kid: Pick<Kid, "name" | "color" | "id" | "emoji">;
 }) {
   let fetcher = useFetcher();
   let isDeleting = fetcher.state !== "idle";
 
   return isDeleting ? null : (
-    <div className="w-full h-28 border-green-400 sm:h-40 p-4 block rounded-sm border-l-2 border-slate-700/50 border shadow hover:shadow-xl bg-slate-800/50 relative hover:bg-slate-800/80">
+    <div
+      style={{ borderLeftColor: kid.color }}
+      className="w-full h-28 sm:h-40 p-4 block rounded-sm border-l-2 border-slate-700/50 border shadow hover:shadow-xl bg-slate-800/50 relative hover:bg-slate-800/80"
+    >
       <div className="font-semibold text-ellipsis text-blue-400">
         {kid.name}
+      </div>
+
+      <div className="absolute sm:bottom-4 sm:right-4 bottom-2 right-2">
+        {kid.emoji ? <span className="h-10 w-10">{kid.emoji}</span> : null}
       </div>
 
       <div>

@@ -101,6 +101,7 @@ model Kid {
   score Float?
 
   color String @default("#93c1fd")
+  emoji String @default("👶")
 
   chores Chore[]
   items  Item[]

@@ -8,7 +8,7 @@ import { NewChore } from "./new-chore";
 import { loader } from "./route";
 
 export function ChoreList() {
-  const { chores } = useLoaderData<typeof loader>();
+  const { chores, kids } = useLoaderData<typeof loader>();
   const [choreId, setChoreId] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
@@ -34,6 +34,7 @@ export function ChoreList() {
         <nav className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
           {todaysChores.map((chore) => (
             <ChoreItem
+              emoji={chore.child?.emoji}
               setChoreId={setChoreId}
               key={chore.id}
               description={chore.description}
@@ -70,7 +71,7 @@ export function ChoreList() {
         <Separator className="bg-slate-700/50 mt-2 mb-8" />
       </div>
       <nav className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-        <NewChore />
+        <NewChore kids={kids} />
       </nav>
 
       <CompleteChoreModal
