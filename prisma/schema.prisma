@@ -100,6 +100,8 @@ model Kid {
   name  String
   score Float?
 
+  color String @default("#93c1fd")
+
   chores Chore[]
   items  Item[]
 
