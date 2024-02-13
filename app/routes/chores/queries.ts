@@ -8,6 +8,9 @@ export async function getChores({ accountId }: { accountId: string }) {
     include: {
       child: true,
     },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
 }
 
