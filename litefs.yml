@@ -13,14 +13,10 @@ data:
 #   db: "${DATABASE_FILENAME}"
 
 lease:
-  type: "static"
+  type: "consul"
   candidate: true
+  advertise-url: "http://${FLY_ALLOC_ID}.vm.${FLY_APP_NAME}.internal:20202"
 
-# lease:
-#   type: "consul"
-#   candidate: ${FLY_REGION == 'ord'}
-#   advertise-url: "http://${FLY_ALLOC_ID}.vm.${FLY_APP_NAME}.internal:20202"
-
-#   consul:
-#     url: "${FLY_CONSUL_URL}"
-#     key: "litefs/${FLY_APP_NAME}"
+  consul:
+    url: "${FLY_CONSUL_URL}"
+    key: "litefs/${FLY_APP_NAME}"
