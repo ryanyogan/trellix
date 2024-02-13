@@ -1,9 +1,10 @@
-import { useFetcher, useSubmit } from "@remix-run/react";
+import { Link, useFetcher, useSubmit } from "@remix-run/react";
 import { useState } from "react";
 
 import { Icon } from "~/icons/icons";
 
 import invariant from "tiny-invariant";
+import { cn } from "~/lib/utils";
 import { CONTENT_TYPES, INTENTS, ItemMutation } from "./types";
 
 interface CardProps {
@@ -14,6 +15,8 @@ interface CardProps {
   order: number;
   nextOrder: number;
   previousOrder: number;
+  complete: boolean | null;
+  boardId: number;
 }
 
 export function Card({
@@ -24,6 +27,8 @@ export function Card({
   order,
   nextOrder,
   previousOrder,
+  complete,
+  boardId,
 }: CardProps) {
   let submit = useSubmit();
   let deleteFetcher = useFetcher();
@@ -48,8 +53,10 @@ export function Card({
         let transfer = JSON.parse(
           event.dataTransfer.getData(CONTENT_TYPES.card),
         );
+
         invariant(transfer.id, "missing cardId");
         invariant(transfer.title, "missing title");
+        console.log(transfer);
 
         let droppedOrder = acceptDrop === "top" ? previousOrder : nextOrder;
         let moveOrder = (droppedOrder + order) / 2;
@@ -59,6 +66,7 @@ export function Card({
           columnId,
           id: transfer.id,
           title: transfer.title,
+          content: transfer.content,
         };
 
         submit(
@@ -75,31 +83,41 @@ export function Card({
       className={
         "border-t-2 border-b-2 -mb-[2px] last:mb-0 cursor-grab active:cursor-grabbing px-2 py-1 " +
         (acceptDrop === "top"
-          ? "border-t-brand-red border-b-transparent"
+          ? "border-t-slate-500 border-b-transparent"
           : acceptDrop === "bottom"
-            ? "border-b-brand-red border-t-transparent"
+            ? "border-b-slate-500 border-t-transparent"
             : "border-t-transparent border-b-transparent")
       }
     >
       <div
         draggable
-        className="bg-white shadow shadow-slate-300 border-slate-300 text-sm rounded-lg w-full py-1 px-2 relative"
+        className={cn("bg-slate-800/50 text-sm w-full py-1 px-2 relative")}
         onDragStart={(event) => {
           event.dataTransfer.effectAllowed = "move";
           event.dataTransfer.setData(
             CONTENT_TYPES.card,
-            JSON.stringify({ id, title }),
+            JSON.stringify({ id, title, content }),
           );
         }}
       >
-        <h3>{title}</h3>
-        <div className="mt-2">{content || <>&nbsp;</>}</div>
+        <h3 className="break-words mr-14">
+          <Link
+            className="text-indigo-400 hover:text-blue-400 font-semibold"
+            to={`/board/${boardId}/card/${id}`}
+            prefetch="intent"
+          >
+            {title}
+          </Link>
+        </h3>
+
+        <div className="mt-2 text-slate-400 mb-2">{content || <>&nbsp;</>}</div>
+
         <deleteFetcher.Form method="post">
           <input type="hidden" name="intent" value={INTENTS.deleteCard} />
           <input type="hidden" name="itemId" value={id} />
           <button
             aria-label="Delete card"
-            className="absolute top-4 right-4 hover:text-brand-red"
+            className="absolute top-2 right-2 text-slate-600 hover:text-slate-500"
             type="submit"
             onClick={(event) => {
               event.stopPropagation();

@@ -2,8 +2,9 @@ import { Form, useSubmit } from "@remix-run/react";
 import { useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import invariant from "tiny-invariant";
+import { Button } from "~/components/ui/button";
 import { Icon } from "~/icons/icons";
-import { CancelButton, SaveButton } from "./components";
+import { CancelButton } from "./components";
 import { INTENTS } from "./types";
 
 export function NewColumn({
@@ -45,6 +46,7 @@ export function NewColumn({
     >
       <input type="hidden" name="intent" value={INTENTS.createColumn} />
       <input type="hidden" name="boardId" value={boardId} />
+      <input type="hidden" name="content" value="" />
       <input
         autoFocus
         required
@@ -55,7 +57,9 @@ export function NewColumn({
       />
 
       <div className="flex justify-between">
-        <SaveButton>Save Column</SaveButton>
+        <Button variant="ghost" className="bg-slate-900 text-slate-300">
+          Save Card
+        </Button>
         <CancelButton onClick={() => setEditing(false)}>Cancel</CancelButton>
       </div>
     </Form>

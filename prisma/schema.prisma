@@ -14,6 +14,8 @@ model Account {
   password Password?
 
   boards Board[]
+  items  Item[]
+  chores Chore[]
 }
 
 model Password {
@@ -34,6 +36,8 @@ model Board {
   accountId String
   account   Account @relation(fields: [accountId], references: [id])
 
+  shareable Boolean? @default(false)
+
   items   Item[]
   columns Column[]
 
@@ -48,6 +52,8 @@ model Column {
   content String?
   order   Float   @default(0)
 
+  completionColumn Boolean? @default(false)
+
   items Item[]
 
   board   Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
@@ -61,18 +67,76 @@ model Item {
   id String @id @default(uuid())
 
   title   String
-  content String?
+  content String @default("")
 
   // Why is order a float? We split the difference betwen prev/next
   // If an item is dropped between 1.00 and 2.00 it will be 1.50.  If dropped
   /// between 1.50 and 2.0 it will be 1.75, etc...
   order Float
 
+  complete Boolean? @default(false)
+
   board   Board @relation(fields: [boardId], references: [id], onDelete: Cascade)
   boardId Int
 
   column   Column @relation(fields: [columnId], references: [id], onDelete: Cascade)
   columnId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  account   Account? @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  accountId String?
+
+  kid   Kid?    @relation(fields: [kidId], references: [id])
+  kidId String?
+
+  @@index([complete])
+}
+
+model Kid {
+  id String @id @default(uuid())
+
+  name  String
+  score Float?
+
+  chores Chore[]
+  items  Item[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Chore {
+  id String @id @default(uuid())
+
+  title       String
+  description String
+  color       String  @default("#eaeaea")
+  complete    Boolean @default(false)
+
+  creator   Account? @relation(fields: [accountId], references: [id])
+  accountId String?
+
+  dueDate     DateTime?
+  completedAt DateTime?
+
+  child Kid?    @relation(fields: [kidId], references: [id])
+  kidId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AuditLog {
+  id String @id @default(uuid())
+
+  action      String
+  entityId    String
+  entityType  String
+  entityTitle String
+  authorId    String
+  authorEmail String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -9,4 +9,8 @@ export default defineConfig({
       ignoredRouteFiles: ["**/.*"],
     }),
   ],
+
+  build: {
+    sourcemap: true,
+  },
 });

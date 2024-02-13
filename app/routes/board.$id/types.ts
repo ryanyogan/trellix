@@ -2,8 +2,9 @@ export interface RenderedItem {
   id: string;
   title: string;
   order: number;
-  content: string | null;
+  content: any;
   columnId: string;
+  complete: boolean | null;
 }
 
 export const CONTENT_TYPES = {
@@ -14,6 +15,7 @@ export const CONTENT_TYPES = {
 export const INTENTS = {
   createBoard: "createBoard" as const,
   deleteBoard: "deleteBoard" as const,
+  editBoard: "editBoard" as const,
   updateBoardName: "updateBoard" as const,
   createColumn: "createColumn" as const,
   updateColumn: "updateColumn" as const,
@@ -21,25 +23,28 @@ export const INTENTS = {
   moveItem: "createItem" as const,
   deleteCard: "deleteCard" as const,
   deleteColumn: "deleteColumn" as const,
-};
+  markCardComplete: "markCardComplete" as const,
+  updateBoardSharing: "updateBoardSharing" as const,
+  updateCardTitle: "updateCardTitle" as const,
+  updateCard: "updateCard" as const,
+  createChore: "createChore" as const,
+  createChoreType: "createChoreType" as const,
+  completeChore: "completeChore" as const,
+} as const;
 
 export const ItemMutationFields = {
   id: { type: String, name: "id" },
   columnId: { type: String, name: "columnId" },
   order: { type: Number, name: "order" },
   title: { type: String, name: "title" },
+  content: { type: String, name: "content" },
 } as const;
 
-export type ItemMutation = MutationFromFields<typeof ItemMutationFields>;
-
-////////////////////////////////////////////////////////////////////////////////
-// Bonkers TypeScript
-type ConstructorToType<T> = T extends typeof String
-  ? string
-  : T extends typeof Number
-    ? number
-    : never;
-
-export type MutationFromFields<T extends Record<string, any>> = {
-  [K in keyof T]: ConstructorToType<T[K]["type"]>;
+export type ItemMutation = {
+  id: string;
+  columnId: string;
+  order: number;
+  title: string;
+  content?: string;
+  kidId?: string;
 };

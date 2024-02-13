@@ -1,51 +1,32 @@
 import type { MetaFunction } from "@remix-run/node";
 import { Link } from "@remix-run/react";
+import { CheckCircle } from "lucide-react";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "Trellix" },
-    { name: "description", content: "Projects for ADHD" },
+    { title: "Choring" },
+    { name: "description", content: "Boops isn't doing it..." },
   ];
 };
 
 export default function Index() {
   return (
-    <div className="h-full flex flex-col items-center pt-20 px-10 bg-slate-900">
-      <img src="/remix-logo-new@dark.png" width="402" height="149" />
-      <div className="space-y-4 max-w-md text-lg text-slate-300">
-        <p>
-          This is a demo app to compare Remix to Next.js for a simple
-          application, it seems to be pretty damn fast ;)
-        </p>
+    <div className="h-full flex flex-col justify-center items-center w-full">
+      <div className="sm:w-[400px] w-[300px] cursor-pointer border-l-green-300 h-28 sm:h-40 p-4 block rounded-sm border-l-2 border-slate-700/50 border shadow hover:shadow-xl bg-slate-800/50 relative hover:bg-slate-800/80">
+        <div className="font-semibold text-ellipsis text-blue-400 hover:underline">
+          <Link prefetch="intent" to="/login">
+            Welcome Back, Login
+          </Link>
+        </div>
+        <div className="text-slate-500 text-xs sm:text-sm mt-2 text-ellipsis mr-6 sm:mr-0 hover:underline">
+          <Link prefetch="intent" to="/signup">
+            Don&apos;t have an account? Sign up.
+          </Link>
+        </div>
 
-        <p>
-          This app is using Sqlite3 distributed by the way of nerds, it means it
-          is fast as shit to get to your data.
-        </p>
-
-        <p>
-          It's a recreation of the popular drag and drop interface in{" "}
-          <a href="https://trello.com" className="underline">
-            Trello
-          </a>{" "}
-          and other similar apps.
-        </p>
-        <p>If you want to play around, click sign up!</p>
-      </div>
-      <div className="flex w-full justify-evenly max-w-md mt-8 rounded-3xl p-10 bg-slate-800">
-        <Link
-          to="/signup"
-          className="text-xl font-medium text-brand-aqua underline"
-        >
-          Sign up
-        </Link>
-        <div className="h-full border-r border-slate-500" />
-        <Link
-          to="/login"
-          className="text-xl font-medium text-brand-aqua underline"
-        >
-          Login
-        </Link>
+        <div className="absolute sm:bottom-4 sm:right-4 bottom-2 right-2">
+          <CheckCircle className={"text-green-400 w-6 h-6 sm:h-10 sm:w-10"} />
+        </div>
       </div>
     </div>
   );
