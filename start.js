@@ -11,7 +11,7 @@ async function start() {
     console.log(
       `Instance (${currentInstance}) in ${process.env.FLY_REGION} is primary. Deploying migrations.`,
     );
-    await exec("npx prisma migrate deploy");
+    await execute("npx prisma migrate deploy");
   } else {
     console.log(
       `Instance (${currentInstance}) in ${process.env.FLY_REGION} is not primary (the primary instance is ${primaryInstance}). Skipping migrations.`,
