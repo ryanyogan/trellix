@@ -1,3 +1,4 @@
+import { captureRemixErrorBoundaryError } from "@sentry/remix";
 import { cssBundleHref } from "@remix-run/css-bundle";
 import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
 import {
@@ -12,6 +13,7 @@ import {
   redirect,
   useLoaderData,
   useNavigation,
+  useRouteError,
 } from "@remix-run/react";
 
 import { CheckCircle2Icon } from "lucide-react";
@@ -35,6 +37,12 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 export function shouldRevalidate({ formAction }: ShouldRevalidateFunctionArgs) {
   return formAction && ["/login", "/signup", "logout"].includes(formAction);
 }
+
+export const ErrorBoundary = () => {
+  const error = useRouteError();
+  captureRemixErrorBoundaryError(error);
+  return <div>Something went wrong</div>;
+};
 
 // export const ErrorBoundary = () => {
 //   const error = useRouteError();
