@@ -1,13 +1,4 @@
 import { Link, useFetcher } from "@remix-run/react";
-import { ChevronDown } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu";
 
 export function Board({
   name,
@@ -44,41 +35,6 @@ export function Board({
           <div className="text-green-300 text-xs">Sharing</div>
         </div>
       ) : null}
-
-      <div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button
-              className="absolute top-4 right-4"
-              type="button"
-              onClick={(event) => {
-                event.stopPropagation();
-              }}
-            >
-              <ChevronDown className="w-4 h-4 text-slate-400" />
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuLabel>Settings</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <fetcher.Form method="post">
-                <input type="hidden" name="intent" value="deleteBoard" />
-                <input type="hidden" name="boardId" value={id} />
-                <button
-                  aria-label="Delete board"
-                  type="submit"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                  }}
-                >
-                  Delete
-                </button>
-              </fetcher.Form>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
     </Link>
   );
 }
