@@ -2,8 +2,6 @@ import { spawn } from "child_process";
 import { getInstanceInfo } from "litefs-js";
 
 async function start() {
-  await execute("npx prisma migrate deploy");
-
   const { currentInstance, currentIsPrimary, primaryInstance } =
     await getInstanceInfo();
 
