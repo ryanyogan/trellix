@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+
 import { spawn } from "child_process";
 import { getInstanceInfo } from "litefs-js";
 

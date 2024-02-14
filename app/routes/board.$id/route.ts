@@ -1,4 +1,4 @@
-import {
+import type {
   ActionFunctionArgs,
   LoaderFunctionArgs,
   MetaFunction,
@@ -32,33 +32,33 @@ export const meta: MetaFunction = () => {
 };
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
-  let accountId = await requireAuthCookie(request);
+  const accountId = await requireAuthCookie(request);
 
   invariant(params.id, "Missing board ID");
-  let id = Number(params.id);
+  const id = Number(params.id);
 
-  let board = await getBoardData(id, accountId);
+  const board = await getBoardData(id, accountId);
   if (!board) throw notFound();
 
-  let completionCount = await getCompleteItemCount(accountId, board.id);
-  let totalCount = await getItemCount(accountId, board.id);
+  const completionCount = await getCompleteItemCount(accountId, board.id);
+  const totalCount = await getItemCount(accountId, board.id);
 
   return { board, completionCount, totalCount };
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
-  let accountId = await requireAuthCookie(request);
-  let boardId = Number(params.id);
+  const accountId = await requireAuthCookie(request);
+  const boardId = Number(params.id);
   invariant(boardId, "Missing Board ID");
 
-  let formData = await request.formData();
-  let intent = formData.get("intent");
+  const formData = await request.formData();
+  const intent = formData.get("intent");
 
   if (!intent) throw badRequest("Missing Intent");
 
   switch (intent) {
     case INTENTS.updateBoardName: {
-      let name = String(formData.get("name") || "");
+      const name = String(formData.get("name") || "");
       invariant(name, "Missing Name");
       await updateBoardName({ boardId, accountId, name });
 
@@ -75,7 +75,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     }
 
     case INTENTS.updateBoardSharing: {
-      let shareable = formData.get("shareable");
+      const shareable = formData.get("shareable");
       invariant(shareable, "shareable");
       const board = await updateBoardSharing({
         boardId,
@@ -95,7 +95,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     }
 
     case INTENTS.editBoard: {
-      let { name, color } = Object.fromEntries(formData);
+      const { name, color } = Object.fromEntries(formData);
       invariant(name, "Missing Name");
       invariant(color, "Missing Name");
       await editBoard({
@@ -109,13 +109,13 @@ export async function action({ request, params }: ActionFunctionArgs) {
     }
 
     case INTENTS.deleteCard: {
-      let id = String(formData.get("itemId") || "");
+      const id = String(formData.get("itemId") || "");
       await deleteCard(id, accountId);
       return { ok: true };
     }
 
     case INTENTS.markCardComplete: {
-      let id = String(formData.get("itemId") || "");
+      const id = String(formData.get("itemId") || "");
       const card = await markCardComplete(id, accountId);
       await createAuditLog({
         entityTitle: card.title,
@@ -130,7 +130,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     }
 
     case INTENTS.deleteColumn: {
-      let id = String(formData.get("columnId") || "");
+      const id = String(formData.get("columnId") || "");
       const col = await deleteColumn(id, accountId);
 
       await createAuditLog({
@@ -146,7 +146,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     }
 
     case INTENTS.createColumn: {
-      let { name, id } = Object.fromEntries(formData);
+      const { name, id } = Object.fromEntries(formData);
       invariant(name, "Missing Name");
       invariant(id, "Missing ID");
       const col = await createColumn(
@@ -169,7 +169,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     }
 
     case INTENTS.updateColumn: {
-      let { name, columnId } = Object.fromEntries(formData);
+      const { name, columnId } = Object.fromEntries(formData);
       if (!name || !columnId) throw badRequest("Missing name or columndId");
       const col = await updateColumnName(
         String(columnId),
@@ -191,7 +191,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
     case INTENTS.moveItem:
     case INTENTS.createItem: {
-      let mutation = parseItemMutation(formData);
+      const mutation = parseItemMutation(formData);
       await upsertItem({ ...mutation, boardId }, accountId);
       return { ok: true };
     }

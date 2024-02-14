@@ -2,7 +2,7 @@ import crypto from "crypto";
 import { prisma } from "~/db/prisma";
 
 export async function login(email: string, password: string) {
-  let user = await prisma.account.findUnique({
+  const user = await prisma.account.findUnique({
     where: {
       email,
     },
@@ -15,7 +15,7 @@ export async function login(email: string, password: string) {
     return false;
   }
 
-  let hash = crypto
+  const hash = crypto
     .pbkdf2Sync(password, user.password.salt, 1_000, 64, "sha256")
     .toString("hex");
 

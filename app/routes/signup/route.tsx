@@ -1,4 +1,5 @@
-import { ActionFunctionArgs, json, redirect } from "@remix-run/node";
+import type { ActionFunctionArgs } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import { Form, Link, useActionData } from "@remix-run/react";
 import { redirectIfLoggedInLoader, setAuthOnResponse } from "~/auth/auth";
 import { Button } from "~/components/ui/button";
@@ -14,22 +15,22 @@ export const meta = () => {
 export const loader = redirectIfLoggedInLoader;
 
 export async function action({ request }: ActionFunctionArgs) {
-  let formData = await request.formData();
+  const formData = await request.formData();
 
-  let email = String(formData.get("email") || "");
-  let password = String(formData.get("password") || "");
+  const email = String(formData.get("email") || "");
+  const password = String(formData.get("password") || "");
 
-  let errors = await validate(email, password);
+  const errors = await validate(email, password);
   if (errors) {
     return json({ ok: false, errors }, 400);
   }
 
-  let user = await createAccount(email, password);
+  const user = await createAccount(email, password);
   return setAuthOnResponse(redirect("/home"), user.id);
 }
 
 export default function Signup() {
-  let actionResult = useActionData<typeof action>();
+  const actionResult = useActionData<typeof action>();
 
   return (
     <div className="flex min-h-full flex-1 flex-col pt-20 px-6 bg-slate-900">
@@ -50,7 +51,6 @@ export default function Signup() {
               </Label>
 
               <Input
-                autoFocus
                 id="email"
                 className="mt-1 resize-none text-[16px] bg-slate-800 border text-blue-300 border-slate-700 focus-visible:ring-0 focus-visible:ring-offset-0 ring-0 focus:ring-0 outline-none shadow-sm"
                 name="email"

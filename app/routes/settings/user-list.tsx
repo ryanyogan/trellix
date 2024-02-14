@@ -2,7 +2,7 @@ import { useLoaderData } from "@remix-run/react";
 import { format } from "date-fns";
 import { Separator } from "~/components/ui/separator";
 import { NewUser } from "./new-user";
-import { loader } from "./route";
+import type { loader } from "./route";
 import { UserCard } from "./user-card";
 
 export function UserList() {

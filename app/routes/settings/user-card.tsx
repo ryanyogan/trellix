@@ -1,4 +1,4 @@
-import { Kid } from "@prisma/client";
+import type { Kid } from "@prisma/client";
 import { useFetcher } from "@remix-run/react";
 import { ChevronDown } from "lucide-react";
 import {
@@ -15,8 +15,8 @@ export function UserCard({
 }: {
   kid: Pick<Kid, "name" | "color" | "id" | "emoji">;
 }) {
-  let fetcher = useFetcher();
-  let isDeleting = fetcher.state !== "idle";
+  const fetcher = useFetcher();
+  const isDeleting = fetcher.state !== "idle";
 
   return isDeleting ? null : (
     <div

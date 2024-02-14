@@ -1,15 +1,12 @@
-import { captureRemixErrorBoundaryError } from "@sentry/remix";
-import { cssBundleHref } from "@remix-run/css-bundle";
-import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
+import type { LoaderFunctionArgs } from "@remix-run/node";
+import type { ShouldRevalidateFunctionArgs } from "@remix-run/react";
 import {
   Link,
   Links,
-  LiveReload,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
-  ShouldRevalidateFunctionArgs,
   redirect,
   useLoaderData,
   useNavigation,
@@ -20,14 +17,11 @@ import { CheckCircle2Icon } from "lucide-react";
 import { getAuthFromRequest } from "./auth/auth";
 import { NavigationLinks } from "./components/navigation-links";
 import { cn } from "./lib/utils";
+
 import "./styles.css";
 
-export const links: LinksFunction = () => [
-  ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
-];
-
-export async function loader({ request, params }: LoaderFunctionArgs) {
-  let auth = await getAuthFromRequest(request);
+export async function loader({ request }: LoaderFunctionArgs) {
+  const auth = await getAuthFromRequest(request);
   if (auth && new URL(request.url).pathname === "/") {
     throw redirect("/home");
   }
@@ -40,18 +34,12 @@ export function shouldRevalidate({ formAction }: ShouldRevalidateFunctionArgs) {
 
 export const ErrorBoundary = () => {
   const error = useRouteError();
-  captureRemixErrorBoundaryError(error);
+  console.error(error);
   return <div>Something went wrong</div>;
 };
 
-// export const ErrorBoundary = () => {
-//   const error = useRouteError();
-//   captureRemixErrorBoundaryError(error);
-//   return <div>Something went wrong</div>;
-// };
-
 export default function App() {
-  let userId = useLoaderData<typeof loader>();
+  const userId = useLoaderData<typeof loader>();
   const navigation = useNavigation();
 
   return (
@@ -110,7 +98,6 @@ export default function App() {
 
         <ScrollRestoration />
         <Scripts />
-        <LiveReload />
       </body>
     </html>
   );

@@ -1,10 +1,6 @@
-import {
-  ActionFunctionArgs,
-  LoaderFunctionArgs,
-  json,
-  redirect,
-} from "@remix-run/node";
-import { Form, useNavigate, useNavigation, useParams } from "@remix-run/react";
+import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
+import { Form, useNavigate, useNavigation } from "@remix-run/react";
 import { useRef } from "react";
 import invariant from "tiny-invariant";
 import { requireAuthCookie } from "~/auth/auth";
@@ -29,12 +25,12 @@ export async function action({ request }: ActionFunctionArgs) {
 
   switch (intent) {
     case INTENTS.createBoard: {
-      let name = String(formData.get("name") || "");
-      let color = String(formData.get("color") || "");
+      const name = String(formData.get("name") || "");
+      const color = String(formData.get("color") || "");
       if (!name) throw badRequest("Bad Request");
 
       try {
-        let board = await createBoard(accountId, name, color);
+        const board = await createBoard(accountId, name, color);
 
         await createAuditLog({
           entityTitle: board.name,
@@ -65,11 +61,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export default function ItemDetail() {
-  const params = useParams();
   const navigate = useNavigate();
   const navigation = useNavigation();
   const isLoading = navigation.state !== "idle";
-  let buttonRef = useRef<HTMLButtonElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   return (
     <Portal wrapperId="new-board">

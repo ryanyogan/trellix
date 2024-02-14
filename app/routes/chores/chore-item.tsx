@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useFetcher } from "@remix-run/react";
 import { differenceInDays, parseISO } from "date-fns";
 import { CheckCircle, ChevronDown, Clock } from "lucide-react";

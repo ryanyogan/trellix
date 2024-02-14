@@ -1,4 +1,5 @@
-import { ActionFunctionArgs, LoaderFunctionArgs, json } from "@remix-run/node";
+import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import invariant from "tiny-invariant";
 import { requireAuthCookie } from "~/auth/auth";
 import { INTENTS } from "../board.$id/types";
@@ -22,13 +23,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export async function action({ request }: ActionFunctionArgs) {
   await requireAuthCookie(request);
-  let formData = await request.formData();
-  let intent = String(formData.get("intent"));
+  const formData = await request.formData();
+  const intent = String(formData.get("intent"));
 
   switch (intent) {
     case INTENTS.createKid: {
-      let name = String(formData.get("name"));
-      let color = String(formData.get("color"));
+      const name = String(formData.get("name"));
+      const color = String(formData.get("color"));
       const emoji = String(formData.get("emoji"));
       invariant(name, "expected name");
       invariant(color, "expected color");
