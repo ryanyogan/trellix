@@ -16,6 +16,7 @@ model Account {
   boards Board[]
   items  Item[]
   chores Chore[]
+  homes  Home[]
 }
 
 model Password {
@@ -106,6 +107,25 @@ model Kid {
   chores Chore[]
   items  Item[]
 
+  home   Home?   @relation(fields: [homeId], references: [id])
+  homeId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Home {
+  id String @id @default(uuid())
+
+  name  String
+  color String @default("#eaeaea")
+
+  kids   Kid[]
+  chores Chore[]
+
+  creator   Account? @relation(fields: [accountId], references: [id])
+  accountId String?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -126,6 +146,9 @@ model Chore {
 
   child Kid?    @relation(fields: [kidId], references: [id])
   kidId String?
+
+  home   Home?   @relation(fields: [homeId], references: [id])
+  homeId String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

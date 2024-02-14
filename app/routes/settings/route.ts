@@ -41,6 +41,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
     default: {
       console.log(intent);
+      return null;
     }
   }
 }
