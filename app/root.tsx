@@ -1,5 +1,4 @@
-import { cssBundleHref } from "@remix-run/css-bundle";
-import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
+import type { LoaderFunctionArgs } from "@remix-run/node";
 import {
   Link,
   Links,
@@ -18,11 +17,8 @@ import { CheckCircle2Icon } from "lucide-react";
 import { getAuthFromRequest } from "./auth/auth";
 import { NavigationLinks } from "./components/navigation-links";
 import { cn } from "./lib/utils";
-import "./styles.css";
 
-export const links: LinksFunction = () => [
-  ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
-];
+import "./styles.css";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   let auth = await getAuthFromRequest(request);

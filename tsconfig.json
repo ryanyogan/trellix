@@ -1,6 +1,7 @@
 {
-  "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx", "start.js"],
+  "include": ["env.d.ts", "**/*.ts", "**/*.tsx", "start.js"],
   "compilerOptions": {
+    "module": "ESNext",
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "isolatedModules": true,
     "esModuleInterop": true,
@@ -10,6 +11,7 @@
     "target": "ES2022",
     "strict": true,
     "allowJs": true,
+    "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
