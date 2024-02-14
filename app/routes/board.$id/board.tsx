@@ -22,18 +22,19 @@ import { cn } from "~/lib/utils";
 import { Column } from "./column";
 import { EditableText } from "./components";
 import { NewColumn } from "./new-columns";
-import { loader } from "./route";
-import { INTENTS, RenderedItem } from "./types";
+import type { loader } from "./route";
+import type { RenderedItem } from "./types";
+import { INTENTS } from "./types";
 
 export function Board() {
-  let { board } = useLoaderData<typeof loader>();
+  const { board } = useLoaderData<typeof loader>();
 
-  let itemsById = new Map(board.items.map((item) => [item.id, item]));
+  const itemsById = new Map(board.items.map((item) => [item.id, item]));
 
-  let pendingItems = usePendingItems();
-  for (let pendingItem of pendingItems) {
-    let item = itemsById.get(pendingItem.id);
-    let merged = item
+  const pendingItems = usePendingItems();
+  for (const pendingItem of pendingItems) {
+    const item = itemsById.get(pendingItem.id);
+    const merged = item
       ? { ...item, ...pendingItem }
       : {
           ...pendingItem,
@@ -48,38 +49,38 @@ export function Board() {
     itemsById.set(pendingItem.id, merged);
   }
 
-  let optAddingColumns = usePendingColumns();
+  const optAddingColumns = usePendingColumns();
   type Column =
     | (typeof board.columns)[number]
     | (typeof optAddingColumns)[number];
 
   type ColumnWithItems = Column & { items: typeof board.items };
-  let columns = new Map<string, ColumnWithItems>();
-  for (let column of [...board.columns, ...optAddingColumns]) {
+  const columns = new Map<string, ColumnWithItems>();
+  for (const column of [...board.columns, ...optAddingColumns]) {
     columns.set(column.id, { ...column, items: [] });
   }
 
-  for (let item of itemsById.values()) {
-    let columnId = item.columnId;
-    let column = columns.get(columnId);
+  for (const item of itemsById.values()) {
+    const columnId = item.columnId;
+    const column = columns.get(columnId);
     invariant(column, "missing column");
     // Add filter here
     column.items.push(item);
   }
 
-  let scrollContainerRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   function scrollRight() {
     invariant(scrollContainerRef.current, "no scroll container");
     scrollContainerRef.current.scrollLeft =
       scrollContainerRef.current.scrollWidth;
   }
 
-  let editFetcher = useFetcher();
-  let sharingFetcher = useFetcher();
-  let isEditing = editFetcher.state !== "idle";
-  let isSharing = sharingFetcher.state !== "idle";
+  const editFetcher = useFetcher();
+  const sharingFetcher = useFetcher();
+  const isEditing = editFetcher.state !== "idle";
+  const isSharing = sharingFetcher.state !== "idle";
 
-  let [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
   function onChange() {
     setDialogOpen(!dialogOpen);
@@ -117,6 +118,7 @@ export function Board() {
                 className="underline text-xs text-green-400 underline-offset-2"
                 href={`https://choring.yogan.dev/sharing/${board.id}`}
                 target="_BLANK"
+                rel="noreferrer"
               >
                 Share Link
               </a>
@@ -158,7 +160,7 @@ export function Board() {
               <DialogHeader>
                 <DialogTitle className="text-xl">Edit Board</DialogTitle>
                 <DialogDescription className="text-md">
-                  Edit your board here. Click update when you're complete.
+                  Edit your board here. Click update when you&apos;re complete.
                 </DialogDescription>
               </DialogHeader>
 
@@ -244,8 +246,8 @@ function usePendingColumns() {
       return fetcher.formData?.get("intent") === INTENTS.createColumn;
     })
     .map((fetcher) => {
-      let name = String(fetcher.formData.get("name"));
-      let id = String(fetcher.formData.get("id"));
+      const name = String(fetcher.formData.get("name"));
+      const id = String(fetcher.formData.get("id"));
       return { name, id };
     });
 }
@@ -258,16 +260,16 @@ function usePendingItems() {
   return useFetchers()
     .filter((fetcher): fetcher is PendingItem => {
       if (!fetcher.formData) return false;
-      let intent = fetcher.formData.get("intent");
+      const intent = fetcher.formData.get("intent");
       return intent === INTENTS.createItem || intent === INTENTS.moveItem;
     })
     .map((fetcher) => {
-      let columnId = String(fetcher.formData.get("columnId"));
-      let title = String(fetcher.formData.get("title"));
-      let content = String(fetcher.formData.get("content"));
-      let id = String(fetcher.formData.get("id"));
-      let order = Number(fetcher.formData.get("order"));
-      let item: RenderedItem = {
+      const columnId = String(fetcher.formData.get("columnId"));
+      const title = String(fetcher.formData.get("title"));
+      const content = String(fetcher.formData.get("content"));
+      const id = String(fetcher.formData.get("id"));
+      const order = Number(fetcher.formData.get("order"));
+      const item: RenderedItem = {
         title,
         id,
         order,

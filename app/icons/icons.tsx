@@ -9,7 +9,7 @@ export function Icon({
   size?: "md" | "xl";
   spin?: boolean;
 }) {
-  let classNames = {
+  const classNames = {
     md: "w-4 h-4",
     xl: "w-8 h-8",
   };

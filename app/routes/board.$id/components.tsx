@@ -2,7 +2,7 @@ import { useFetcher } from "@remix-run/react";
 import { forwardRef, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 
-export let SaveButton = forwardRef<
+export const SaveButton = forwardRef<
   HTMLButtonElement,
   React.ButtonHTMLAttributes<HTMLButtonElement>
 >((props, ref) => {
@@ -20,7 +20,9 @@ export let SaveButton = forwardRef<
   );
 });
 
-export let CancelButton = forwardRef<
+SaveButton.displayName = "SaveButton";
+
+export const CancelButton = forwardRef<
   HTMLButtonElement,
   React.ButtonHTMLAttributes<HTMLButtonElement>
 >((props, ref) => {
@@ -34,6 +36,8 @@ export let CancelButton = forwardRef<
     />
   );
 });
+
+CancelButton.displayName = "CancelButton";
 
 export function EditableText({
   children,
@@ -52,10 +56,10 @@ export function EditableText({
   buttonClassName: string;
   buttonLabel: string;
 }) {
-  let fetcher = useFetcher();
-  let [edit, setEdit] = useState(false);
-  let inputRef = useRef<HTMLInputElement>(null);
-  let buttonRef = useRef<HTMLButtonElement>(null);
+  const fetcher = useFetcher();
+  const [edit, setEdit] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   // optimistic update
   if (fetcher.formData?.has(fieldName)) {

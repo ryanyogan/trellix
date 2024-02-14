@@ -1,4 +1,4 @@
-import { SafeAuditLog } from "~/components/activity-item";
+import type { SafeAuditLog } from "~/components/activity-item";
 
 export const generateLogMessage = (log: SafeAuditLog) => {
   const { action, entityTitle, entityType } = log;

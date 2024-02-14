@@ -1,7 +1,9 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useNavigate } from "@remix-run/react";
 import { Portal } from "./portal";
 
-interface props {
+interface Props {
   children: React.ReactNode;
   isOpen: boolean;
   ariaLabel?: string;
@@ -10,14 +12,14 @@ interface props {
   triggerClose?: () => void;
 }
 
-export const Modal: React.FC<props> = ({
+export function Modal({
   children,
   isOpen,
   ariaLabel,
   className,
   backTo,
   triggerClose,
-}) => {
+}: Props) {
   const navigate = useNavigate();
   if (!isOpen) return null;
 
@@ -41,4 +43,4 @@ export const Modal: React.FC<props> = ({
       </div>
     </Portal>
   );
-};
+}

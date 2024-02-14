@@ -1,4 +1,6 @@
-import { Kid } from "@prisma/client";
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+import type { Kid } from "@prisma/client";
 import { PlusIcon } from "lucide-react";
 import { useState } from "react";
 import NewChoreModal from "~/components/new-chore-modal";

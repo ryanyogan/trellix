@@ -1,8 +1,5 @@
-import {
-  ActionFunctionArgs,
-  LoaderFunctionArgs,
-  redirect,
-} from "@remix-run/node";
+import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import { requireAuthCookie } from "~/auth/auth";
 import { badRequest } from "~/http/bad-request";
 import { createAuditLog } from "~/lib/create-audit-log";
@@ -15,24 +12,24 @@ export const meta = () => {
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  let userId = await requireAuthCookie(request);
-  let boards = await getHomeData(userId);
+  const userId = await requireAuthCookie(request);
+  const boards = await getHomeData(userId);
 
   return { boards };
 }
 
 export async function action({ request }: ActionFunctionArgs) {
-  let accountId = await requireAuthCookie(request);
-  let formData = await request.formData();
-  let intent = String(formData.get("intent"));
+  const accountId = await requireAuthCookie(request);
+  const formData = await request.formData();
+  const intent = String(formData.get("intent"));
 
   switch (intent) {
     case INTENTS.createBoard: {
-      let name = String(formData.get("name") || "");
-      let color = String(formData.get("color") || "");
+      const name = String(formData.get("name") || "");
+      const color = String(formData.get("color") || "");
       if (!name) throw badRequest("Bad Request");
 
-      let board = await createBoard(accountId, name, color);
+      const board = await createBoard(accountId, name, color);
 
       await createAuditLog({
         entityTitle: board.name,
@@ -47,7 +44,7 @@ export async function action({ request }: ActionFunctionArgs) {
     }
 
     case INTENTS.deleteBoard: {
-      let boardId = Number(formData.get("boardId"));
+      const boardId = Number(formData.get("boardId"));
       if (!boardId) throw badRequest("Missing board");
       const board = await deleteBoard(boardId, accountId);
 

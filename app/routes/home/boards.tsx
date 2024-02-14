@@ -3,10 +3,10 @@ import { format } from "date-fns";
 import { Separator } from "~/components/ui/separator";
 import { Board } from "./board";
 import { NewBoard } from "./new-board";
-import { loader } from "./route";
+import type { loader } from "./route";
 
 export function Boards() {
-  let { boards } = useLoaderData<typeof loader>();
+  const { boards } = useLoaderData<typeof loader>();
 
   return (
     <div className="p-6 space-y-8">

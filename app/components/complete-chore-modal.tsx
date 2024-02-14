@@ -22,7 +22,7 @@ export function CompleteChoreModal({
     if (fetcher?.data?.ok) {
       setClose();
     }
-  }, [fetcher]);
+  }, [fetcher, setClose]);
 
   return (
     <Portal wrapperId={`complete-chore-${choreId}`}>

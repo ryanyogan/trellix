@@ -1,4 +1,4 @@
-import { Kid } from "@prisma/client";
+import type { Kid } from "@prisma/client";
 import { useFetcher, useNavigation } from "@remix-run/react";
 import { useEffect, useRef } from "react";
 import invariant from "tiny-invariant";
@@ -23,13 +23,13 @@ export default function NewChoreModal({
   const fetcher = useFetcher<{ ok?: boolean; error?: boolean }>();
   const navigation = useNavigation();
   const isLoading = navigation.state !== "idle";
-  let buttonRef = useRef<HTMLButtonElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (fetcher?.data?.ok) {
       setClose();
     }
-  }, [fetcher]);
+  }, [fetcher, setClose]);
 
   return (
     <Portal wrapperId="new-chore">

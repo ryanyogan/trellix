@@ -1,4 +1,5 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
+import type { ShouldRevalidateFunctionArgs } from "@remix-run/react";
 import {
   Link,
   Links,
@@ -6,7 +7,6 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  ShouldRevalidateFunctionArgs,
   redirect,
   useLoaderData,
   useNavigation,
@@ -20,8 +20,8 @@ import { cn } from "./lib/utils";
 
 import "./styles.css";
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
-  let auth = await getAuthFromRequest(request);
+export async function loader({ request }: LoaderFunctionArgs) {
+  const auth = await getAuthFromRequest(request);
   if (auth && new URL(request.url).pathname === "/") {
     throw redirect("/home");
   }
@@ -34,11 +34,12 @@ export function shouldRevalidate({ formAction }: ShouldRevalidateFunctionArgs) {
 
 export const ErrorBoundary = () => {
   const error = useRouteError();
+  console.error(error);
   return <div>Something went wrong</div>;
 };
 
 export default function App() {
-  let userId = useLoaderData<typeof loader>();
+  const userId = useLoaderData<typeof loader>();
   const navigation = useNavigation();
 
   return (

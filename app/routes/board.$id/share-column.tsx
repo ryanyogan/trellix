@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { ShareCard } from "./share-card";
-import { RenderedItem } from "./types";
+import type { RenderedItem } from "./types";
 
 interface ColumnProps {
   name: string;
@@ -8,7 +8,7 @@ interface ColumnProps {
   items: RenderedItem[];
 }
 
-export function ShareColumn({ name, columnId, items }: ColumnProps) {
+export function ShareColumn({ name, items }: ColumnProps) {
   const listRef = useRef<HTMLUListElement>(null);
 
   return (
@@ -26,7 +26,7 @@ export function ShareColumn({ name, columnId, items }: ColumnProps) {
       <ul ref={listRef} className="flex-grow overflow-auto">
         {items
           .sort((a, b) => a.order - b.order)
-          .map((item, index, items) => (
+          .map((item) => (
             <ShareCard
               key={item.id}
               title={item.title}

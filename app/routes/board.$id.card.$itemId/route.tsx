@@ -1,9 +1,5 @@
-import {
-  ActionFunctionArgs,
-  LoaderFunctionArgs,
-  json,
-  redirect,
-} from "@remix-run/node";
+import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import {
   Form,
   useLoaderData,
@@ -58,15 +54,15 @@ export async function action({ request }: ActionFunctionArgs) {
       try {
         await updateCardTitle({ itemId, title });
         return { ok: true };
-      } catch (error: any) {
+      } catch (error) {
         console.log(error);
+        return;
       }
     }
 
     case INTENTS.updateCard: {
       const content = String(formData.get("content") ?? "");
       const boardId = String(formData.get("boardId") ?? "");
-      // const complete = Boolean(formData.get("complete") ?? false);
       const complete = false;
 
       invariant(content, "missing content");
@@ -75,8 +71,9 @@ export async function action({ request }: ActionFunctionArgs) {
       try {
         await updateCard({ itemId, content, complete });
         return redirect(`/board/${boardId}`);
-      } catch (error: any) {
+      } catch (error) {
         console.log(error);
+        return;
       }
     }
 
@@ -91,7 +88,7 @@ export default function ItemDetail() {
   const navigate = useNavigate();
   const navigation = useNavigation();
   const isLoading = navigation.state !== "idle";
-  let buttonRef = useRef<HTMLButtonElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const { item } = useLoaderData<typeof loader>();
 

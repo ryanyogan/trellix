@@ -13,8 +13,8 @@ export function Board({
   itemCount: number;
   shareable?: boolean | null;
 }) {
-  let fetcher = useFetcher();
-  let isDeleting = fetcher.state !== "idle";
+  const fetcher = useFetcher();
+  const isDeleting = fetcher.state !== "idle";
 
   return isDeleting ? null : (
     <Link

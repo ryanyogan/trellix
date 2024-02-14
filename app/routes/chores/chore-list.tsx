@@ -5,7 +5,7 @@ import { CompleteChoreModal } from "~/components/complete-chore-modal";
 import { Separator } from "~/components/ui/separator";
 import { ChoreItem } from "./chore-item";
 import { NewChore } from "./new-chore";
-import { loader } from "./route";
+import type { loader } from "./route";
 
 export function ChoreList() {
   const { chores, kids } = useLoaderData<typeof loader>();

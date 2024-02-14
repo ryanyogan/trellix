@@ -27,7 +27,7 @@ export function NewBoard() {
         <DialogHeader>
           <DialogTitle className="text-xl">Create Board</DialogTitle>
           <DialogDescription className="text-md">
-            Create a new board here. Click create when you're done.
+            Create a new board here. Click create when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <fetcher.Form method="post" action="/home">

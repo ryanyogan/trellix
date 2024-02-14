@@ -5,7 +5,8 @@ import { Icon } from "~/icons/icons";
 
 import invariant from "tiny-invariant";
 import { cn } from "~/lib/utils";
-import { CONTENT_TYPES, INTENTS, ItemMutation } from "./types";
+import type { ItemMutation } from "./types";
+import { CONTENT_TYPES, INTENTS } from "./types";
 
 interface CardProps {
   title: string;
@@ -15,7 +16,6 @@ interface CardProps {
   order: number;
   nextOrder: number;
   previousOrder: number;
-  complete: boolean | null;
   boardId: number;
 }
 
@@ -27,21 +27,22 @@ export function Card({
   order,
   nextOrder,
   previousOrder,
-  complete,
   boardId,
 }: CardProps) {
-  let submit = useSubmit();
-  let deleteFetcher = useFetcher();
+  const submit = useSubmit();
+  const deleteFetcher = useFetcher();
 
-  let [acceptDrop, setAcceptDrop] = useState<"none" | "top" | "bottom">("none");
+  const [acceptDrop, setAcceptDrop] = useState<"none" | "top" | "bottom">(
+    "none",
+  );
 
   return deleteFetcher.state !== "idle" ? null : (
     <li
       onDragOver={(event) => {
         event.preventDefault();
         event.stopPropagation();
-        let rect = event.currentTarget.getBoundingClientRect();
-        let midpoint = (rect.top + rect.bottom) / 2;
+        const rect = event.currentTarget.getBoundingClientRect();
+        const midpoint = (rect.top + rect.bottom) / 2;
         setAcceptDrop(event.clientY <= midpoint ? "top" : "bottom");
       }}
       onDragLeave={() => {
@@ -50,7 +51,7 @@ export function Card({
       onDrop={(event) => {
         event.stopPropagation();
 
-        let transfer = JSON.parse(
+        const transfer = JSON.parse(
           event.dataTransfer.getData(CONTENT_TYPES.card),
         );
 
@@ -58,10 +59,10 @@ export function Card({
         invariant(transfer.title, "missing title");
         console.log(transfer);
 
-        let droppedOrder = acceptDrop === "top" ? previousOrder : nextOrder;
-        let moveOrder = (droppedOrder + order) / 2;
+        const droppedOrder = acceptDrop === "top" ? previousOrder : nextOrder;
+        const moveOrder = (droppedOrder + order) / 2;
 
-        let mutation: ItemMutation = {
+        const mutation: ItemMutation = {
           order: moveOrder,
           columnId,
           id: transfer.id,

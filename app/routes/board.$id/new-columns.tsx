@@ -27,7 +27,7 @@ export function NewColumn({
       className="p-2 flex-shrink-0 flex flex-col gap-5 overflow-hidden max-h-full w-80 border rounded-xl shadow bg-slate-100"
       onSubmit={(event) => {
         event.preventDefault();
-        let formData = new FormData(event.currentTarget);
+        const formData = new FormData(event.currentTarget);
         formData.set("id", crypto.randomUUID());
         submit(formData, {
           navigate: false,
@@ -48,6 +48,7 @@ export function NewColumn({
       <input type="hidden" name="boardId" value={boardId} />
       <input type="hidden" name="content" value="" />
       <input
+        // eslint-disable-next-line jsx-a11y/no-autofocus
         autoFocus
         required
         ref={inputRef}

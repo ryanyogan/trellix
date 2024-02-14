@@ -1,4 +1,5 @@
-import { ActionFunctionArgs, LoaderFunctionArgs, json } from "@remix-run/node";
+import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import invariant from "tiny-invariant";
 import { requireAuthCookie } from "~/auth/auth";
 import { INTENTS } from "../board.$id/types";

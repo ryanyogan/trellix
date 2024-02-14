@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs } from "@remix-run/node";
+import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { requireAuthCookie } from "~/auth/auth";
 import { ActivityItem } from "~/components/activity-item";

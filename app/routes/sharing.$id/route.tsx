@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs } from "@remix-run/node";
+import type { LoaderFunctionArgs } from "@remix-run/node";
 import {
   isRouteErrorResponse,
   useLoaderData,
@@ -18,32 +18,32 @@ import { notFound } from "~/http/bad-request";
 import { getSharedBoardById } from "../board.$id/queries";
 import { ShareColumn } from "../board.$id/share-column";
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
+export async function loader({ params }: LoaderFunctionArgs) {
   invariant(params.id, "Missing board ID");
-  let id = Number(params.id);
+  const id = Number(params.id);
 
-  let board = await getSharedBoardById(id);
+  const board = await getSharedBoardById(id);
   if (!board) throw notFound();
 
   return { board };
 }
 
 export default function Board() {
-  let { board } = useLoaderData<typeof loader>();
+  const { board } = useLoaderData<typeof loader>();
 
-  let itemsById = new Map(board.items.map((item) => [item.id, item]));
+  const itemsById = new Map(board.items.map((item) => [item.id, item]));
 
   type Column = (typeof board.columns)[number];
 
   type ColumnWithItems = Column & { items: typeof board.items };
-  let columns = new Map<string, ColumnWithItems>();
-  for (let column of board.columns) {
+  const columns = new Map<string, ColumnWithItems>();
+  for (const column of board.columns) {
     columns.set(column.id, { ...column, items: [] });
   }
 
-  for (let item of itemsById.values()) {
-    let columnId = item.columnId;
-    let column = columns.get(columnId);
+  for (const item of itemsById.values()) {
+    const columnId = item.columnId;
+    const column = columns.get(columnId);
     invariant(column, "missing column");
     column.items.push(item);
   }

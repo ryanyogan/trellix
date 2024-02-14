@@ -15,9 +15,9 @@ export function NewCard({
   onComplete: () => void;
   onAddCard: () => void;
 }) {
-  let textAreaRef = useRef<HTMLTextAreaElement>(null);
-  let buttonRef = useRef<HTMLButtonElement>(null);
-  let submit = useSubmit();
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const submit = useSubmit();
 
   return (
     <Form
@@ -26,8 +26,8 @@ export function NewCard({
       onSubmit={(event) => {
         event.preventDefault();
 
-        let formData = new FormData(event.currentTarget);
-        let id = crypto.randomUUID();
+        const formData = new FormData(event.currentTarget);
+        const id = crypto.randomUUID();
         formData.set(ItemMutationFields.id.name, id);
 
         submit(formData, {
@@ -63,6 +63,7 @@ export function NewCard({
       <textarea
         name={ItemMutationFields.title.name}
         ref={textAreaRef}
+        // eslint-disable-next-line jsx-a11y/no-autofocus
         autoFocus
         required
         placeholder="Enter a title for this card"
@@ -79,7 +80,7 @@ export function NewCard({
           }
         }}
         onChange={(event) => {
-          let el = event.currentTarget;
+          const el = event.currentTarget;
           el.style.height = el.scrollHeight + "px";
         }}
       />

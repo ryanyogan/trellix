@@ -1,5 +1,5 @@
 import { prisma } from "~/db/prisma";
-import { ItemMutation } from "./types";
+import type { ItemMutation } from "./types";
 
 export function deleteCard(id: string, accountId: string) {
   return prisma.item.delete({ where: { id, board: { accountId } } });
@@ -151,7 +151,7 @@ export async function createColumn(
   id: string,
   accountId: string,
 ) {
-  let columnCount = await prisma.column.count({
+  const columnCount = await prisma.column.count({
     where: {
       boardId,
       board: {

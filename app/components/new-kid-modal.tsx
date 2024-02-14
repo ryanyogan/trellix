@@ -19,13 +19,13 @@ export default function NewKidModal({
   const fetcher = useFetcher<{ ok?: boolean; error?: boolean }>();
   const navigation = useNavigation();
   const isLoading = navigation.state !== "idle";
-  let buttonRef = useRef<HTMLButtonElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (fetcher?.data?.ok) {
       setClose();
     }
-  }, [fetcher]);
+  }, [fetcher, setClose]);
 
   return (
     <Portal wrapperId="new-kid-portal">
@@ -46,7 +46,7 @@ export default function NewKidModal({
           <input type="hidden" name="intent" value={INTENTS.createKid} />
 
           <div className="mx-2 flex flex-col space-y-4">
-            <Label className="text-blue-400">Kiddo's Name</Label>
+            <Label className="text-blue-400">Childs Name</Label>
             <Input
               name="name"
               required
