@@ -1,10 +1,8 @@
-import { captureRemixErrorBoundaryError } from "@sentry/remix";
 import { cssBundleHref } from "@remix-run/css-bundle";
 import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
 import {
   Link,
   Links,
-  LiveReload,
   Meta,
   Outlet,
   Scripts,
@@ -40,15 +38,8 @@ export function shouldRevalidate({ formAction }: ShouldRevalidateFunctionArgs) {
 
 export const ErrorBoundary = () => {
   const error = useRouteError();
-  captureRemixErrorBoundaryError(error);
   return <div>Something went wrong</div>;
 };
-
-// export const ErrorBoundary = () => {
-//   const error = useRouteError();
-//   captureRemixErrorBoundaryError(error);
-//   return <div>Something went wrong</div>;
-// };
 
 export default function App() {
   let userId = useLoaderData<typeof loader>();
@@ -110,7 +101,6 @@ export default function App() {
 
         <ScrollRestoration />
         <Scripts />
-        <LiveReload />
       </body>
     </html>
   );
